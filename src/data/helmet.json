@@ -1,0 +1,34 @@
+{
+    "helmet": [
+        {
+            "name": "Standard Helmet",
+            "cost": 100,
+            "attr": [
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                }
+            ]
+        }
+    ]
+}

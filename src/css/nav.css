@@ -1,0 +1,60 @@
+.app>.nav {
+    display: flex;
+    flex-wrap: wrap;
+    cursor: default;
+}
+
+.app>.nav>* {
+    flex: 1 0;
+}
+
+.app>.nav>.nav-left {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.app>.nav>.nav-right {
+    min-width: 100px;
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.app>.nav>.nav-left>.nav-level {
+    flex: 1 0;
+    color: white;
+    width: 50px;
+    height: 50px;
+    word-wrap: break-word;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app>.nav>.nav-left>.nav-name {
+    min-width: 120px;
+    flex: 1 0;
+    color: white;
+    word-break: break-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app>.nav>.nav-right>.nav-wallet {
+    height: fit-content;
+    margin-left: 10px;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: right;
+    display: block;
+}
+
+.app>.nav>.nav-right>.nav-wallet:hover {
+    text-overflow: unset;
+    white-space: pre-wrap;
+    word-break: break-all;
+}

@@ -1,0 +1,22 @@
+.infinite-carousel {
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    mask: linear-gradient(90deg,
+            transparent 0%,
+            #fff 30%,
+            #fff 70%,
+            transparent 100%);
+    -webkit-mask: linear-gradient(90deg,
+            transparent 0%,
+            #fff 30%,
+            #fff 70%,
+            transparent 100%);
+}
+
+.carousel {
+    border: 1px solid red;
+    width: 30px;
+    height: 30px;
+    background-color: aliceblue;
+}

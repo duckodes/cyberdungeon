@@ -1,0 +1,37 @@
+{
+    "appname": "Cyber Dungeon",
+    "auth": {
+        "placeholder": {
+            "email": "Email/Username..",
+            "password": "Password.."
+        },
+        "switchAction": {
+            "register": "Register",
+            "login": "Login"
+        },
+        "action": {
+            "create": "Create",
+            "login": "Login"
+        }
+    },
+    "items": {
+        "helmet": [
+            "Standard Helmet"
+        ],
+        "jacket": [
+            "Standard Jacket"
+        ],
+        "weapon": [
+            "Standard Knife"
+        ],
+        "legstrap": [
+            "Standard Potion"
+        ],
+        "boots": [
+            "Standard Boots"
+        ]
+    },
+    "settings": {
+        "logout": "Logout"
+    }
+}

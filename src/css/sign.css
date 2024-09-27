@@ -1,0 +1,41 @@
+.sign>.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: fit-content;
+}
+
+.sign>.container>* {
+    margin: 5px;
+}
+
+.sign>.container>input {
+    outline: 0;
+    border: 1px solid var(--color-main);
+    font-size: large;
+    padding: 5px;
+}
+
+.sign>.container>input::placeholder {
+    font-size: small;
+}
+
+.sign>.container>.switch-display {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sign>.container>.switch-display>.switch-action {
+    width: fit-content;
+    text-decoration: underline;
+    color: white;
+    font-size: xx-small;
+    cursor: pointer;
+}
+
+.sign>.container>.action {
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #fff7;
+    padding: 5px;
+}

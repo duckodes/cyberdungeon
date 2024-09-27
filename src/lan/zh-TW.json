@@ -1,0 +1,37 @@
+{
+    "appname": "虛擬地下城",
+    "auth": {
+        "placeholder": {
+            "email": "信箱/用戶名..",
+            "password": "密碼.."
+        },
+        "switchAction": {
+            "register": "註冊",
+            "login": "登入"
+        },
+        "action": {
+            "create": "創建",
+            "login": "登入"
+        }
+    },
+    "items": {
+        "helmet": [
+            "普通頭盔"
+        ],
+        "jacket": [
+            "普通夾克"
+        ],
+        "weapon": [
+            "普通小刀"
+        ],
+        "legstrap": [
+            "普通藥水"
+        ],
+        "boots": [
+            "普通戰靴"
+        ]
+    },
+    "settings": {
+        "logout": "登出"
+    }
+}
