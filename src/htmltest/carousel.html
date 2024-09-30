@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>無限循環 Carousel</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .carousel {
+            overflow: hidden;
+            width: 300px;
+            border-radius: 10px;
+            position: relative;
+            mask: linear-gradient(90deg,
+                    transparent 15%,
+                    #fff 50%,
+                    #fff 50%,
+                    transparent 85%);
+            -webkit-mask: linear-gradient(90deg,
+                    transparent 15%,
+                    #fff 50%,
+                    #fff 50%,
+                    transparent 85%);
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100px;
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid #e0e0e0;
+            background-color: #e8f0fe;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .carousel-item:last-child {
+            border-right: none;
+            /* 去掉最後一個項目的右邊框 */
+        }
+
+        .button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        #prevBtn {
+            left: 10px;
+        }
+
+        #nextBtn {
+            right: 10px;
+        }
+
+        .button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="carousel">
+        <div class="carousel-inner" id="carouselInner">
+            <div class="carousel-item">Card 1</div>
+            <div class="carousel-item">Card 2</div>
+            <div class="carousel-item">Card 3</div>
+            <div class="carousel-item">Card 4</div>
+            <div class="carousel-item">Card 5</div>
+        </div>
+    </div>
+    <button class="button" id="prevBtn">⦑</button>
+    <button class="button" id="nextBtn">⦒</button>
+
+    <script>
+        const carouselInner = document.getElementById('carouselInner');
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+        let currentIndex = 1; // 由於需要顯示三個項目，從1開始
+
+        const firstItemClone = items[0].cloneNode(true);
+        const secondItemClone = items[1].cloneNode(true);
+        const lastItemClone = items[totalItems - 1].cloneNode(true);
+        const secondLastItemClone = items[totalItems - 2].cloneNode(true);
+
+        carouselInner.insertBefore(lastItemClone, items[0]);
+        carouselInner.insertBefore(secondLastItemClone, lastItemClone);
+        carouselInner.appendChild(firstItemClone);
+        carouselInner.appendChild(secondItemClone);
+
+        const newTotalItems = totalItems + 3; // 總項目數加上克隆的項目
+
+        function updateCarousel() {
+            const offset = -currentIndex * 100; // 每個項目的寬度
+            carouselInner.style.transform = `translateX(${offset}px)`;
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentIndex === 0) {
+                carouselInner.style.transition = 'none';
+                currentIndex = newTotalItems - 3; // 跳到倒數第三個
+                updateCarousel();
+                setTimeout(() => {
+                    carouselInner.style.transition = 'transform 0.5s ease';
+                    goToIndex(currentIndex - 1);
+                }, 0);
+            } else {
+                goToIndex(currentIndex - 1);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentIndex === newTotalItems - 2) {
+                carouselInner.style.transition = 'none';
+                currentIndex = 1; // 跳到第一個
+                updateCarousel();
+                setTimeout(() => {
+                    carouselInner.style.transition = 'transform 0.5s ease';
+                    goToIndex(currentIndex + 1);
+                }, 0);
+            } else {
+                goToIndex(currentIndex + 1);
+            }
+        });
+
+        function goToIndex(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        updateCarousel(); // 初始化
+    </script>
+
+</body>
+
+</html>

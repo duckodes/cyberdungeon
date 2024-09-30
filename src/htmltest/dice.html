@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>擲骰子動畫</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    #dice {
+      width: 100px;
+      height: 100px;
+      margin: 20px;
+      perspective: 1000px;
+    }
+
+    .die {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    .face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border: 1px solid #000;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+    }
+
+    .face1 {
+      transform: rotateY(0deg) translateZ(50px);
+    }
+
+    .face2 {
+      transform: rotateY(90deg) translateZ(50px);
+    }
+
+    .face3 {
+      transform: rotateY(180deg) translateZ(50px);
+    }
+
+    .face4 {
+      transform: rotateY(-90deg) translateZ(50px);
+    }
+
+    .face5 {
+      transform: rotateX(90deg) translateZ(50px);
+    }
+
+    .face6 {
+      transform: rotateX(-90deg) translateZ(50px);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="dice">
+    <div class="die" id="die">
+      <div class="face face1">1</div>
+      <div class="face face2">2</div>
+      <div class="face face3">3</div>
+      <div class="face face4">4</div>
+      <div class="face face5">5</div>
+      <div class="face face6">6</div>
+    </div>
+  </div>
+  <button id="rollButton">擲骰子</button>
+
+  <script>
+    const die = document.getElementById('die');
+    const rollButton = document.getElementById('rollButton');
+    // 設定每個面的權重 (機率)
+    const probabilities = [
+      { face: 1, weight: 0.1 }, // 面1有10%的機率
+      { face: 2, weight: 0.2 }, // 面2有20%的機率
+      { face: 3, weight: 0.6 }, // 面3有30%的機率
+      { face: 4, weight: 0.07 }, // 面4有10%的機率
+      { face: 5, weight: 0.02 }, // 面5有15%的機率
+      { face: 6, weight: 0.01 } // 面6有15%的機率
+    ];
+
+    function rollDice(probabilities) {
+      // 計算總權重
+      const totalWeight = probabilities.reduce((sum, p) => sum + p.weight, 0);
+
+      // 生成一個0到總權重之間的隨機數
+      let random = Math.random() * totalWeight;
+
+      // 根據隨機數選擇一個面
+      let selectedFace = probabilities.find(p => {
+        if (random < p.weight) {
+          return true;
+        }
+        random -= p.weight;
+        return false;
+      }).face;
+
+      // 根據選擇的面設置旋轉角度
+      const rotations = [
+        { x: 0, y: 0 }, // 面1
+        { x: 0, y: 90 }, // 面2
+        { x: 0, y: 180 }, // 面3
+        { x: 0, y: -90 }, // 面4
+        { x: 90, y: 0 }, // 面5
+        { x: -90, y: 0 } // 面6
+    ];
+
+      const { x, y } = rotations[selectedFace - 1];
+
+      let totalRotations = 6; // 初始旋轉圈數
+      let duration = 3000; // 動畫時長3秒
+      let startTime = null; // 開始時間
+      let currentRotationX = 0;
+      let currentRotationY = 0;
+
+      // 隨機旋轉方向
+      const directionX = (Math.random() < 0.5 ? 1 : -1);
+      const directionY = (Math.random() < 0.5 ? 1 : -1);
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        let elapsed = timestamp - startTime;
+
+        // 計算進度
+        let progress = elapsed / duration;
+
+        // 使用緩動函數來實現一開始快，然後減速
+        let easeOut = 1 - Math.pow(1 - progress, 3); // 快速到慢速的過渡
+
+        // 根據進度設置旋轉角度
+        let rotationX = directionX * 360 * totalRotations * easeOut;
+        let rotationY = directionY * 360 * totalRotations * easeOut;
+
+        // 應用旋轉效果
+        die.style.transform = `rotateX(${rotationX + x}deg) rotateY(${rotationY + y}deg)`;
+
+        // 繼續動畫直到時間到達
+        if (elapsed < duration) {
+          requestAnimationFrame(animate);
+        } else {
+          // 最終確保骰子停在正確的面
+          die.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
+        }
+      }
+
+      // 開始旋轉動畫
+      die.style.transition = 'none'; // 移除過渡效果
+      requestAnimationFrame(animate); // 啟動動畫
+    }
+
+    rollButton.addEventListener('click', () => rollDice(probabilities));
+
+    function simulateRolls(probabilities) {
+
+      // 計算總權重
+      const totalWeight = probabilities.reduce((sum, p) => sum + p.weight, 0);
+
+      // 模擬結果統計
+      let results = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+
+      // 模擬100次擲骰
+      for (let i = 0; i < 100; i++) {
+        // 生成一個0到總權重之間的隨機數
+        let random = Math.random() * totalWeight;
+
+        // 根據隨機數選擇一個面
+        let selectedFace = probabilities.find(p => {
+          if (random < p.weight) {
+            return true;
+          }
+          random -= p.weight;
+          return false;
+        }).face;
+
+        // 計數選中的面
+        results[selectedFace]++;
+      }
+
+      // 輸出結果
+      console.log('100次擲骰結果：');
+      for (let face in results) {
+        console.log(`面${face}: ${results[face]}次`);
+      }
+    }
+    simulateRolls(probabilities);
+  </script>
+
+</body>
+
+</html>
