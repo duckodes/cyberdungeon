@@ -20,14 +20,12 @@ const auth = (() => {
         let sign = authSign.render(auth, languageData);
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
+            if (!user)
+                return !document.querySelector('.sign') && (sign = authSign.render(auth, languageData));
+            const uid = user.uid;
 
-                sign.remove();
-                apputils.render(auth, languageData);
-            } else {
-                !document.querySelector('.sign') && (sign = authSign.render(auth, languageData));
-            }
+            sign.remove();
+            apputils.render(auth, languageData);
         });
     }
 
