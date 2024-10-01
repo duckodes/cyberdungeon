@@ -32,7 +32,7 @@ const authSign = (() => {
     }
     function UpdateProfile(user) {
         updateProfile(user, { displayName: user.email.replace(/@.*?(?=@|$)/g, '') })
-            .then(() => { })
+            .then(void 0)
             .catch(error => console.log(error));
     }
     function render(auth, languageData) {
@@ -66,7 +66,7 @@ const authSign = (() => {
             action.textContent === languageData.auth.action.login ?
                 login(auth, email.value, password.value) : create(auth, email.value, password.value);
         });
-        sign.addEventListener('keyup', e => {
+        sign.addEventListener('keyup', (e) => {
             if (e.key === "Enter") {
                 action.textContent === languageData.auth.action.login ?
                     login(auth, email.value, password.value) : create(auth, email.value, password.value);

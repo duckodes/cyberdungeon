@@ -1,7 +1,7 @@
+// https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 import language from "./language.js";
 import fetcher from "./fetcher.js";
@@ -19,15 +19,14 @@ const auth = (() => {
 
         let sign = authSign.render(auth, languageData);
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 const uid = user.uid;
 
                 sign.remove();
                 apputils.render(auth, languageData);
-                console.log(user);
             } else {
-                document.querySelector('.sign') ? void 0 : sign = authSign.render(auth, languageData);
+                !document.querySelector('.sign') && (sign = authSign.render(auth, languageData));
             }
         });
     }

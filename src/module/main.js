@@ -1,5 +1,4 @@
 import auth from "./auth.js";
-import carousel from "./carousel.js";
 import items from "./items.js";
 import language from "./language.js";
 
@@ -9,12 +8,11 @@ const main = (() => {
     async function init() {
         console.log("welcome to cyberdungeon !!");
         document.documentElement.lang = lang;
-        //await auth.init(lang);
+        await auth.init(lang);
         const itemData = await items.init(lang);
+        console.log(itemData);
         const languageData = await language.cache(lang);
         render(languageData);
-        const infiniteCarousel = carousel.render();
-        carousel.add(infiniteCarousel);
     }
 
     function render(languageData) {
