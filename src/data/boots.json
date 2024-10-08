@@ -5,27 +5,27 @@
             "cost": 100,
             "attr": [
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 },
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 },
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 },
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 },
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 },
                 {
-                    "type": "spd",
+                    "type": "act",
                     "value": 1
                 }
             ]

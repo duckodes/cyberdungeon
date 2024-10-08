@@ -1,29 +1,24 @@
+import language from "./language.js";
 import auth from "./auth.js";
 import items from "./items.js";
-import language from "./language.js";
 
-const main = (() => {
+const main = (async () => {
     let lang = navigator.language;
+    document.documentElement.lang = lang;
 
-    async function init() {
-        console.log("welcome to cyberdungeon !!");
-        document.documentElement.lang = lang;
-        await auth.init(lang);
-        const itemData = await items.init(lang);
-        console.log(itemData);
-        const languageData = await language.cache(lang);
-        render(languageData);
-    }
+    console.log("welcome to cyberdungeon !!");
+
+    const languageData = await language.cache(lang);
+
+    await auth.init(languageData);
+
+    const itemData = await items.init(languageData);
+    console.log(itemData);
 
     function render(languageData) {
         const title = document.createElement('title');
         title.textContent = languageData.appname;
         document.head.appendChild(title);
     }
-
-    return {
-        init
-    }
+    render(languageData);
 })();
-
-await main.init();

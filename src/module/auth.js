@@ -3,14 +3,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
-import language from "./language.js";
 import fetcher from "./fetcher.js";
 import authSign from "./auth.sign.js";
 import apputils from "./apputils.js";
 
 const auth = (() => {
-    async function init(lang) {
-        const languageData = await language.cache(lang);
+    async function init(languageData) {
         const firebaseConfig = await fetcher.load('../src/config/firebaseConfig.json');
 
         const app = initializeApp(firebaseConfig);
@@ -25,7 +23,8 @@ const auth = (() => {
             const uid = user.uid;
 
             sign.remove();
-            apputils.render(auth, languageData);
+            const apputilsRender = apputils.render(auth, languageData);
+            apputilsRender.update.btc(58);
         });
     }
 

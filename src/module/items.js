@@ -1,9 +1,7 @@
-import language from "./language.js";
 import fetcher from "./fetcher.js";
 
 const items = (() => {
-    async function init(lang) {
-        const languageData = await language.cache(lang);
+    async function init(languageData) {
         const categories = ['helmet', 'jacket', 'weapon', 'legstrap', 'boots'];
         const dataPromises = categories.map(category =>
             fetcher.load(`../src/data/${category}.json`)

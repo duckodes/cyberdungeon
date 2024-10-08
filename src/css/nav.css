@@ -44,13 +44,13 @@
 
 .app>.nav>.nav-right>.nav-wallet {
     height: fit-content;
-    margin-left: 10px;
     color: white;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     text-align: right;
     display: block;
+    padding: 20px;
 }
 
 .app>.nav>.nav-right>.nav-wallet:hover {

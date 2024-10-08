@@ -25,12 +25,12 @@ const apputils = (() => {
         navName.textContent = 'QueenmasteraasdfEEEE';
         const navWalletBTC = document.createElement('div');
         navWalletBTC.className = 'nav-wallet nav-wallet-btc';
-        navWalletBTC.title = 'Bitcoin'
-        navWalletBTC.textContent = '510654654065406545405655506516540650650540650' + ' ₿';
-        const navWalletNeuralChips = document.createElement('div');
-        navWalletNeuralChips.className = 'nav-wallet nav-wallet-wafer';
-        navWalletNeuralChips.title = 'NeuralChips';
-        navWalletNeuralChips.textContent = '510654654065406545405655506516540650650540650' + ' ℕ';
+        navWalletBTC.title = 'Bitcoin';
+        navWalletBTC.textContent = '0 ₿';
+        const navWalletNC = document.createElement('div');
+        navWalletNC.className = 'nav-wallet nav-wallet-nc';
+        navWalletNC.title = 'NeuralChips';
+        navWalletNC.textContent = '0 ℕ';
 
         const settings = document.createElement('div');
         settings.className = 'settings';
@@ -50,7 +50,7 @@ const apputils = (() => {
         navLeft.appendChild(navLevel);
         navLeft.appendChild(navName);
         navRight.appendChild(navWalletBTC);
-        navRight.appendChild(navWalletNeuralChips);
+        navRight.appendChild(navWalletNC);
 
         nav.appendChild(navLeft);
         nav.appendChild(navRight);
@@ -60,6 +60,22 @@ const apputils = (() => {
         app.appendChild(footer);
 
         document.body.appendChild(app);
+        return {
+            update: {
+                level: (textContent) => {
+                    navLevel.textContent = textContent;
+                },
+                name: (textContent) => {
+                    navName.textContent = textContent;
+                },
+                btc: (textContent) => {
+                    navWalletBTC.textContent = textContent + ' ₿';
+                },
+                nc: (textContent) => {
+                    navWalletNC.textContent = textContent + ' ℕ';
+                }
+            }
+        }
     }
 
     return {
