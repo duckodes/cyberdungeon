@@ -19,18 +19,19 @@ const apputils = (() => {
 
         const navLevel = document.createElement('div');
         navLevel.className = 'nav-level';
+        navLevel.title = 'Level';
         navLevel.textContent = '0';
         const navName = document.createElement('div');
         navName.className = 'nav-name';
-        navName.textContent = 'QueenmasteraasdfEEEE';
+        navName.textContent = languageData.nav.name;
         const navWalletBTC = document.createElement('div');
         navWalletBTC.className = 'nav-wallet nav-wallet-btc';
-        navWalletBTC.title = 'Bitcoin';
-        navWalletBTC.textContent = '0 ₿';
+        navWalletBTC.title = 'Bytecoin';
+        navWalletBTC.textContent = '0 BTC';
         const navWalletNC = document.createElement('div');
         navWalletNC.className = 'nav-wallet nav-wallet-nc';
         navWalletNC.title = 'NeuralChips';
-        navWalletNC.textContent = '0 ℕ';
+        navWalletNC.textContent = '0 N';
 
         const settings = document.createElement('div');
         settings.className = 'settings';
@@ -63,16 +64,16 @@ const apputils = (() => {
         return {
             update: {
                 level: (textContent) => {
-                    navLevel.textContent = textContent;
+                    navLevel.textContent = textContent === undefined ? '0' : textContent;
                 },
                 name: (textContent) => {
-                    navName.textContent = textContent;
+                    navName.textContent = textContent === undefined ? languageData.nav.name : textContent;
                 },
                 btc: (textContent) => {
-                    navWalletBTC.textContent = textContent + ' ₿';
+                    navWalletBTC.textContent = textContent === undefined ? '0 BTC' : textContent + ' BTC';
                 },
                 nc: (textContent) => {
-                    navWalletNC.textContent = textContent + ' ℕ';
+                    navWalletNC.textContent = textContent === undefined ? '0 N' : textContent + ' N';
                 }
             }
         }

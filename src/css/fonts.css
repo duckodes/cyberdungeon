@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'pressStart2P';
+    src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cyber';
+    src: url('../fonts/Cyber/cyber-1.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'plankKosmos';
+    src: url('../fonts/Planet-Kosmos/PLANK-1.ttf') format('truetype');
+}

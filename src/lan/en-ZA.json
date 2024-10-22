@@ -31,6 +31,9 @@
             "Standard Boots"
         ]
     },
+    "nav": {
+        "name": "Code Name"
+    },
     "settings": {
         "logout": "Logout"
     }
