@@ -43,6 +43,13 @@ const authSign = (() => {
         const email = document.createElement('input');
         email.type = 'text';
         email.placeholder = languageData.auth.placeholder.email;
+        email.addEventListener('input', (e) => {
+            const v = e.target.value;
+            if (v.includes('@') && !v.endsWith('@gmail.com')) {
+                e.target.value = v.split('@')[0] + '@gmail.com';
+                password.focus();
+            }
+        });
         const password = document.createElement('input');
         password.type = 'password';
         password.placeholder = languageData.auth.placeholder.password;

@@ -26,7 +26,7 @@ const apputils = (() => {
         navName.textContent = languageData.nav.name;
         const navWalletBTC = document.createElement('div');
         navWalletBTC.className = 'nav-wallet nav-wallet-btc';
-        navWalletBTC.title = 'Bytecoin';
+        navWalletBTC.title = 'Bitcoin';
         navWalletBTC.textContent = '0 BTC';
         const navWalletNC = document.createElement('div');
         navWalletNC.className = 'nav-wallet nav-wallet-nc';

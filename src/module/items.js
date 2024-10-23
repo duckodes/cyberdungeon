@@ -19,6 +19,18 @@ const items = (() => {
                 item.name = languageData.items[category][i] || item.name;
             });
         }
+        function readOnly(obj) {
+            if (obj === null || typeof obj !== 'object') {
+                return;
+            }
+            Object.freeze(obj);
+            Object.entries(obj).forEach(([key, value]) => {
+                if (typeof value === 'object') {
+                    readOnly(value);
+                }
+            });
+        }
+        readOnly(itemData);
         return itemData;
     }
 

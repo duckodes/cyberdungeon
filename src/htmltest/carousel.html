@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            user-select: none;
         }
 
         .carousel {
@@ -40,7 +41,7 @@
 
         .carousel-inner {
             display: flex;
-            transition: transform 0.5s ease;
+            transition: transform .2s ease-out;
         }
 
         .carousel-item {
@@ -128,9 +129,9 @@
                 currentIndex = newTotalItems - 3; // 跳到倒數第三個
                 updateCarousel();
                 setTimeout(() => {
-                    carouselInner.style.transition = 'transform 0.5s ease';
+                    carouselInner.style.transition = 'transform .2s ease-out';
                     goToIndex(currentIndex - 1);
-                }, 0);
+                }, 50);
             } else {
                 goToIndex(currentIndex - 1);
             }
@@ -142,9 +143,9 @@
                 currentIndex = 1; // 跳到第一個
                 updateCarousel();
                 setTimeout(() => {
-                    carouselInner.style.transition = 'transform 0.5s ease';
+                    carouselInner.style.transition = 'transform .2s ease-out';
                     goToIndex(currentIndex + 1);
-                }, 0);
+                }, 50);
             } else {
                 goToIndex(currentIndex + 1);
             }
@@ -154,7 +155,46 @@
             currentIndex = index;
             updateCarousel();
         }
+        let startX; // 開始位置
+        let isDragging = false; // 是否正在拖動
 
+        // 捕捉滑動開始位置
+        document.querySelector('.carousel').addEventListener('mousedown', (e) => {
+            startX = e.clientX; // 獲取滑鼠X坐標
+            isDragging = true;
+        });
+
+        document.querySelector('.carousel').addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX; // 獲取觸控X坐標
+            isDragging = true;
+        });
+
+        // 捕捉滑動結束位置
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            const endX = e.clientX; // 獲取滑鼠結束X坐標
+            handleSwipe(startX, endX);
+            isDragging = false;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            const endX = e.changedTouches[0].clientX; // 獲取觸控結束X坐標
+            handleSwipe(startX, endX);
+            isDragging = false;
+        });
+
+        // 處理滑動
+        function handleSwipe(startX, endX) {
+            if (startX > endX + 50) {
+                // 向左滑動
+                document.getElementById('nextBtn').click(); // 模擬點擊下一個按鈕
+            }
+            if (startX < endX - 50) {
+                // 向右滑動
+                document.getElementById('prevBtn').click(); // 模擬點擊上一個按鈕
+            }
+        }
         updateCarousel(); // 初始化
     </script>
 
