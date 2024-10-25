@@ -36,5 +36,9 @@
     },
     "settings": {
         "logout": "登出"
+    },
+    "prompter": {
+        "timeout": "登入逾時，請重新登入",
+        "confirm": "點擊螢幕確認"
     }
 }

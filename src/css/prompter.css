@@ -1,0 +1,42 @@
+.prompter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #353535fa;
+}
+
+.prompter>.box {
+    color: #fff;
+    max-width: 350px;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.prompter>button {
+    border: none;
+    background-color: transparent;
+    color: #fff6;
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        color: #fff6;
+    }
+
+    50% {
+        color: #fff1;
+    }
+}

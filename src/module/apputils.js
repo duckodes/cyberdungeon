@@ -1,6 +1,11 @@
 import authSign from "./auth.sign.js";
 
 const apputils = (() => {
+    function registerEvent(user, apputilsRender, languageData) {
+        window.addEventListener('focus', () => {
+            authSign.checkToken(user, apputilsRender, languageData);
+        });
+    }
     function render(auth, languageData) {
         const app = document.createElement('div');
         app.className = 'app';
@@ -40,7 +45,7 @@ const apputils = (() => {
         logout.className = 'logout';
         logout.textContent = languageData.settings.logout;
         logout.addEventListener('click', () => {
-            authSign.logout(auth, languageData);
+            authSign.logout(auth);
             app.remove();
         });
 
@@ -62,6 +67,10 @@ const apputils = (() => {
 
         document.body.appendChild(app);
         return {
+            revokeApp: () => {
+                authSign.logout(auth);
+                app.remove();
+            },
             update: {
                 level: (textContent) => {
                     navLevel.textContent = textContent === undefined ? '0' : textContent;
@@ -80,6 +89,7 @@ const apputils = (() => {
     }
 
     return {
+        registerEvent,
         render
     }
 })();

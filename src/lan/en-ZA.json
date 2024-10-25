@@ -36,5 +36,9 @@
     },
     "settings": {
         "logout": "Logout"
+    },
+    "prompter": {
+        "timeout": "Login timed out, please log in again.",
+        "confirm": "Click the screen to confirm"
     }
 }

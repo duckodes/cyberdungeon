@@ -1,14 +1,12 @@
 import { ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
-import apputils from "./apputils.js";
-
 const authData = (() => {
-    function init(auth, database, user, languageData) {
+    function init(database, user, apputilsRender) {
         const dataRef = ref(database, `cyberdungeon/user/${user.uid}`);
         const updateData = (field, val) => {
             update(dataRef, { [field]: val });
         };
-        const apputilsRender = apputils.render(auth, languageData);
+        
         onValue(dataRef, (snapshot) => {
             apputilsRender.update.level(snapshot.val()?.level);
             apputilsRender.update.name(snapshot.val()?.name);

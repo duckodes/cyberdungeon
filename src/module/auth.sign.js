@@ -1,5 +1,7 @@
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
+import prompter from "./prompter.js";
+
 const authSign = (() => {
     function login(auth, email, password) {
         signInWithEmailAndPassword(auth, email, password)
@@ -12,12 +14,11 @@ const authSign = (() => {
                 console.log(errorCode);
             });
     }
-    function logout(auth, languageData) {
-        signOut(auth).then(() => {
-
-        }).catch((error) => {
-            console.log(error);
-        });
+    function logout(auth) {
+        signOut(auth)
+            .catch((error) => {
+                console.log(error);
+            });
     }
     function create(auth, email, password) {
         createUserWithEmailAndPassword(auth, email, password)
@@ -32,8 +33,15 @@ const authSign = (() => {
     }
     function UpdateProfile(user) {
         updateProfile(user, { displayName: user.email.replace(/@.*?(?=@|$)/g, '') })
-            .then(void 0)
             .catch(error => console.log(error));
+    }
+    function checkToken(user, apputilsRender, languageData) {
+        user.getIdToken()
+            .catch((error) => {
+                apputilsRender.revokeApp();
+                prompter.render(languageData);
+                console.log(error);
+            });
     }
     function render(auth, languageData) {
         const sign = document.createElement('div');
@@ -92,7 +100,7 @@ const authSign = (() => {
         document.body.appendChild(sign);
         return sign;
     }
-    return { render, logout }
+    return { render, logout, checkToken }
 })();
 
 export default authSign;

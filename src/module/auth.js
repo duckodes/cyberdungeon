@@ -6,6 +6,7 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/10.13.2/firebase
 import fetcher from "./fetcher.js";
 import authSign from "./auth.sign.js";
 import authData from "./auth.data.js";
+import apputils from "./apputils.js";
 
 const auth = (() => {
     async function init(languageData) {
@@ -22,7 +23,9 @@ const auth = (() => {
                 return !document.querySelector('.sign') && (sign = authSign.render(auth, languageData));
             sign.remove();
 
-            authData.init(auth, database, user, languageData);
+            const apputilsRender = apputils.render(auth, languageData);
+            apputils.registerEvent(user, apputilsRender, languageData);
+            authData.init(database, user, apputilsRender);
         });
     }
 

@@ -14,7 +14,7 @@ const main = (async () => {
 
     const itemData = await items.init(languageData);
     console.log(itemData);
-
+    
     function render(languageData) {
         const title = document.createElement('title');
         title.textContent = languageData.appname;
