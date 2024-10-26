@@ -2,9 +2,12 @@ import authSign from "./auth.sign.js";
 
 const apputils = (() => {
     function registerEvent(user, apputilsRender, languageData) {
-        window.addEventListener('focus', () => {
-            authSign.checkToken(user, apputilsRender, languageData);
-        });
+        const checkToken = () => {
+            const isTokenExist = authSign.checkToken(user, apputilsRender, languageData);
+            if (isTokenExist) return;
+            window.removeEventListener('focus', checkToken);
+        }
+        window.addEventListener('focus', checkToken);
     }
     function render(auth, languageData) {
         const app = document.createElement('div');
@@ -67,6 +70,12 @@ const apputils = (() => {
 
         document.body.appendChild(app);
         return {
+            display: {
+                settings: (isShow) => {
+                    isShow ?
+                        settings.style.display = 'flex' : settings.style.display = '';
+                }
+            },
             revokeApp: () => {
                 authSign.logout(auth);
                 app.remove();

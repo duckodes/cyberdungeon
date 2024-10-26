@@ -1,22 +1,28 @@
 const prompter = (() => {
-    function render(languageData) {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'prompter';
-        tooltip.addEventListener('click', (e) => {
-            e.target !== box && tooltip.remove();
+    let isRender = false;
+    function render(boxText, confirmText) {
+        const prompter = document.createElement('div');
+        prompter.className = 'prompter';
+        prompter.addEventListener('click', (e) => {
+            e.target !== box && prompter.remove();
+            isRender = false;
         });
         const box = document.createElement('div');
         box.className = 'box';
-        box.textContent = languageData.prompter.timeout;
+        box.textContent = boxText;
         const confirm = document.createElement('button');
-        confirm.textContent = languageData.prompter.confirm;
+        confirm.textContent = confirmText;
 
-        tooltip.appendChild(box);
-        tooltip.appendChild(confirm);
-        document.body.appendChild(tooltip);
+        prompter.appendChild(box);
+        prompter.appendChild(confirm);
+        document.body.appendChild(prompter);
+        isRender = true;
     }
     return {
-        render
+        render,
+        get isRender() {
+            return isRender
+        }
     }
 })();
 

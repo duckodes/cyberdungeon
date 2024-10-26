@@ -36,12 +36,14 @@ const authSign = (() => {
             .catch(error => console.log(error));
     }
     function checkToken(user, apputilsRender, languageData) {
+        if (prompter.isRender) return false;
         user.getIdToken()
             .catch((error) => {
                 apputilsRender.revokeApp();
-                prompter.render(languageData);
+                prompter.render(languageData.prompter.timeout, languageData.prompter.confirm);
                 console.log(error);
             });
+        return true;
     }
     function render(auth, languageData) {
         const sign = document.createElement('div');
