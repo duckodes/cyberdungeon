@@ -3,8 +3,8 @@ import authSign from "./auth.sign.js";
 const apputils = (() => {
     function registerEvent(user, apputilsRender, languageData) {
         const checkToken = () => {
-            const isTokenExist = authSign.checkToken(user, apputilsRender, languageData);
-            if (isTokenExist) return;
+            if (authSign.checkToken(user, apputilsRender, languageData))
+                return;
             window.removeEventListener('focus', checkToken);
         }
         window.addEventListener('focus', checkToken);
