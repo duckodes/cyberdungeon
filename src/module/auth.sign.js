@@ -7,6 +7,7 @@ const authSign = (() => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
+                localStorage.setItem('USER_EMAIL', email);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -53,6 +54,7 @@ const authSign = (() => {
         const email = document.createElement('input');
         email.type = 'text';
         email.placeholder = languageData.auth.placeholder.email;
+        email.value = localStorage.getItem('USER_EMAIL');
         email.addEventListener('input', (e) => {
             const v = e.target.value;
             if (v.includes('@') && !v.endsWith('@gmail.com')) {
