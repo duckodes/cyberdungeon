@@ -9,9 +9,7 @@ const apputils = (() => {
         }
         window.addEventListener('focus', checkToken);
 
-        window.addEventListener('close', () => {
-            localStorage.removeItem('USER_EMAIL');
-        });
+        window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
     }
     function render(auth, languageData) {
         const app = document.createElement('div');
