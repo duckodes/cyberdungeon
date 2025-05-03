@@ -4,11 +4,6 @@
 }
 
 @font-face {
-    font-family: 'cyber';
-    src: url('../fonts/Cyber/cyber-1.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'plankKosmos';
-    src: url('../fonts/Planet-Kosmos/PLANK-1.ttf') format('truetype');
+    font-family: 'Road_Rage';
+    src: url('../fonts/Road-Rage-Font/Road_Rage.otf') format('opentype');
 }

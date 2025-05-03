@@ -6,7 +6,7 @@ const main = (async () => {
     let lang = navigator.language;
     document.documentElement.lang = lang;
 
-    console.log("welcome to cyberdungeon !!");
+    console.warn("welcome to cyberdungeon !!");
 
     const languageData = await language.cache(lang);
 
