@@ -1,5 +1,9 @@
 {
     "appname": "Cyber Dungeon",
+    "languagetype": {
+        "en-ZA": "South African English",
+        "zh-TW": "Traditional Chinese"
+    },
     "auth": {
         "placeholder": {
             "email": "Email/Username..",

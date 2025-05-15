@@ -24,7 +24,7 @@
 
 .app>.nav>.nav-left>.nav-level {
     flex: 1 0;
-    color: white;
+    color: #ffffff;
     width: 50px;
     height: 50px;
     word-wrap: break-word;
@@ -36,16 +36,17 @@
 .app>.nav>.nav-left>.nav-name {
     min-width: 120px;
     flex: 1 0;
-    color: white;
+    color: #ffffff;
     word-break: break-all;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-shadow: 2px 2px 3px #9b9b9b;
 }
 
 .app>.nav>.nav-right>.nav-wallet {
     height: fit-content;
-    color: white;
+    color: #ffffff;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;

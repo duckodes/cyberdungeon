@@ -1,5 +1,9 @@
 {
     "appname": "虛擬地下城",
+    "languagetype": {
+        "en-ZA": "南非英語",
+        "zh-TW": "繁體中文"
+    },
     "auth": {
         "placeholder": {
             "email": "信箱/用戶名..",

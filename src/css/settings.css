@@ -6,6 +6,29 @@
     align-items: center;
 }
 
+.app>.content>.settings>.language-select {
+    background-color: #777777;
+    color: #ffffff;
+    width: 100%;
+    max-width: 200px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.app>.content>.settings>.language-select>.language-select-text {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app>.content>.settings>.language-select>.selection-symbol {
+    font-size: x-small;
+}
+
 .app>.content>.settings>.logout {
     max-width: 200px;
 }
