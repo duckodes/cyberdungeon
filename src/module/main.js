@@ -8,13 +8,13 @@ const main = (async () => {
 
     console.warn("welcome to cyberdungeon !!");
 
-    const languageData = await language.cache(lang);
+    const languageData = await language.cache(document.documentElement.lang);
 
-    await auth.init(languageData);
+    (await auth).init(languageData);
 
     const itemData = await items.init(languageData);
     console.log(itemData);
-    
+
     function render(languageData) {
         const title = document.createElement('title');
         title.textContent = languageData.appname;

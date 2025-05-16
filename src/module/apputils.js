@@ -1,4 +1,7 @@
+import auth from "./auth.js";
+import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
+import language from "./language.js";
 import languagetype from "./languagetype.js";
 
 const apputils = (() => {
@@ -12,7 +15,7 @@ const apputils = (() => {
 
         window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
     }
-    function render(auth, languageData) {
+    function render(languageData) {
         const app = document.createElement('div');
         app.className = 'app';
 
@@ -31,7 +34,7 @@ const apputils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
-        const settingsUtils = settingsutils.render(auth, app, languageData);
+        const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(settingsUtils.settings);
 
         document.body.appendChild(app);
@@ -42,8 +45,8 @@ const apputils = (() => {
                         settings.style.display = 'flex' : settings.style.display = '';
                 }
             },
-            revokeApp: () => {
-                authSign.logout(auth);
+            revokeApp: async () => {
+                authSign.logout((await auth).auth);
                 app.remove();
             },
             update: {
@@ -111,41 +114,64 @@ const navutils = (() => {
 })();
 
 const settingsutils = (() => {
-    function render(auth, app, languageData) {
+    function render(app, languageData) {
         const settings = document.createElement('div');
         settings.className = 'settings';
 
         const languageSelect = document.createElement('div');
         languageSelect.className = 'language-select';
+        const languageSelectBox = document.createElement('div');
+        languageSelectBox.className = 'language-select-box';
         const languageSelectText = document.createElement('div');
         languageSelectText.className = 'language-select-text';
-        languageSelectText.textContent = languagetype.getType(languageData);
+        languageSelectText.textContent = languagetype.getType(languageData, document.documentElement.lang);
         const selectionSymbol = document.createElement('div');
         selectionSymbol.className = 'selection-symbol';
         selectionSymbol.textContent = '▲';
         function isLanguageBoxActive() {
             return selectionSymbol.textContent === '▼';
         }
-        languageSelect.addEventListener('click', () => {
+        function setLanguageBoxActive(active) {
+            active ? selectionSymbol.textContent = '▼' : selectionSymbol.textContent = '▲';
+        }
+        languageSelectBox.addEventListener('click', () => {
             const isActiveSelection = isLanguageBoxActive();
             selectionSymbol.textContent = isActiveSelection ? '▲' : '▼';
+            if (!isActiveSelection) {
+                languageSelectList.style.display = 'flex';
+            } else {
+                languageSelectList.style.display = 'none';
+            }
         });
-        for (let i = 0; i < Object.keys(languageData.languagetype).length; i++) {
-            const languageSelectBox = document.createElement('div');
-            languageSelectBox.textContent = languagetype.getType(languageData);
-            languageSelect.appendChild(languageSelectBox);
+        const languageSelectList = document.createElement('div');
+        languageSelectList.className = 'language-select-list';
+        languageSelectList.style.display = 'none';
+        for (let i = 0; i < languagetype.getLength(languageData); i++) {
+            const languageSelectItem = document.createElement('div');
+            languageSelectItem.textContent = languagetype.getValue(languageData)[i];
+            languageSelectItem.addEventListener('click', async () => {
+                const languageTypeKey = languagetype.getKeys(languageData)[i];
+                document.documentElement.lang = languageTypeKey;
+                authData.setData((await auth).auth.currentUser, 'lan', languageTypeKey);
+                app.remove();
+                (await auth).update(await language.set(languageTypeKey));
+                console.log(languagetype.getKeys(languageData)[i]);
+            });
+            languageSelectList.appendChild(languageSelectItem);
         }
+        languageSelectBox.appendChild(languageSelectText);
+        languageSelectBox.appendChild(selectionSymbol);
+
+        languageSelect.appendChild(languageSelectBox);
+        languageSelect.appendChild(languageSelectList);
 
         const logout = document.createElement('button');
         logout.className = 'logout';
         logout.textContent = languageData.settings.logout;
-        logout.addEventListener('click', () => {
-            authSign.logout(auth);
+        logout.addEventListener('click', async () => {
+            authSign.logout((await auth).auth);
             app.remove();
         });
-
-        languageSelect.appendChild(languageSelectText);
-        languageSelect.appendChild(selectionSymbol);
 
         settings.appendChild(languageSelect);
         settings.appendChild(logout);

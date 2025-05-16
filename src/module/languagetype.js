@@ -1,9 +1,21 @@
 const languagetype = (() => {
-    function getType(languageData) {
-        return languageData.languagetype[document.documentElement.lang] || null;
+    function getType(languageData, key) {
+        return languageData.languagetype[key] || null;
+    }
+    function getLength(languageData) {
+        return Object.keys(languageData.languagetype).length;
+    }
+    function getKeys(languageData) {
+        return Object.keys(languageData.languagetype);
+    }
+    function getValue(languageData) {
+        return Object.values(languageData.languagetype);
     }
     return {
-        getType: getType
+        getType,
+        getKeys,
+        getLength,
+        getValue
     }
 })();
 

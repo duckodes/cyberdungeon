@@ -11,22 +11,52 @@
     color: #ffffff;
     width: 100%;
     max-width: 200px;
-    padding: 5px;
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.app>.content>.settings>.language-select>.language-select-box {
+    display: flex;
+    flex-direction: row;
+    padding: 2px;
+}
+
+.app>.content>.settings>.language-select>.language-select-box>.language-select-text {
+    font-size: large;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.app>.content>.settings>.language-select>.language-select-box>.selection-symbol {
+    font-size: x-small;
+    width: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
 }
 
-.app>.content>.settings>.language-select>.language-select-text {
+.app>.content>.settings>.language-select>.language-select-list {
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
 }
 
-.app>.content>.settings>.language-select>.selection-symbol {
-    font-size: x-small;
+.app>.content>.settings>.language-select>.language-select-list>* {
+    color: #cccccc;
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.app>.content>.settings>.language-select>.language-select-list>*:hover {
+    background-color: #aaaaaa;
+    white-space: unset;
 }
 
 .app>.content>.settings>.logout {

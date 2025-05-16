@@ -15,7 +15,8 @@
         },
         "action": {
             "create": "Create",
-            "login": "Login"
+            "login": "Login",
+            "logout": "Logout"
         }
     },
     "items": {

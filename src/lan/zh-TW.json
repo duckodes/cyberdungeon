@@ -15,7 +15,8 @@
         },
         "action": {
             "create": "創建",
-            "login": "登入"
+            "login": "登入",
+            "logout": "登出"
         }
     },
     "items": {
