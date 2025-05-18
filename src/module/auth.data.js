@@ -1,10 +1,10 @@
 import { ref, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
+import auth from "./auth.js";
+
 const authData = (() => {
-    let Database;
-    function init(database, user, apputilsRender) {
-        Database = database;
-        const dataRef = ref(database, `cyberdungeon/user/${user.uid}`);
+    function init(apputilsRender) {
+        const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}`);
         const updateData = (field, val) => {
             update(dataRef, { [field]: val });
         };
@@ -20,8 +20,8 @@ const authData = (() => {
             !snapshot.val()?.nc && updateData('nc', 0);
         });
     }
-    function setData(user, key, data) {
-        const dataRef = ref(Database, `cyberdungeon/user/${user.uid}/${key}`);
+    async function setData(key, data) {
+        const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/${key}`);
         set(dataRef, data);
     }
 

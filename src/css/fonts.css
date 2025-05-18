@@ -7,3 +7,8 @@
     font-family: 'Road_Rage';
     src: url('../fonts/Road-Rage-Font/Road_Rage.otf') format('opentype');
 }
+
+@font-face {
+    font-family: 'CyberwarRegular-7BX0E';
+    src: url('../fonts/CyberwarRegular-7BX0E.ttf') format('truetype');
+}

@@ -1,10 +1,13 @@
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
+import language from "./language.js";
+import auth from "./auth.js";
+import apputils from "./apputils.js";
 import prompter from "./prompter.js";
 
 const authSign = (() => {
-    function login(auth, email, password) {
-        signInWithEmailAndPassword(auth, email, password)
+    function login(email, password) {
+        signInWithEmailAndPassword(auth.auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 localStorage.setItem('USER_EMAIL', email);
@@ -15,14 +18,14 @@ const authSign = (() => {
                 console.log(errorCode);
             });
     }
-    function logout(auth) {
-        signOut(auth)
+    function logout() {
+        signOut(auth.auth)
             .catch((error) => {
                 console.log(error);
             });
     }
-    function create(auth, email, password) {
-        createUserWithEmailAndPassword(auth, email, password)
+    function create(email, password) {
+        createUserWithEmailAndPassword(auth.auth, email, password)
             .then((userCredential) => {
                 UpdateProfile(userCredential.user);
             })
@@ -36,17 +39,20 @@ const authSign = (() => {
         updateProfile(user, { displayName: user.email.replace(/@.*?(?=@|$)/g, '') })
             .catch(error => console.log(error));
     }
-    function checkToken(user, apputilsRender, languageData) {
+    function checkToken() {
         if (prompter.isRender) return false;
-        user.getIdToken()
-            .catch((error) => {
-                apputilsRender.revokeApp();
+        if (!auth.auth.currentUser) return;
+        auth.auth.currentUser.getIdToken()
+            .catch(async (error) => {
+                const languageData = await language.cache(document.documentElement.lang);
+                logout();
+                apputils.forceRevokeApp();
                 prompter.render(languageData.prompter.timeout, languageData.prompter.confirm);
                 console.log(error);
             });
         return true;
     }
-    function render(auth, languageData) {
+    function render(languageData) {
         const sign = document.createElement('div');
         sign.className = 'sign';
         const container = document.createElement('div');
@@ -81,14 +87,14 @@ const authSign = (() => {
         const action = document.createElement('button');
         action.className = 'action';
         action.textContent = languageData.auth.action.login;
-        action.addEventListener('click', () => {
+        action.addEventListener('click', async () => {
             action.textContent === languageData.auth.action.login ?
-                login(auth, email.value, password.value) : create(auth, email.value, password.value);
+                login(email.value, password.value) : create(email.value, password.value);
         });
-        sign.addEventListener('keyup', (e) => {
+        sign.addEventListener('keyup', async (e) => {
             if (e.key === "Enter") {
                 action.textContent === languageData.auth.action.login ?
-                    login(auth, email.value, password.value) : create(auth, email.value, password.value);
+                    login(email.value, password.value) : create(email.value, password.value);
             }
         });
 

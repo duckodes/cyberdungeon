@@ -10,7 +10,7 @@ const main = (async () => {
 
     const languageData = await language.cache(document.documentElement.lang);
 
-    (await auth).init(languageData);
+    auth.init(languageData);
 
     const itemData = await items.init(languageData);
     console.log(itemData);

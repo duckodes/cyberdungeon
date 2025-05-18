@@ -1,19 +1,23 @@
-import auth from "./auth.js";
-import authData from "./auth.data.js";
-import authSign from "./auth.sign.js";
 import language from "./language.js";
 import languagetype from "./languagetype.js";
+import authData from "./auth.data.js";
+import authSign from "./auth.sign.js";
 
 const apputils = (() => {
-    function registerEvent(user, apputilsRender, languageData) {
+    let isRegisterWindowEvent = false;
+    function registerWindowEvent() {
+        if (isRegisterWindowEvent) return;
         const checkToken = () => {
-            if (authSign.checkToken(user, apputilsRender, languageData))
+            console.log('isCheckToken');
+            if (authSign.checkToken())
                 return;
             window.removeEventListener('focus', checkToken);
         }
         window.addEventListener('focus', checkToken);
 
         window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
+
+        isRegisterWindowEvent = true;
     }
     function render(languageData) {
         const app = document.createElement('div');
@@ -45,10 +49,6 @@ const apputils = (() => {
                         settings.style.display = 'flex' : settings.style.display = '';
                 }
             },
-            revokeApp: async () => {
-                authSign.logout((await auth).auth);
-                app.remove();
-            },
             update: {
                 level: (textContent) => {
                     navUtils.navLevel.textContent = textContent === undefined ? '0' : textContent;
@@ -65,10 +65,16 @@ const apputils = (() => {
             }
         }
     }
-
+    function update(languageData) {
+        const apputilsRender = render(languageData);
+        authData.init(apputilsRender);
+        registerWindowEvent();
+    }
     return {
-        registerEvent,
-        render
+        update,
+        forceRevokeApp: () => {
+            document.querySelector('.app').remove();
+        },
     }
 })();
 
@@ -114,6 +120,9 @@ const navutils = (() => {
 })();
 
 const settingsutils = (() => {
+    /**
+    * @param {HTMLDivElement} app
+    */
     function render(app, languageData) {
         const settings = document.createElement('div');
         settings.className = 'settings';
@@ -130,9 +139,6 @@ const settingsutils = (() => {
         selectionSymbol.textContent = '▲';
         function isLanguageBoxActive() {
             return selectionSymbol.textContent === '▼';
-        }
-        function setLanguageBoxActive(active) {
-            active ? selectionSymbol.textContent = '▼' : selectionSymbol.textContent = '▲';
         }
         languageSelectBox.addEventListener('click', () => {
             const isActiveSelection = isLanguageBoxActive();
@@ -152,9 +158,9 @@ const settingsutils = (() => {
             languageSelectItem.addEventListener('click', async () => {
                 const languageTypeKey = languagetype.getKeys(languageData)[i];
                 document.documentElement.lang = languageTypeKey;
-                authData.setData((await auth).auth.currentUser, 'lan', languageTypeKey);
+                authData.setData('lan', languageTypeKey);
                 app.remove();
-                (await auth).update(await language.set(languageTypeKey));
+                apputils.update(await language.set(languageTypeKey));
                 console.log(languagetype.getKeys(languageData)[i]);
             });
             languageSelectList.appendChild(languageSelectItem);
@@ -169,7 +175,7 @@ const settingsutils = (() => {
         logout.className = 'logout';
         logout.textContent = languageData.settings.logout;
         logout.addEventListener('click', async () => {
-            authSign.logout((await auth).auth);
+            authSign.logout();
             app.remove();
         });
 

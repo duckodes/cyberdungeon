@@ -6,38 +6,30 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/10.13.2/firebase
 import language from "./language.js";
 import fetcher from "./fetcher.js";
 import authSign from "./auth.sign.js";
-import authData from "./auth.data.js";
 import apputils from "./apputils.js";
 
-const auth = (async () => {
-    const firebaseConfig = await fetcher.load('../src/config/firebaseConfig.json');
-
+const firebaseConfig = await fetcher.load('../src/config/firebaseConfig.json');
+const auth = (() => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const database = getDatabase();
 
-    async function init(languageData) {
-        let sign = authSign.render(auth, languageData);
-
+    function init(languageData) {
+        let sign = authSign.render(languageData);
         onAuthStateChanged(auth, async (user) => {
             const languageData = await language.cache(document.documentElement.lang);
             if (!user)
-                return !document.querySelector('.sign') && (sign = authSign.render(auth, languageData));
+                return !document.querySelector('.sign') && (sign = authSign.render(languageData));
             sign.remove();
 
-            update(languageData);
+            apputils.update(languageData);
         });
-    }
-    function update(languageData) {
-        const apputilsRender = apputils.render(languageData);
-        apputils.registerEvent(auth.currentUser, apputilsRender, languageData);
-        authData.init(database, auth.currentUser, apputilsRender);
     }
 
     return {
         init,
-        update,
-        auth
+        auth,
+        database
     }
 })();
 
