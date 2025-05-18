@@ -4,20 +4,14 @@ import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
 const apputils = (() => {
-    let isRegisterWindowEvent = false;
     function registerWindowEvent() {
-        if (isRegisterWindowEvent) return;
         const checkToken = () => {
-            console.log('isCheckToken');
-            if (authSign.checkToken())
-                return;
-            window.removeEventListener('focus', checkToken);
+            console.log('check token processing..');
+            if (authSign.checkToken()) return;
         }
         window.addEventListener('focus', checkToken);
 
         window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
-
-        isRegisterWindowEvent = true;
     }
     function render(languageData) {
         const app = document.createElement('div');
@@ -68,10 +62,10 @@ const apputils = (() => {
     function update(languageData) {
         const apputilsRender = render(languageData);
         authData.init(apputilsRender);
-        registerWindowEvent();
     }
     return {
         update,
+        registerWindowEvent,
         forceRevokeApp: () => {
             document.querySelector('.app').remove();
         },

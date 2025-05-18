@@ -16,6 +16,7 @@ const auth = (() => {
 
     function init(languageData) {
         let sign = authSign.render(languageData);
+        apputils.registerWindowEvent();
         onAuthStateChanged(auth, async (user) => {
             const languageData = await language.cache(document.documentElement.lang);
             if (!user)

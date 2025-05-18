@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     cursor: default;
-    font-family: 'CyberwarRegular-7BX0E';
+    font-family: 'Road_Rage';
 }
 
 .app>.nav>* {
@@ -31,6 +31,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--color-high-light);
+    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
 }
 
 .app>.nav>.nav-left>.nav-name {
@@ -46,7 +48,8 @@
 
 .app>.nav>.nav-right>.nav-wallet {
     height: fit-content;
-    color: #ffffff;
+    color: var(--color-high-light);
+    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
