@@ -1,0 +1,186 @@
+{
+    "en-ZA": "English (South Africa)", // 英文（南非）
+    "en-GB": "English (United Kingdom)", // 英文（英國）
+    "en-US": "English (United States)", // 英文（美國）
+    "en": "English", // 英文
+    "zh-TW": "Chinese (Traditional)", // 中文（繁體）
+    "tr": "Turkish", // 土耳其文
+    "tk": "Turkmen", // 土庫曼文
+    "lg": "Luganda", // 干達文
+    "zh": "Chinese", // 中文
+    "zh-HK": "Chinese (Hong Kong)", // 中文（香港）
+    "zh-CN": "Chinese (Simplified)", // 中文（簡體）
+    "ckb": "Central Kurdish", // 中庫德文
+    "da": "Danish", // 丹麥文
+    "nb": "Norwegian Bokmål", // 巴克摩挪威文
+    "eu": "Basque", // 巴斯克文
+    "ja": "Japanese", // 日文
+    "mi": "Māori", // 毛利文
+    "jv": "Javanese", // 爪哇文
+    "eo": "Esperanto", // 世界文
+    "gl": "Galician", // 加利西亞文
+    "ca": "Catalan", // 加泰蘭文
+    "nso": "Northern Sotho", // 北索托文
+    "gu": "Gujarati", // 古吉拉特文
+    "sw": "Swahili", // 史瓦希里文
+    "ne": "Nepali", // 尼泊爾文
+    "ny": "Nyanja", // 尼揚賈文
+    "br": "Breton", // 布列塔尼文
+    "gn": "Guaraní", // 瓜拉尼文
+    "wa": "Walloon", // 瓦隆文
+    "be": "Belarusian", // 白俄羅斯文
+    "lt": "Lithuanian", // 立陶宛文
+    "ig": "Igbo", // 伊布文
+    "ilo": "Iloko", // 伊洛闊文
+    "is": "Icelandic", // 冰島文
+    "hu": "Hungarian", // 匈牙利文
+    "id": "Indonesian", // 印尼文
+    "hi": "Hindi", // 印地文
+    "ky": "Kyrgyz", // 吉爾吉斯文
+    "doi": "Dogri", // 多格來文
+    "lus": "Mizo", // 米佐文
+    "ay": "Aymara", // 艾馬拉文
+    "fy": "Frisian", // 西弗里西亞文
+    "es": "Spanish", // 西班牙文
+    "es-ES": "Spanish (Spain)", // 西班牙文（西班牙）
+    "es-HN": "Spanish (Honduras)", // 西班牙文（宏都拉斯）
+    "es-VE": "Spanish (Venezuela)", // 西班牙文（委內瑞拉）
+    "es-AR": "Spanish (Argentina)", // 西班牙文（阿根廷）
+    "es-419": "Spanish (Latin America)", // 西班牙文（拉丁美洲）
+    "es-US": "Spanish (United States)", // 西班牙文（美國）
+    "es-CO": "Spanish (Colombia)", // 西班牙文（哥倫比亞）
+    "es-CR": "Spanish (Costa Rica)", // 西班牙文（哥斯大黎加）
+    "es-UY": "Spanish (Uruguay)", // 西班牙文（烏拉圭）
+    "es-PE": "Spanish (Peru)", // 西班牙文（秘魯）
+    "es-CL": "Spanish (Chile)", // 西班牙文（智利）
+    "es-MX": "Spanish (Mexico)", // 西班牙文（墨西哥）
+    "hr": "Croatian", // 克羅埃西亞文
+    "kn": "Kannada", // 坎那達文
+    "he": "Hebrew", // 希伯來文
+    "el": "Greek", // 希臘文
+    "wo": "Wolof", // 沃洛夫文
+    "hy": "Armenian", // 亞美尼亞文
+    "az": "Azerbaijani", // 亞塞拜然文
+    "ta": "Tamil", // 坦米爾文
+    "bn": "Bengali", // 孟加拉文
+    "la": "Latin", // 拉丁文
+    "lv": "Latvian", // 拉脫維亞文
+    "to": "Tongan", // 東加文
+    "ln": "Lingala", // 林加拉文
+    "fr": "French", // 法文
+    "fr-CA": "French (Canada)", // 法文（加拿大）
+    "fr-FR": "French (France)", // 法文（法國）
+    "fr-CH": "French (Switzerland)", // 法文（瑞士）
+    "fo": "Faroese", // 法羅文
+    "bs": "Bosnian", // 波士尼亞文
+    "fa": "Persian", // 波斯文
+    "pl": "Polish", // 波蘭文
+    "fi": "Finnish", // 芬蘭文
+    "ak": "Akan", // 阿坎文
+    "am": "Amharic", // 阿姆哈拉文
+    "ar": "Arabic", // 阿拉伯文
+    "an": "Aragonese", // 阿拉貢文
+    "ast": "Asturian", // 阿斯圖里亞文
+    "sq": "Albanian", // 阿爾巴尼亞文
+    "as": "Assamese", // 阿薩姆文
+    "ru": "Russian", // 俄文
+    "bg": "Bulgarian", // 保加利亞文
+    "sd": "Sindhi", // 信德文
+    "af": "Afrikaans", // 南非荷蘭文
+    "kk": "Kazakh", // 哈薩克文
+    "cy": "Welsh", // 威爾斯文
+    "co": "Corsican", // 科西嘉文
+    "xh": "Xhosa", // 科薩文
+    "yo": "Yoruba", // 約魯巴文
+    "nn": "Norwegian Nynorsk", // 耐諾斯克挪威文
+    "hmn": "Hmong", // 苗語
+    "en-CA": "English (Canada)", // 英文（加拿大）
+    "en-GB-oxendict": "English (UK, Oxford Dictionary Pronunciation)", // 英文（英國，牛津英文字典拼音）
+    "en-IN": "English (India)", // 英文（印度）
+    "en-NZ": "English (New Zealand)", // 英文（紐西蘭）
+    "en-IE": "English (Ireland)", // 英文（愛爾蘭）
+    "en-AU": "English (Australia)", // 英文（澳洲）
+    "dv": "Divehi", // 迪維西文
+    "ee": "Ewe", // 埃維文
+    "haw": "Hawaiian", // 夏威夷文
+    "ku": "Kurdish", // 庫德文
+    "no": "Norwegian", // 挪威文
+    "pa": "Punjabi", // 旁遮普文
+    "chr": "Cherokee", // 柴羅基文
+    "th": "Thai", // 泰文
+    "te": "Telugu", // 泰盧固文
+    "ht": "Haitian Creole", // 海地文
+    "uk": "Ukrainian", // 烏克蘭文
+    "uz": "Uzbek", // 烏茲別克文
+    "ur": "Urdu", // 烏都文
+    "ts": "Tsonga", // 特松加文
+    "tw": "Twi", // 特威文
+    "bm": "Bambara", // 班巴拉文
+    "zu": "Zulu", // 祖魯文
+    "so": "Somali", // 索馬利文
+    "kok": "Konkani", // 貢根文
+    "ms": "Malay", // 馬來文
+    "mk": "Macedonian", // 馬其頓文
+    "ml": "Malayalam", // 馬來亞拉姆文
+    "mr": "Marathi", // 馬拉地文
+    "mg": "Malagasy", // 馬達加斯加文
+    "mt": "Maltese", // 馬爾他文
+    "km": "Khmer", // 高棉文
+    "ia": "Interlingua", // 國際文
+    "ceb": "Cebuano", // 宿霧文
+    "cs": "Czech", // 捷克文
+    "mni-Mtei": "Manipuri (Meitei)", // 曼尼普爾文（曼尼普爾文）
+    "sa": "Sanskrit", // 梵文
+    "sn": "Shona", // 紹納文
+    "nl": "Dutch", // 荷蘭文
+    "bho": "Bhojpuri", // 博傑普爾文
+    "ka": "Georgian", // 喬治亞文
+    "su": "Sundanese", // 巽他文
+    "ti": "Tigrinya", // 提格利尼亞文
+    "sk": "Slovak", // 斯洛伐克文
+    "sl": "Slovenian", // 斯洛維尼亞文
+    "ps": "Pashto", // 普什圖文
+    "fil": "Filipino", // 菲律賓文
+    "vi": "Vietnamese", // 越南文
+    "tg": "Tajik", // 塔吉克文
+    "kri": "Krio", // 塞拉利昂克裏奧爾文
+    "st": "Sesotho", // 塞索托文
+    "tn": "Tswana", // 塞茲瓦納文
+    "sr": "Serbian", // 塞爾維亞文
+    "sh": "Serbo-Croatian", // 塞爾維亞克羅埃西亞文
+    "oc": "Occitan", // 奧克西坦文
+    "om": "Oromo", // 奧羅莫文
+    "yi": "Yiddish", // 意第緒文
+    "et": "Estonian", // 愛沙尼亞文
+    "ga": "Irish", // 愛爾蘭文
+    "sv": "Swedish", // 瑞典文
+    "it": "Italian", // 義大利文
+    "it-CH": "Italian (Switzerland)", // 義大利文（瑞士）
+    "it-IT": "Italian (Italy)", // 義大利文（義大利）
+    "pt": "Portuguese", // 葡萄牙文
+    "pt-BR": "Portuguese (Brazil)", // 葡萄牙文（巴西）
+    "pt-PT": "Portuguese (Portugal)", // 葡萄牙文（葡萄牙）
+    "si": "Sinhala", // 僧伽羅文
+    "ug": "Uyghur", // 維吾爾文
+    "mn": "Mongolian", // 蒙古文
+    "qu": "Quechua", // 蓋楚瓦文
+    "ha": "Hausa", // 豪薩文
+    "lo": "Lao", // 寮文
+    "de": "German", // 德文
+    "de-LI": "German (Liechtenstein)", // 德文（列支敦斯登）
+    "de-AT": "German (Austria)", // 德文（奧地利）
+    "de-CH": "German (Switzerland)", // 德文（瑞士）
+    "de-DE": "German (Germany)", // 德文（德國）
+    "or": "Odia", // 歐迪亞文
+    "my": "Burmese", // 緬甸文
+    "rw": "Kinyarwanda", // 盧安達文
+    "lb": "Luxembourgish", // 盧森堡文
+    "mai": "Maithili", // 邁蒂利文
+    "ko": "Korean", // 韓文
+    "sm": "Samoan", // 薩摩亞文
+    "ro": "Romanian", // 羅馬尼亞文
+    "mo": "Moldovan", // 羅馬尼亞文（摩爾多瓦）
+    "rm": "Romansh", // 羅曼斯文
+    "gd": "Scottish Gaelic", // 蘇格蘭蓋爾文
+    "tt": "Tatar" // 韃靼文
+}

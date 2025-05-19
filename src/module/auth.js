@@ -7,6 +7,7 @@ import language from "./language.js";
 import fetcher from "./fetcher.js";
 import authSign from "./auth.sign.js";
 import apputils from "./apputils.js";
+import authData from "./auth.data.js";
 
 const firebaseConfig = await fetcher.load('../src/config/firebaseConfig.json');
 const auth = (() => {
@@ -16,15 +17,27 @@ const auth = (() => {
 
     function init(languageData) {
         let sign = authSign.render(languageData);
-        apputils.registerWindowEvent();
+        registerWindowEvent();
         onAuthStateChanged(auth, async (user) => {
-            const languageData = await language.cache(document.documentElement.lang);
+            let languageData = await language.cache(document.documentElement.lang);
             if (!user)
                 return !document.querySelector('.sign') && (sign = authSign.render(languageData));
             sign.remove();
 
+            const lanData = await authData.getData('lan');
+            lanData && (document.documentElement.lang = lanData);
+            languageData = await language.set(lanData);
             apputils.update(languageData);
         });
+    }
+    function registerWindowEvent() {
+        const checkToken = () => {
+            console.log('check token processing..');
+            if (authSign.checkToken()) return;
+        }
+        window.addEventListener('focus', checkToken);
+
+        window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
     }
 
     return {

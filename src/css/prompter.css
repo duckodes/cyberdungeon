@@ -1,4 +1,5 @@
 .prompter {
+    background-color: #252525ee;
     position: fixed;
     top: 0;
     left: 0;
@@ -8,7 +9,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #252525ee;
 }
 
 .prompter>.box {
@@ -23,14 +23,13 @@
 }
 
 .prompter>button {
+    color: #fff6;
     border: none;
     background-color: transparent;
-    color: #fff6;
     animation: blink 3s infinite;
 }
 
 @keyframes blink {
-
     0%,
     100% {
         color: #fff6;

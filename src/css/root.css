@@ -2,4 +2,16 @@
     --color-main: #252525;
     --color-high-light: #bcfff9;
     --color-high-light-darkness: #bcfff999;
+    --font-main: 'Road_Rage';
+}
+
+button {
+    background-color: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    border: 1px solid #ffffff70;
+}
+
+button:hover {
+    border: 1px solid #ffffffaa;
 }

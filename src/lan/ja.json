@@ -1,0 +1,50 @@
+{
+    "appname": "サイバーダンジョン",
+    "languagetype": {
+        "en-ZA": "南アフリカ英語",
+        "zh-TW": "繁體字中国語",
+        "ja": "日本語"
+    },
+    "auth": {
+        "placeholder": {
+            "email": "メールアドレス/ユーザー名..",
+            "password": "パスワード.."
+        },
+        "switchAction": {
+            "register": "登録",
+            "login": "ログイン"
+        },
+        "action": {
+            "create": "作成",
+            "login": "ログイン",
+            "logout": "ログアウト"
+        }
+    },
+    "items": {
+        "helmet": [
+            "標準ヘルメット"
+        ],
+        "jacket": [
+            "標準ジャケット"
+        ],
+        "weapon": [
+            "標準ナイフ"
+        ],
+        "legstrap": [
+            "標準ポーション"
+        ],
+        "boots": [
+            "標準ブーツ"
+        ]
+    },
+    "nav": {
+        "name": "コードネーム"
+    },
+    "settings": {
+        "logout": "ログアウト"
+    },
+    "prompter": {
+        "timeout": "ログインタイムアウトしました。再度ログインしてください。",
+        "confirm": "画面をクリックして確認"
+    }
+}

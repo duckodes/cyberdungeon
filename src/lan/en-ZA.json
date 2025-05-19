@@ -2,7 +2,8 @@
     "appname": "Cyber Dungeon",
     "languagetype": {
         "en-ZA": "South African English",
-        "zh-TW": "Traditional Chinese"
+        "zh-TW": "Traditional Chinese",
+        "ja": "Japanese"
     },
     "auth": {
         "placeholder": {

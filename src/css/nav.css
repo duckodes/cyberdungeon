@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     cursor: default;
-    font-family: 'Road_Rage';
+    font-family: var(--font-main);
 }
 
 .app>.nav>* {
@@ -23,33 +23,30 @@
 }
 
 .app>.nav>.nav-left>.nav-level {
-    flex: 1 0;
     color: #ffffff;
+    flex: 1 0;
     width: 50px;
     height: 50px;
     word-wrap: break-word;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--color-high-light);
-    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
 }
 
 .app>.nav>.nav-left>.nav-name {
+    color: var(--color-high-light);
+    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     min-width: 120px;
     flex: 1 0;
-    color: #ffffff;
     word-break: break-all;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-shadow: 2px 2px 3px #9b9b9b;
 }
 
 .app>.nav>.nav-right>.nav-wallet {
+    color: #ffffff;
     height: fit-content;
-    color: var(--color-high-light);
-    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;

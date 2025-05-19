@@ -4,15 +4,6 @@ import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
 const apputils = (() => {
-    function registerWindowEvent() {
-        const checkToken = () => {
-            console.log('check token processing..');
-            if (authSign.checkToken()) return;
-        }
-        window.addEventListener('focus', checkToken);
-
-        window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
-    }
     function render(languageData) {
         const app = document.createElement('div');
         app.className = 'app';
@@ -65,7 +56,6 @@ const apputils = (() => {
     }
     return {
         update,
-        registerWindowEvent,
         forceRevokeApp: () => {
             document.querySelector('.app').remove();
         },

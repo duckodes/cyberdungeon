@@ -2,7 +2,8 @@
     "appname": "虛擬地下城",
     "languagetype": {
         "en-ZA": "南非英語",
-        "zh-TW": "繁體中文"
+        "zh-TW": "繁體中文",
+        "ja": "日文"
     },
     "auth": {
         "placeholder": {

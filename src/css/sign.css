@@ -26,9 +26,9 @@
 }
 
 .sign>.container>.switch-display>.switch-action {
+    color: #ffffff;
     width: fit-content;
     text-decoration: underline;
-    color: #ffffff;
     font-size: xx-small;
     cursor: pointer;
 }
