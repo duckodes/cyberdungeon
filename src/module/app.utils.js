@@ -4,6 +4,8 @@ import languageType from "./language.type.js";
 import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
+import audioSource from "./audio.source.js";
+
 const appUtils = (() => {
     function render(languageData) {
         const app = document.createElement('div');
@@ -29,10 +31,11 @@ const appUtils = (() => {
 
         document.body.appendChild(app);
         return {
+            settings: settingsUtils.settings,
             display: {
-                settings: (isShow) => {
-                    isShow ?
-                        settings.style.display = 'flex' : settings.style.display = '';
+                settings: (active) => {
+                    active ?
+                        settingsUtils.settings.style.display = 'flex' : settingsUtils.settings.style.display = '';
                 }
             },
             update: {
@@ -54,9 +57,10 @@ const appUtils = (() => {
     function update(languageData) {
         const appUtilsRender = render(languageData);
         authData.init(appUtilsRender);
+        audioSource.render(appUtilsRender, languageData);
     }
     return {
-        update,
+        update: update,
         forceRevokeApp: () => {
             document.querySelector('.app').remove();
         },
@@ -91,16 +95,16 @@ const navutils = (() => {
         navRight.appendChild(navWalletBTC);
         navRight.appendChild(navWalletNC);
         return {
-            navLeft,
-            navRight,
-            navLevel,
-            navName,
-            navWalletBTC,
-            navWalletNC
+            navLeft: navLeft,
+            navRight: navRight,
+            navLevel: navLevel,
+            navName: navName,
+            navWalletBTC: navWalletBTC,
+            navWalletNC: navWalletNC
         }
     }
     return {
-        render
+        render: render
     }
 })();
 
@@ -133,6 +137,7 @@ const settingsutils = (() => {
             } else {
                 languageSelectList.style.display = 'none';
             }
+            audioSource.playSoundEffect('click4');
         });
         const languageSelectList = document.createElement('div');
         languageSelectList.className = 'language-select-list';
@@ -146,6 +151,8 @@ const settingsutils = (() => {
                 authData.setData('lan', languageTypeKey);
                 app.remove();
                 appUtils.update(await language.set(languageTypeKey));
+
+                audioSource.playSoundEffect('click3');
                 console.log(languageType.getKeys(languageData)[i]);
             });
             languageSelectList.appendChild(languageSelectItem);
@@ -167,13 +174,13 @@ const settingsutils = (() => {
         settings.appendChild(languageSelect);
         settings.appendChild(logout);
         return {
-            settings,
-            languageSelect,
-            logout
+            settings: settings,
+            languageSelect: languageSelect,
+            logout: logout
         }
     }
     return {
-        render
+        render: render
     }
 })();
 

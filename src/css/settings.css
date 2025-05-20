@@ -66,3 +66,58 @@
     margin-top: 2px;
     padding: 2px;
 }
+
+.app>.content>.settings>.audio-label {
+    color: var(--color-high-light);
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 10px;
+    width: 100%;
+    max-width: 300px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.app>.content>.settings>.audio-label>div {
+    width: 10%;
+    text-align: center;
+}
+
+.audio-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    background: none;
+    border: 1px solid transparent;
+    border-image: linear-gradient(to right, transparent, var(--color-high-light-darkness)) 1;
+    border-radius: 5px;
+    height: 5px;
+    width: 60%;
+    padding: 10px;
+}
+
+.audio-slider:hover::-webkit-slider-thumb {
+    border: 3px dashed transparent;
+    background-image: linear-gradient(to left, transparent 50%, var(--color-high-light) 60%, transparent 70%),
+        linear-gradient(to right, transparent 50%, var(--color-high-light) 60%, transparent 70%);
+}
+
+.audio-slider::-webkit-slider-thumb {
+    border: 3px dashed var(--color-high-light-darkness);
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.audio-slider::-moz-range-thumb {
+    border: 3px dashed var(--color-high-light-darkness);
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}

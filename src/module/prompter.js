@@ -21,7 +21,7 @@ const prompter = (() => {
     return {
         render,
         get isRender() {
-            return isRender
+            return isRender;
         }
     }
 })();

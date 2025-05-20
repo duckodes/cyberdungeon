@@ -5,6 +5,11 @@
         "zh-TW": "繁體中文",
         "ja": "日文"
     },
+    "audio": {
+        "master": "主音量",
+        "bgm": "環境音",
+        "fx": "音效"
+    },
     "auth": {
         "placeholder": {
             "email": "信箱/用戶名..",

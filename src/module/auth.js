@@ -33,9 +33,9 @@ const auth = (() => {
     }
 
     return {
-        init,
-        auth,
-        database
+        init: init,
+        auth: auth,
+        database: database
     }
 })();
 

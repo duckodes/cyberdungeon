@@ -5,6 +5,11 @@
         "zh-TW": "Traditional Chinese",
         "ja": "Japanese"
     },
+    "audio": {
+        "master": "Main Volume",
+        "bgm": "Ambient Sound",
+        "fx": "Sound Effects"
+    },
     "auth": {
         "placeholder": {
             "email": "Email/Username..",
