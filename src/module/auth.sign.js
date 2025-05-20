@@ -1,11 +1,22 @@
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
 import language from "./language.js";
+
 import auth from "./auth.js";
-import apputils from "./apputils.js";
+
+import appUtils from "./app.utils.js";
 import prompter from "./prompter.js";
 
 const authSign = (() => {
+    function registerWindowEvent() {
+        const checkToken = () => {
+            console.log('check token processing..');
+            if (authSign.checkToken()) return;
+        }
+        window.addEventListener('focus', checkToken);
+
+        window.addEventListener('close', () => localStorage.removeItem('USER_EMAIL'));
+    }
     function login(email, password) {
         signInWithEmailAndPassword(auth.auth, email, password)
             .then((userCredential) => {
@@ -46,7 +57,7 @@ const authSign = (() => {
             .catch(async (error) => {
                 const languageData = await language.cache(document.documentElement.lang);
                 logout();
-                apputils.forceRevokeApp();
+                appUtils.forceRevokeApp();
                 prompter.render(languageData.prompter.timeout, languageData.prompter.confirm);
                 console.log(error);
             });
@@ -110,7 +121,7 @@ const authSign = (() => {
         document.body.appendChild(sign);
         return sign;
     }
-    return { render, logout, checkToken }
+    return { render, logout, checkToken, registerWindowEvent }
 })();
 
 export default authSign;

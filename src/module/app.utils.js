@@ -1,9 +1,10 @@
 import language from "./language.js";
-import languagetype from "./languagetype.js";
+import languageType from "./language.type.js";
+
 import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
-const apputils = (() => {
+const appUtils = (() => {
     function render(languageData) {
         const app = document.createElement('div');
         app.className = 'app';
@@ -51,8 +52,8 @@ const apputils = (() => {
         }
     }
     function update(languageData) {
-        const apputilsRender = render(languageData);
-        authData.init(apputilsRender);
+        const appUtilsRender = render(languageData);
+        authData.init(appUtilsRender);
     }
     return {
         update,
@@ -117,7 +118,7 @@ const settingsutils = (() => {
         languageSelectBox.className = 'language-select-box';
         const languageSelectText = document.createElement('div');
         languageSelectText.className = 'language-select-text';
-        languageSelectText.textContent = languagetype.getType(languageData, document.documentElement.lang);
+        languageSelectText.textContent = languageType.getType(languageData, document.documentElement.lang);
         const selectionSymbol = document.createElement('div');
         selectionSymbol.className = 'selection-symbol';
         selectionSymbol.textContent = '▲';
@@ -136,16 +137,16 @@ const settingsutils = (() => {
         const languageSelectList = document.createElement('div');
         languageSelectList.className = 'language-select-list';
         languageSelectList.style.display = 'none';
-        for (let i = 0; i < languagetype.getLength(languageData); i++) {
+        for (let i = 0; i < languageType.getLength(languageData); i++) {
             const languageSelectItem = document.createElement('div');
-            languageSelectItem.textContent = languagetype.getValue(languageData)[i];
+            languageSelectItem.textContent = languageType.getValue(languageData)[i];
             languageSelectItem.addEventListener('click', async () => {
-                const languageTypeKey = languagetype.getKeys(languageData)[i];
+                const languageTypeKey = languageType.getKeys(languageData)[i];
                 document.documentElement.lang = languageTypeKey;
                 authData.setData('lan', languageTypeKey);
                 app.remove();
-                apputils.update(await language.set(languageTypeKey));
-                console.log(languagetype.getKeys(languageData)[i]);
+                appUtils.update(await language.set(languageTypeKey));
+                console.log(languageType.getKeys(languageData)[i]);
             });
             languageSelectList.appendChild(languageSelectItem);
         }
@@ -176,4 +177,4 @@ const settingsutils = (() => {
     }
 })();
 
-export default apputils;
+export default appUtils;

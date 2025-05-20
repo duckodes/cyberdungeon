@@ -3,17 +3,17 @@ import { ref, update, onValue, set, get } from "https://www.gstatic.com/firebase
 import auth from "./auth.js";
 
 const authData = (() => {
-    function init(apputilsRender) {
+    function init(appUtilsRender) {
         const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}`);
         const updateData = (field, val) => {
             update(dataRef, { [field]: val });
         };
 
         onValue(dataRef, (snapshot) => {
-            apputilsRender.update.level(snapshot.val()?.level);
-            apputilsRender.update.name(snapshot.val()?.name);
-            apputilsRender.update.btc(snapshot.val()?.btc);
-            apputilsRender.update.nc(snapshot.val()?.nc);
+            appUtilsRender.update.level(snapshot.val()?.level);
+            appUtilsRender.update.name(snapshot.val()?.name);
+            appUtilsRender.update.btc(snapshot.val()?.btc);
+            appUtilsRender.update.nc(snapshot.val()?.nc);
             !snapshot.val()?.level && updateData('level', 0);
             !snapshot.val()?.name && updateData('name', user.displayName);
             !snapshot.val()?.btc && updateData('btc', 0);

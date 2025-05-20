@@ -1,4 +1,4 @@
-class audioutils {
+class AudioUtils {
     constructor() {
         this.context = new (window.AudioContext || window.webkitAudioContext)();
         this.backgroundMusic = [];
@@ -126,4 +126,4 @@ class audioutils {
     }
 }
 
-export default audioutils;
+export default AudioUtils;

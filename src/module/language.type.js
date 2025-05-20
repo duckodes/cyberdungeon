@@ -1,4 +1,4 @@
-const languagetype = (() => {
+const languageType = (() => {
     function getType(languageData, key) {
         return languageData.languagetype[key] || null;
     }
@@ -19,4 +19,4 @@ const languagetype = (() => {
     }
 })();
 
-export default languagetype;
+export default languageType;

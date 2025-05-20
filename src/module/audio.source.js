@@ -1,19 +1,12 @@
-import audioutils from "./audioutils.js";
+import AudioUtils from "./audio.utils.js";
 
-const audio = (() => {
-    const audioUtils = new audioutils();
+const audioSource = (() => {
+    const audioUtils = new AudioUtils();
     function init() {
         BGM();
         FX();
     }
-    /**
-    * background music
-    */
-    function BGM() {
-        audioUtils.loadBackgroundMusic([
-            '../src/audio/bgm/audio1.mp3',
-            '../src/audio/bgm/audio2.mp3'
-        ]);
+    function registerWindowEvent() {
         window.addEventListener('focus', () => {
             audioUtils.isPlaying = false;
         });
@@ -25,6 +18,15 @@ const audio = (() => {
         });
     }
     /**
+    * background music
+    */
+    function BGM() {
+        audioUtils.loadBackgroundMusic([
+            '../src/audio/bgm/audio1.mp3',
+            '../src/audio/bgm/audio2.mp3'
+        ]);
+    }
+    /**
     * sound effects
     */
     function FX() {
@@ -34,8 +36,9 @@ const audio = (() => {
         audioUtils.loadSoundEffect('click4', '../src/audio/click/click4.mp3');
     }
     return {
-        init
+        init,
+        registerWindowEvent
     }
 })();
 
-export default audio;
+export default audioSource;
