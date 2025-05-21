@@ -4,6 +4,39 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.app>.content>.settings>.edit-username {
+    width: 50%;
+    max-width: fit-content;
+    margin: 5px;
+    color: #fff;
+    display: flex;
+}
+
+.app>.content>.settings>.edit-username>input[type=text] {
+    width: 100%;
+    height: fit-content;
+    outline: none;
+    border: none;
+    background: #fff2;
+    color: #fff;
+    font-size: 17px;
+    padding: 5px;
+    margin-left: -5px;
+}
+
+.app>.content>.settings>.edit-username>.confirm-username {
+    display: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.app>.content>.settings>.edit-username>.confirm-username:hover {
+    color: #8ffab6;
 }
 
 .app>.content>.settings>.language-select {
@@ -12,8 +45,6 @@
     width: 100%;
     max-width: 200px;
     cursor: pointer;
-    user-select: none;
-    -moz-user-select: none;
 }
 
 .app>.content>.settings>.language-select>.language-select-box {
@@ -67,6 +98,15 @@
     padding: 2px;
 }
 
+.app>.content>.settings>.system-info {
+    color: var(--color-high-light);
+    text-shadow: var(--text-shadow-main);
+    font-size: xx-small;
+    white-space: pre-wrap;
+    text-align: center;
+    max-width: 350px;
+}
+
 .app>.content>.settings>.audio-label {
     color: var(--color-high-light);
     font-size: 17px;
@@ -83,6 +123,7 @@
 .app>.content>.settings>.audio-label>div {
     width: 10%;
     text-align: center;
+    font-family: var(--font-2);
 }
 
 .audio-slider {
@@ -99,15 +140,15 @@
 }
 
 .audio-slider:hover::-webkit-slider-thumb {
-    border: 3px dashed var(--color-high-light);
+    border: 1px dashed var(--color-high-light);
 }
 
 .audio-slider::-webkit-slider-thumb {
-    border: 3px dashed var(--color-high-light-darkness);
+    border: 1px dashed var(--color-high-light-darkness);
     -webkit-appearance: none;
     appearance: none;
-    width: 15px;
-    height: 15px;
+    width: 8px;
+    height: 8px;
     cursor: pointer;
 }
 

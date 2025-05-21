@@ -46,6 +46,7 @@
         "name": "Code Name"
     },
     "settings": {
+        "editusername": "username",
         "logout": "Logout"
     },
     "prompter": {

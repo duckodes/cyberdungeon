@@ -15,7 +15,7 @@ const authData = (() => {
             appUtilsRender.update.btc(snapshot.val()?.btc);
             appUtilsRender.update.nc(snapshot.val()?.nc);
             !snapshot.val()?.level && updateData('level', 0);
-            !snapshot.val()?.name && updateData('name', user.displayName);
+            !snapshot.val()?.name && updateData('name', auth.auth.currentUser.displayName);
             !snapshot.val()?.btc && updateData('btc', 0);
             !snapshot.val()?.nc && updateData('nc', 0);
         });
@@ -31,9 +31,9 @@ const authData = (() => {
     }
 
     return {
-        init,
-        setData,
-        getData
+        init: init,
+        setData: setData,
+        getData: getData
     }
 })();
 

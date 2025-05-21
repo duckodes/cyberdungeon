@@ -2,7 +2,35 @@
     --color-main: #252525;
     --color-high-light: #bcfff9;
     --color-high-light-darkness: #bcfff999;
+    --color-yellow: #f7d967;
+
     --font-main: 'Road_Rage';
+    --font-2: 'CyberwarRegular-7BX0E';
+    --font-3: 'pressStart2P';
+
+    --text-shadow-main: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
+    --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #353535;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #353535;
+}
+
+::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+::selection {
+    color: white;
+    background-color: #3498db;
 }
 
 button {

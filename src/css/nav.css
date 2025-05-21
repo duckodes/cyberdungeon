@@ -2,7 +2,6 @@
     display: flex;
     flex-wrap: wrap;
     cursor: default;
-    font-family: var(--font-main);
 }
 
 .app>.nav>* {
@@ -22,37 +21,42 @@
     align-items: flex-end;
 }
 
-.app>.nav>.nav-left>.nav-level {
-    color: #ffffff;
-    flex: 1 0;
-    width: 50px;
-    height: 50px;
-    word-wrap: break-word;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .app>.nav>.nav-left>.nav-name {
-    color: var(--color-high-light);
-    text-shadow: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
+    color: var(--color-yellow);
+    text-shadow: var(--text-shadow-2);
     min-width: 120px;
     flex: 1 0;
     word-break: break-all;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: var(--font-main);
+    padding: 10px;
+}
+
+.app>.nav>.nav-right>.nav-level {
+    color: var(--color-high-light);
+    text-shadow: var(--text-shadow-main);
+    flex: 1 0;
+    word-wrap: break-word;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    font-family: var(--font-2);
 }
 
 .app>.nav>.nav-right>.nav-wallet {
-    color: #ffffff;
+    color: var(--color-high-light);
+    text-shadow: var(--text-shadow-main);
     height: fit-content;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     text-align: right;
     display: block;
-    padding: 20px;
+    padding: 10px;
+    font-family: var(--font-2);
 }
 
 .app>.nav>.nav-right>.nav-wallet:hover {

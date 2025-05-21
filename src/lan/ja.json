@@ -46,6 +46,7 @@
         "name": "コードネーム"
     },
     "settings": {
+        "editusername": "ユーザー名",
         "logout": "ログアウト"
     },
     "prompter": {

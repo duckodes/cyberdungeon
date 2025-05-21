@@ -5,6 +5,7 @@ import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
 import audioSource from "./audio.source.js";
+import auth from "./auth.js";
 
 const appUtils = (() => {
     function render(languageData) {
@@ -40,7 +41,7 @@ const appUtils = (() => {
             },
             update: {
                 level: (textContent) => {
-                    navUtils.navLevel.textContent = textContent === undefined ? '0' : textContent;
+                    navUtils.navLevel.textContent = textContent === undefined ? '0 LV' : textContent + ' LV';
                 },
                 name: (textContent) => {
                     navUtils.navName.textContent = textContent === undefined ? languageData.nav.name : textContent;
@@ -74,13 +75,13 @@ const navutils = (() => {
         const navRight = document.createElement('div');
         navRight.className = 'nav-right';
 
+        const navName = document.createElement('div');
+        navName.className = 'nav-name';
+        navName.textContent = languageData.nav.name;
         const navLevel = document.createElement('div');
         navLevel.className = 'nav-level';
         navLevel.title = 'Level';
         navLevel.textContent = '0';
-        const navName = document.createElement('div');
-        navName.className = 'nav-name';
-        navName.textContent = languageData.nav.name;
         const navWalletBTC = document.createElement('div');
         navWalletBTC.className = 'nav-wallet nav-wallet-btc';
         navWalletBTC.title = 'Bitcoin';
@@ -90,8 +91,8 @@ const navutils = (() => {
         navWalletNC.title = 'NeuralChips';
         navWalletNC.textContent = '0 N';
 
-        navLeft.appendChild(navLevel);
         navLeft.appendChild(navName);
+        navRight.appendChild(navLevel);
         navRight.appendChild(navWalletBTC);
         navRight.appendChild(navWalletNC);
         return {
@@ -115,6 +116,33 @@ const settingsutils = (() => {
     function render(app, languageData) {
         const settings = document.createElement('div');
         settings.className = 'settings';
+
+        const editUsername = document.createElement('div');
+        editUsername.className = 'edit-username';
+        const inputUsername = document.createElement('input');
+        inputUsername.type = 'text';
+        inputUsername.placeholder = languageData.settings.editusername + '(3 ~ 20)..';
+        inputUsername.value = auth.auth.currentUser.displayName;
+        const confirmUsername = document.createElement('div');
+        confirmUsername.className = 'confirm-username';
+        confirmUsername.textContent = '✓';
+        inputUsername.addEventListener('input', () => {
+            if (inputUsername.value != auth.auth.currentUser.displayName) {
+                confirmUsername.style.display = 'flex';
+            } else {
+                confirmUsername.style = '';
+            }
+            if (inputUsername.value === '' || inputUsername.value.length < 3 || inputUsername.value.length > 20) {
+                confirmUsername.style = '';
+            }
+        });
+        confirmUsername.addEventListener('click', () => {
+            authSign.updateProfiles(auth.auth.currentUser, inputUsername.value);
+            authData.setData('name', inputUsername.value);
+            confirmUsername.style = '';
+        });
+        editUsername.appendChild(inputUsername);
+        editUsername.appendChild(confirmUsername);
 
         const languageSelect = document.createElement('div');
         languageSelect.className = 'language-select';
@@ -171,10 +199,21 @@ const settingsutils = (() => {
             app.remove();
         });
 
+        const systemInfo = document.createElement('pre');
+        systemInfo.className = 'system-info';
+        systemInfo.textContent =
+            `User Agent: ${navigator.userAgent}\n` +
+            `Memory: ${navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Not available'}\n` +
+            `Screen Resolution: ${window.screen.width} x ${window.screen.height}\n` +
+            `Online Status: ${navigator.onLine ? 'Online' : 'Offline'}`;
+
+        settings.appendChild(editUsername);
         settings.appendChild(languageSelect);
         settings.appendChild(logout);
+        settings.appendChild(systemInfo);
         return {
             settings: settings,
+            inputUsername: inputUsername,
             languageSelect: languageSelect,
             logout: logout
         }

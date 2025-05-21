@@ -38,7 +38,7 @@ const authSign = (() => {
     function create(email, password) {
         createUserWithEmailAndPassword(auth.auth, email, password)
             .then((userCredential) => {
-                UpdateProfile(userCredential.user);
+                updateProfiles(userCredential.user, user.email.replace(/@.*?(?=@|$)/g, ''));
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -46,8 +46,8 @@ const authSign = (() => {
                 console.log(errorCode);
             });
     }
-    function UpdateProfile(user) {
-        updateProfile(user, { displayName: user.email.replace(/@.*?(?=@|$)/g, '') })
+    function updateProfiles(user, value) {
+        updateProfile(user, { displayName: value })
             .catch(error => console.log(error));
     }
     function checkToken() {
@@ -121,7 +121,7 @@ const authSign = (() => {
         document.body.appendChild(sign);
         return sign;
     }
-    return { render, logout, checkToken, registerWindowEvent }
+    return { render, logout, checkToken, registerWindowEvent, updateProfiles }
 })();
 
 export default authSign;
