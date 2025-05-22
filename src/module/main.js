@@ -4,7 +4,6 @@ import auth from "./auth.js";
 import authSign from "./auth.sign.js";
 
 import audioSource from "./audio.source.js";
-import items from "./items.js";
 
 const main = (async () => {
     let lang = navigator.language;
@@ -15,9 +14,6 @@ const main = (async () => {
 
     auth.init(languageData);
     audioSource.init();
-
-    const itemData = await items.init(languageData);
-    console.log(itemData);
 
     function render(languageData) {
         const title = document.createElement('title');

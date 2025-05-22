@@ -1,7 +1,7 @@
 import fetcher from "./fetcher.js";
 
 const items = (() => {
-    async function init(languageData) {
+    async function get(languageData) {
         const categories = ['helmet', 'jacket', 'weapon', 'legstrap', 'boots'];
         const dataPromises = categories.map(category =>
             fetcher.load(`../src/data/${category}.json`)
@@ -35,7 +35,7 @@ const items = (() => {
     }
 
     return {
-        init: init
+        get: get
     }
 })();
 

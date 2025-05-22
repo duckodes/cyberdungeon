@@ -1,12 +1,13 @@
 import language from "./language.js";
 import languageType from "./language.type.js";
 
+import auth from "./auth.js";
 import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
 import audioSource from "./audio.source.js";
-import auth from "./auth.js";
 import cssUtils from "./css.utils.js";
+import items from "./items.js";
 
 const appUtils = (() => {
     function render(languageData) {
@@ -56,7 +57,9 @@ const appUtils = (() => {
             }
         }
     }
-    function update(languageData) {
+    async function update(languageData) {
+        const itemData = await items.get(languageData);
+        console.log(itemData);
         const appUtilsRender = render(languageData);
         authData.init(appUtilsRender);
         audioSource.render(appUtilsRender, languageData);
