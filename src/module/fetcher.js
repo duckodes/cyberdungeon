@@ -4,7 +4,7 @@ const fetcher = (() => {
     }
 
     return {
-        load
+        load: load
     }
 })();
 

@@ -30,23 +30,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: var(--font-main);
     padding: 10px;
+    font-family: var(--font-main), var(--font-4);
 }
 
-.app>.nav>.nav-right>.nav-level {
-    color: var(--color-high-light);
-    text-shadow: var(--text-shadow-main);
-    flex: 1 0;
-    word-wrap: break-word;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px;
-    font-family: var(--font-2);
-}
-
-.app>.nav>.nav-right>.nav-wallet {
+.app>.nav>.nav-left>.nav-wallet {
     color: var(--color-high-light);
     text-shadow: var(--text-shadow-main);
     height: fit-content;
@@ -59,8 +47,20 @@
     font-family: var(--font-2);
 }
 
-.app>.nav>.nav-right>.nav-wallet:hover {
+.app>.nav>.nav-left>.nav-wallet:hover {
     text-overflow: unset;
     white-space: pre-wrap;
     word-break: break-all;
+}
+
+.app>.nav>.nav-right>.nav-level {
+    color: var(--color-high-light);
+    text-shadow: var(--text-shadow-main);
+    word-wrap: break-word;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    font-family: var(--font-main);
+    font-size: 20px;
 }

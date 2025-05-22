@@ -19,7 +19,7 @@ const prompter = (() => {
         isRender = true;
     }
     return {
-        render,
+        render: render,
         get isRender() {
             return isRender;
         }

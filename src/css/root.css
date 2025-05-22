@@ -6,7 +6,10 @@
 
     --font-main: 'Road_Rage';
     --font-2: 'CyberwarRegular-7BX0E';
-    --font-3: 'pressStart2P';
+    --font-3: 'TaipeiSansTCBetaRegular';
+    --font-4: 'TaipeiSansTCBetaBold';
+    --font-5: 'SoukouMincho';
+    --font-6: 'pressStart2P';
 
     --text-shadow-main: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);

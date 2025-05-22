@@ -35,7 +35,7 @@ const items = (() => {
     }
 
     return {
-        init
+        init: init
     }
 })();
 

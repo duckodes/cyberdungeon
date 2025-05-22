@@ -121,7 +121,13 @@ const authSign = (() => {
         document.body.appendChild(sign);
         return sign;
     }
-    return { render, logout, checkToken, registerWindowEvent, updateProfiles }
+    return {
+        render: render,
+        logout: logout,
+        checkToken: checkToken,
+        registerWindowEvent: registerWindowEvent,
+        updateProfiles: registerWindowEvent
+    }
 })();
 
 export default authSign;

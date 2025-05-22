@@ -76,9 +76,12 @@ const audioSource = (() => {
             audioUtils.setEffectVolume(e.target.value);
             audioFX.div.textContent = parseInt(e.target.value * 100);
         });
+        audioFX.input.addEventListener("change", () => {
+            audioUtils.playSoundEffect('click1');
+        });
         audioFX.input.addEventListener("click", () => {
             audioUtils.playSoundEffect('click1');
-        })
+        });
     }
     return {
         init: init,

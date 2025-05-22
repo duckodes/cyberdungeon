@@ -12,10 +12,10 @@ const languageType = (() => {
         return Object.values(languageData.languagetype);
     }
     return {
-        getType,
-        getKeys,
-        getLength,
-        getValue
+        getType: getType,
+        getKeys: getKeys,
+        getLength: getLength,
+        getValue: getValue
     }
 })();
 

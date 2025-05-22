@@ -6,6 +6,7 @@ import authSign from "./auth.sign.js";
 
 import audioSource from "./audio.source.js";
 import auth from "./auth.js";
+import cssUtils from "./css.utils.js";
 
 const appUtils = (() => {
     function render(languageData) {
@@ -92,9 +93,9 @@ const navutils = (() => {
         navWalletNC.textContent = '0 N';
 
         navLeft.appendChild(navName);
+        navLeft.appendChild(navWalletBTC);
+        navLeft.appendChild(navWalletNC);
         navRight.appendChild(navLevel);
-        navRight.appendChild(navWalletBTC);
-        navRight.appendChild(navWalletNC);
         return {
             navLeft: navLeft,
             navRight: navRight,
@@ -172,7 +173,10 @@ const settingsutils = (() => {
         languageSelectList.style.display = 'none';
         for (let i = 0; i < languageType.getLength(languageData); i++) {
             const languageSelectItem = document.createElement('div');
-            languageSelectItem.textContent = languageType.getValue(languageData)[i];
+            const languageTypeValue = languageType.getValue(languageData)[i];
+            languageSelectItem.textContent = languageTypeValue;
+            languageTypeValue === languageSelectText.textContent
+                && (languageSelectItem.style.color = cssUtils.getRootProperty('--color-yellow'));
             languageSelectItem.addEventListener('click', async () => {
                 const languageTypeKey = languageType.getKeys(languageData)[i];
                 document.documentElement.lang = languageTypeKey;
@@ -181,7 +185,7 @@ const settingsutils = (() => {
                 appUtils.update(await language.set(languageTypeKey));
 
                 audioSource.playSoundEffect('click3');
-                console.log(languageType.getKeys(languageData)[i]);
+                console.log(languageTypeKey);
             });
             languageSelectList.appendChild(languageSelectItem);
         }

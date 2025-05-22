@@ -14,8 +14,8 @@ const language = (() => {
     }
 
     return {
-        set,
-        cache
+        set: set,
+        cache: cache
     }
 })();
 

@@ -9,6 +9,21 @@
 }
 
 @font-face {
+    font-family: 'TaipeiSansTCBetaBold';
+    src: url('../fonts/TaipeiSansTCBetaBold/TaipeiSansTCBetaBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'TaipeiSansTCBetaRegular';
+    src: url('../fonts/TaipeiSansTCBetaRegular/TaipeiSansTCBetaRegular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SoukouMincho';
+    src: url('../fonts/装甲明朝SoukouMincho.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'pressStart2P';
     src: url('../fonts/Press_Start_2P/PressStart2P-Regular.ttf') format('truetype');
 }

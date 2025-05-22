@@ -6,6 +6,7 @@
     align-items: center;
     user-select: none;
     -moz-user-select: none;
+    font-family: var(--font-main), var(--font-5), var(--font-4);
 }
 
 .app>.content>.settings>.edit-username {
@@ -50,7 +51,7 @@
 .app>.content>.settings>.language-select>.language-select-box {
     display: flex;
     flex-direction: row;
-    padding: 2px;
+    padding: 5px;
 }
 
 .app>.content>.settings>.language-select>.language-select-box>.language-select-text {
@@ -96,6 +97,7 @@
     font-size: 16px;
     margin-top: 2px;
     padding: 2px;
+    font-family: var(--font-main), var(--font-5), var(--font-4);
 }
 
 .app>.content>.settings>.system-info {
@@ -123,7 +125,6 @@
 .app>.content>.settings>.audio-label>div {
     width: 10%;
     text-align: center;
-    font-family: var(--font-2);
 }
 
 .audio-slider {
