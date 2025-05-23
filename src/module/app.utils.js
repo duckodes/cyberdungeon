@@ -29,7 +29,9 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
+        const marketUtils = marketutils.render();
         const settingsUtils = settingsutils.render(app, languageData);
+        content.appendChild(marketUtils.market);
         content.appendChild(settingsUtils.settings);
 
         const footerUtils = footerutils.render(content, settingsUtils);
@@ -109,6 +111,19 @@ const navutils = (() => {
             navName: navName,
             navWalletBTC: navWalletBTC,
             navWalletNC: navWalletNC
+        }
+    }
+    return {
+        render: render
+    }
+})();
+
+const marketutils = (() => {
+    function render() {
+        const market = document.createElement('div');
+        market.className = 'market';
+        return {
+            market: market
         }
     }
     return {
@@ -251,6 +266,8 @@ const footerutils = (() => {
         selectSettings.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>`;
 
         footerContainer.addEventListener('click', (e) => {
+            const eTargetIndexMetchContent = content.querySelectorAll(':scope>*')[Array.from(footerContainer.querySelectorAll(':scope>*')).indexOf(e.target)];
+            if (!eTargetIndexMetchContent) return;
             // sound
             audioSource.playSoundEffect('click3');
             // color
@@ -263,16 +280,7 @@ const footerutils = (() => {
             content.querySelectorAll(':scope>*').forEach(element => {
                 element.style.display = 'none';
             });
-            switch (e.target) {
-                case selectMarket:
-                    break;
-                case selectSettings:
-                    settingsUtils.settings.style.display = '';
-                    break;
-
-                default:
-                    break;
-            }
+            eTargetIndexMetchContent.style.display = '';
         });
 
         footerContainer.appendChild(selectMarket);
