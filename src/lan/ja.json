@@ -1,6 +1,7 @@
 {
     "appname": "サイバーダンジョン",
     "languagetype": {
+        "system": "-",
         "en-ZA": "南アフリカ英語",
         "zh-TW": "繁體字中国語",
         "ja": "日本語"

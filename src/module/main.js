@@ -6,7 +6,7 @@ import authSign from "./auth.sign.js";
 import audioSource from "./audio.source.js";
 
 const main = (async () => {
-    let lang = navigator.language;
+    const lang = navigator.language;
     document.documentElement.lang = lang;
     console.warn("welcome to cyberdungeon !!");
 

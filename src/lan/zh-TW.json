@@ -1,6 +1,7 @@
 {
     "appname": "虛擬地下城",
     "languagetype": {
+        "system": "-",
         "en-ZA": "南非英語",
         "zh-TW": "繁體中文",
         "ja": "日文"

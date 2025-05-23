@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改進版動態輪盤</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #wheelContainer {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin: 50px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            user-select: none;
+        }
+
+        #wheelContainer.expanded {
+            width: 300px;
+            height: 300px;
+        }
+
+        .wheelItem {
+            position: absolute;
+            width: 80px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .separator {
+            position: absolute;
+            width: 2px;
+            background-color: black;
+            display: none;
+            transform-origin: center;
+        }
+
+        #controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>可動態調整的輪盤</h2>
+    <div id="wheelContainer">
+        <span>按住我顯示選項</span>
+    </div>
+
+    <div id="controls">
+        <button onclick="addItem()">增加選項</button>
+        <button onclick="removeItem()">減少選項</button>
+    </div>
+
+    <script>
+        let wheelContainer = document.getElementById("wheelContainer");
+        let wheelItems = [];
+        let separators = [];
+        let isPressed = false;
+
+        wheelContainer.addEventListener("mousedown", () => {
+            isPressed = true;
+            wheelContainer.classList.add("expanded");
+            wheelItems.forEach(item => item.style.display = "block");
+            separators.forEach(line => line.style.display = "block");
+        });
+
+        document.addEventListener("mouseup", () => {
+            isPressed = false;
+            wheelContainer.classList.remove("expanded");
+            wheelItems.forEach(item => item.style.display = "none");
+            separators.forEach(line => line.style.display = "none");
+        });
+
+        function getSeparatorAngle(index, count, angleStep) {
+            if (count % 4 === 0) {
+                return index * angleStep + angleStep / 2; // 適用於 4、8、12、16...
+            } else {
+                return index * angleStep; // 適用於 2、6、10、14...
+            }
+        }
+
+        function updateWheelItems() {
+            let count = wheelItems.length;
+            if (count === 0) return;
+
+            let radius = 140;
+            let angleStep = 360 / count;
+
+            wheelItems.forEach((item, index) => {
+                let angle = index * angleStep;
+                item.style.transform = `rotate(${angle}deg) translate(${radius + count - 50}px) rotate(-${angle}deg)`;
+            });
+
+            separators.forEach(separator => separator.remove());
+            separators = [];
+
+            for (let i = 0; i < count; i++) {
+                let angle = getSeparatorAngle(i, count, angleStep);
+
+                let separator = document.createElement("div");
+                separator.className = "separator";
+                separator.style.transform = `rotate(${angle}deg)`;
+                separator.style.height = `${radius * 2}px`;
+                separator.style.transformOrigin = "center";
+                document.getElementById("wheelContainer").appendChild(separator);
+                separators.push(separator);
+            }
+        }
+
+        function addItem() {
+            // 確保每次添加的選項數量為偶數
+            if (wheelItems.length % 2 === 0) {
+                // 每次加 2 個選項
+                for (let i = 0; i < 2; i++) {
+                    let newItem = document.createElement("div");
+                    newItem.className = "wheelItem";
+                    newItem.innerText = `${wheelItems.length + 1}`;
+                    document.getElementById("wheelContainer").appendChild(newItem);
+                    wheelItems.push(newItem);
+                }
+
+                updateWheelItems();
+            }
+        }
+
+        function removeItem() {
+            // 確保每次移除的選項數量為偶數
+            if (wheelItems.length > 0 && wheelItems.length % 2 === 0) {
+                let lastItem = wheelItems.pop();
+                document.getElementById("wheelContainer").removeChild(lastItem);
+
+                lastItem = wheelItems.pop();
+                document.getElementById("wheelContainer").removeChild(lastItem);
+
+                updateWheelItems();
+            }
+        }
+    </script>
+</body>
+
+</html>

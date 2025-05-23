@@ -32,6 +32,9 @@ const appUtils = (() => {
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(settingsUtils.settings);
 
+        const footerUtils = footerutils.render(content, settingsUtils);
+        footer.appendChild(footerUtils.footerContainer);
+
         document.body.appendChild(app);
         return {
             settings: settingsUtils.settings,
@@ -96,9 +99,9 @@ const navutils = (() => {
         navWalletNC.textContent = '0 N';
 
         navLeft.appendChild(navName);
-        navLeft.appendChild(navWalletBTC);
-        navLeft.appendChild(navWalletNC);
-        navRight.appendChild(navLevel);
+        navLeft.appendChild(navLevel);
+        navRight.appendChild(navWalletBTC);
+        navRight.appendChild(navWalletNC);
         return {
             navLeft: navLeft,
             navRight: navRight,
@@ -180,15 +183,21 @@ const settingsutils = (() => {
             languageSelectItem.textContent = languageTypeValue;
             languageTypeValue === languageSelectText.textContent
                 && (languageSelectItem.style.color = cssUtils.getRootProperty('--color-yellow'));
-            languageSelectItem.addEventListener('click', async () => {
+            languageSelectItem.addEventListener('click', () => {
                 const languageTypeKey = languageType.getKeys(languageData)[i];
-                document.documentElement.lang = languageTypeKey;
-                authData.setData('lan', languageTypeKey);
                 app.remove();
-                appUtils.update(await language.set(languageTypeKey));
-
                 audioSource.playSoundEffect('click3');
-                console.log(languageTypeKey);
+                if (languageTypeKey === 'system') {
+                    refresh(navigator.language);
+                    return;
+                }
+                refresh(languageTypeKey);
+                async function refresh(languageTypeKey) {
+                    document.documentElement.lang = languageTypeKey;
+                    authData.setData('lan', languageTypeKey);
+                    appUtils.update(await language.set(languageTypeKey));
+                    console.log(languageTypeKey);
+                }
             });
             languageSelectList.appendChild(languageSelectItem);
         }
@@ -223,6 +232,55 @@ const settingsutils = (() => {
             inputUsername: inputUsername,
             languageSelect: languageSelect,
             logout: logout
+        }
+    }
+    return {
+        render: render
+    }
+})();
+
+const footerutils = (() => {
+    function render(content, settingsUtils) {
+        const footerContainer = document.createElement('div');
+        footerContainer.className = 'footer-container';
+        const selectMarket = document.createElement('div');
+        selectMarket.className = 'select-market';
+        selectMarket.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16" fill="var(--color-high-light-darkness-max)"><path fill-rule="evenodd" d="M11.5 14c2.49 0 4.5-1 4.5-2.5V2c0-1-2-2-4.5-2S7 1 7 2v3.5c1.17.49 2.17 1.31 2.88 2.35c.49.096 1.03.149 1.62.149c1.31 0 2.4-.261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .235-.187.6-.802.936c-.596.325-1.51.564-2.7.564q-.357 0-.68-.027q.12.495.16 1.01q.253.014.52.014c1.31 0 2.4-.261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .236-.149.586-.791.932c-.632.34-1.58.568-2.71.568q-.345 0-.668-.028a6.4 6.4 0 0 1-.309.974q.472.053.976.053zm2.7-7.56c.615-.336.802-.701.802-.936v-1.38q-.155.106-.323.198c-.778.425-1.87.686-3.18.686s-2.4-.261-3.18-.686a4 4 0 0 1-.323-.198v1.38c0 .235.187.6.802.935c.596.325 1.51.564 2.7.564s2.1-.239 2.7-.564zM8 2.5c0-.288.125-.565.358-.734c.127-.092.265-.184.374-.234c.273-.126 1.64-.533 2.77-.533s2.11.227 2.77.533c.124.057.261.146.382.234c.231.167.35.442.35.727v.006c0 .235-.187.6-.802.936c-.596.325-1.51.564-2.7.564s-2.1-.24-2.7-.564C8.187 3.1 8 2.734 8 2.5" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M9 11.5C9 13.99 6.99 16 4.5 16S0 13.99 0 11.5S2.01 7 4.5 7S9 9.01 9 11.5m-1 0C8 13.43 6.43 15 4.5 15S1 13.43 1 11.5S2.57 8 4.5 8S8 9.57 8 11.5" clip-rule="evenodd"></path></svg>`
+        const selectSettings = document.createElement('div');
+        selectSettings.className = 'select-settings';
+        selectSettings.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>`;
+
+        footerContainer.addEventListener('click', (e) => {
+            // sound
+            audioSource.playSoundEffect('click3');
+            // color
+            footerContainer.querySelectorAll('*>*>svg').forEach(element => {
+                element.setAttribute('fill', 'var(--color-high-light-darkness-max)');
+            });
+            e.target.querySelector('svg').setAttribute('fill', 'var(--color-high-light)');
+
+            // interact
+            content.querySelectorAll(':scope>*').forEach(element => {
+                element.style.display = 'none';
+            });
+            switch (e.target) {
+                case selectMarket:
+                    break;
+                case selectSettings:
+                    settingsUtils.settings.style.display = '';
+                    break;
+
+                default:
+                    break;
+            }
+        });
+
+        footerContainer.appendChild(selectMarket);
+        footerContainer.appendChild(selectSettings);
+        return {
+            footerContainer: footerContainer,
+            selectSettings: selectSettings,
+            selectMarket: selectMarket
         }
     }
     return {

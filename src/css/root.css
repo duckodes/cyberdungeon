@@ -2,6 +2,7 @@
     --color-main: #252525;
     --color-high-light: #bcfff9;
     --color-high-light-darkness: #bcfff999;
+    --color-high-light-darkness-max: #bcfff930;
     --color-yellow: #f7d967;
 
     --font-main: 'Road_Rage';
@@ -13,6 +14,10 @@
 
     --text-shadow-main: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);
+}
+
+svg {
+    pointer-events: none;
 }
 
 ::-webkit-scrollbar {
