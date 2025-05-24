@@ -46,6 +46,9 @@
     "nav": {
         "name": "Code Name"
     },
+    "market": {
+        "buy": "purchase"
+    },
     "settings": {
         "editusername": "username",
         "logout": "Logout"

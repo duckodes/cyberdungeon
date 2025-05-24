@@ -46,6 +46,9 @@
     "nav": {
         "name": "コードネーム"
     },
+    "market": {
+        "buy": "購入"
+    },
     "settings": {
         "editusername": "ユーザー名",
         "logout": "ログアウト"

@@ -3,6 +3,7 @@
         {
             "name": "Standard Potion",
             "cost": 100,
+            "img": "",
             "attr": [
                 {
                     "type": "rd",

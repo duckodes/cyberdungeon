@@ -3,6 +3,7 @@
         {
             "name": "Standard Helmet",
             "cost": 100,
+            "img": "",
             "attr": [
                 {
                     "type": "def",

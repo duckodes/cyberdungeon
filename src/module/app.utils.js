@@ -10,7 +10,7 @@ import cssUtils from "./css.utils.js";
 import items from "./items.js";
 
 const appUtils = (() => {
-    function render(languageData) {
+    function render(languageData, itemData) {
         const app = document.createElement('div');
         app.className = 'app';
 
@@ -29,12 +29,12 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
-        const marketUtils = marketutils.render();
+        const marketUtils = marketutils.render(languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
         content.appendChild(settingsUtils.settings);
 
-        const footerUtils = footerutils.render(content, settingsUtils);
+        const footerUtils = footerutils.render(content);
         footer.appendChild(footerUtils.footerContainer);
 
         document.body.appendChild(app);
@@ -65,7 +65,7 @@ const appUtils = (() => {
     async function update(languageData) {
         const itemData = await items.get(languageData);
         console.log(itemData);
-        const appUtilsRender = render(languageData);
+        const appUtilsRender = render(languageData, itemData);
         authData.init(appUtilsRender);
         audioSource.render(appUtilsRender, languageData);
     }
@@ -119,9 +119,36 @@ const navutils = (() => {
 })();
 
 const marketutils = (() => {
-    function render() {
+    function render(languageData, itemData) {
         const market = document.createElement('div');
         market.className = 'market';
+
+        renderItemData(itemData.boots);
+        renderItemData(itemData.helmet);
+        renderItemData(itemData.jacket);
+        renderItemData(itemData.legstrap);
+        renderItemData(itemData.weapon);
+        function renderItemData(data) {
+            for (let i = 0; i < data.length; i++) {
+                const item = document.createElement('div');
+                item.setAttribute('data', data[i].name);
+                const itemTitle = document.createElement('div');
+                itemTitle.className = 'item-title';
+                itemTitle.textContent = data[i].name;
+                const itemImage = document.createElement('div');
+                itemImage.className = 'item-image';
+                itemImage.style.backgroundImage = `url(${data[i].img})`;
+                const itemBuyButton = document.createElement('div');
+                itemBuyButton.className = 'item-buy-button';
+                itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
+
+                item.appendChild(itemTitle);
+                item.appendChild(itemImage);
+                item.appendChild(itemBuyButton);
+
+                market.appendChild(item);
+            }
+        }
         return {
             market: market
         }
@@ -138,6 +165,7 @@ const settingsutils = (() => {
     function render(app, languageData) {
         const settings = document.createElement('div');
         settings.className = 'settings';
+        settings.style.display = 'flex';
 
         const editUsername = document.createElement('div');
         editUsername.className = 'edit-username';
@@ -255,7 +283,7 @@ const settingsutils = (() => {
 })();
 
 const footerutils = (() => {
-    function render(content, settingsUtils) {
+    function render(content) {
         const footerContainer = document.createElement('div');
         footerContainer.className = 'footer-container';
         const selectMarket = document.createElement('div');
@@ -278,9 +306,9 @@ const footerutils = (() => {
 
             // interact
             content.querySelectorAll(':scope>*').forEach(element => {
-                element.style.display = 'none';
+                element.style = '';
             });
-            eTargetIndexMetchContent.style.display = '';
+            eTargetIndexMetchContent.style.display = 'flex';
         });
 
         footerContainer.appendChild(selectMarket);

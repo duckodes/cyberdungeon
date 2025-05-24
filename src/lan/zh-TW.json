@@ -46,6 +46,9 @@
     "nav": {
         "name": "代號名稱"
     },
+    "market": {
+        "buy": "購買"
+    },
     "settings": {
         "editusername": "用戶名稱",
         "logout": "登出"

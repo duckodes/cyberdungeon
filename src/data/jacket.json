@@ -3,6 +3,7 @@
         {
             "name": "Standard Jacket",
             "cost": 100,
+            "img": "",
             "attr": [
                 {
                     "type": "def",
