@@ -144,20 +144,13 @@
     border: 1px dashed var(--color-high-light);
 }
 
+.audio-slider::-moz-range-thumb,
 .audio-slider::-webkit-slider-thumb {
+    background: transparent;
     border: 1px dashed var(--color-high-light-darkness);
     -webkit-appearance: none;
     appearance: none;
     width: 8px;
     height: 8px;
-    cursor: pointer;
-}
-
-.audio-slider::-moz-range-thumb {
-    border: 3px dashed var(--color-high-light-darkness);
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
     cursor: pointer;
 }
