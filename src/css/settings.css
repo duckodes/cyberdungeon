@@ -141,15 +141,15 @@
 }
 
 .audio-slider:hover::-webkit-slider-thumb {
-    border: 1px dashed var(--color-high-light);
+    border: 3px dashed var(--color-high-light);
 }
 
 .audio-slider::-webkit-slider-thumb {
     background: transparent;
-    border: 1px dashed var(--color-high-light-darkness);
+    border: 3px dashed var(--color-high-light-darkness);
     -webkit-appearance: none;
     appearance: none;
-    width: 8px;
-    height: 8px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
 }
