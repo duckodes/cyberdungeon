@@ -144,7 +144,6 @@
     border: 1px dashed var(--color-high-light);
 }
 
-.audio-slider::-moz-range-thumb,
 .audio-slider::-webkit-slider-thumb {
     background: transparent;
     border: 1px dashed var(--color-high-light-darkness);
