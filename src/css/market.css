@@ -9,7 +9,11 @@
     flex-wrap: wrap;
 }
 
-.app>.content>.market>div {
+.app>.content>.market>.items-key {
+    color: var(--color-high-light);
+}
+
+.app>.content>.market>.item {
     margin: 10px;
     background: #000;
     width: 100%;

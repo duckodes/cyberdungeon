@@ -123,8 +123,14 @@ const marketutils = (() => {
         const market = document.createElement('div');
         market.className = 'market';
 
+        const itemskey = document.createElement('div');
+        itemskey.className = 'items-key';
         items.parse(itemData, (key, data, i) => {
+            const itemkey = document.createElement('div');
+            itemkey.textContent = languageData.itemskey[key];
+            if (!data[i].store) return;
             const item = document.createElement('div');
+            item.className = 'item';
             item.setAttribute('data', data[i].name);
             const itemTitle = document.createElement('div');
             itemTitle.className = 'item-title';
@@ -140,7 +146,10 @@ const marketutils = (() => {
             item.appendChild(itemImage);
             item.appendChild(itemBuyButton);
 
+            itemskey.appendChild(itemkey);
+
             market.appendChild(item);
+            market.appendChild(itemskey);
         });
         return {
             market: market

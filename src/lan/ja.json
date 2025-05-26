@@ -26,6 +26,13 @@
             "logout": "ログアウト"
         }
     },
+    "itemskey": {
+        "helmet": "ヘルメット",
+        "jacket": "ジャケット",
+        "weapon": "武器",
+        "legstrap": "レッグストラップ",
+        "boots": "ブーツ"
+    },
     "items": {
         "helmet": [
             "標準ヘルメット"

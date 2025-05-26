@@ -26,6 +26,13 @@
             "logout": "Logout"
         }
     },
+    "itemskey": {
+        "helmet": "Helmet",
+        "jacket": "Jacket",
+        "weapon": "Weapon",
+        "legstrap": "Leg strap",
+        "boots": "Boots"
+    },
     "items": {
         "helmet": [
             "Standard Helmet"

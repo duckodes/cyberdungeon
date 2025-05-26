@@ -3,6 +3,7 @@
         {
             "name": "Standard Boots",
             "cost": 100,
+            "store": true,
             "img": "",
             "attr": [
                 {
