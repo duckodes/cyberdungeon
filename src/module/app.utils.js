@@ -123,32 +123,25 @@ const marketutils = (() => {
         const market = document.createElement('div');
         market.className = 'market';
 
-        renderItemData(itemData.boots);
-        renderItemData(itemData.helmet);
-        renderItemData(itemData.jacket);
-        renderItemData(itemData.legstrap);
-        renderItemData(itemData.weapon);
-        function renderItemData(data) {
-            for (let i = 0; i < data.length; i++) {
-                const item = document.createElement('div');
-                item.setAttribute('data', data[i].name);
-                const itemTitle = document.createElement('div');
-                itemTitle.className = 'item-title';
-                itemTitle.textContent = data[i].name;
-                const itemImage = document.createElement('div');
-                itemImage.className = 'item-image';
-                itemImage.style.backgroundImage = `url(${data[i].img})`;
-                const itemBuyButton = document.createElement('div');
-                itemBuyButton.className = 'item-buy-button';
-                itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
+        items.parse(itemData, (key, data, i) => {
+            const item = document.createElement('div');
+            item.setAttribute('data', data[i].name);
+            const itemTitle = document.createElement('div');
+            itemTitle.className = 'item-title';
+            itemTitle.textContent = data[i].name;
+            const itemImage = document.createElement('div');
+            itemImage.className = 'item-image';
+            itemImage.style.backgroundImage = `url(${data[i].img})`;
+            const itemBuyButton = document.createElement('div');
+            itemBuyButton.className = 'item-buy-button';
+            itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
 
-                item.appendChild(itemTitle);
-                item.appendChild(itemImage);
-                item.appendChild(itemBuyButton);
+            item.appendChild(itemTitle);
+            item.appendChild(itemImage);
+            item.appendChild(itemBuyButton);
 
-                market.appendChild(item);
-            }
-        }
+            market.appendChild(item);
+        });
         return {
             market: market
         }

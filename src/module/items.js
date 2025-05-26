@@ -33,9 +33,17 @@ const items = (() => {
         readOnly(itemData);
         return itemData;
     }
+    function parse(itemData, callback) {
+        for (const [key, data] of Object.entries(itemData)) {
+            for (let i = 0; i < data.length; i++) {
+                callback(key, data, i);
+            }
+        }
+    }
 
     return {
-        get: get
+        get: get,
+        parse: parse
     }
 })();
 
