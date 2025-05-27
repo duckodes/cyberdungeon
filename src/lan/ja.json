@@ -54,7 +54,11 @@
         "name": "コードネーム"
     },
     "market": {
-        "buy": "購入"
+        "buy": "購入",
+        "purchase-info": "購入を確認しますか",
+        "question-mark": "？",
+        "confirm": "確認",
+        "cancel": "取消"
     },
     "settings": {
         "editusername": "ユーザー名",

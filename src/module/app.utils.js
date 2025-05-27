@@ -143,6 +143,27 @@ const marketutils = (() => {
                 const itemBuyButton = document.createElement('div');
                 itemBuyButton.className = 'item-buy-button';
                 itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
+                itemBuyButton.addEventListener('click', () => {
+                    const popupUtils = popuputils.render();
+                    const popupContent = document.createElement('div');
+                    popupContent.className = 'popup-content';
+                    popupContent.textContent = languageData.market['purchase-info'] + data[i].name + languageData.market['question-mark'];
+                    const confirmPurchase = document.createElement('button');
+                    confirmPurchase.className = 'confirm-purchase';
+                    confirmPurchase.textContent = languageData.market.buy;
+                    confirmPurchase.addEventListener('click', () => {
+                        const popupUtilsCheck = popuputils.render();
+                        const confirm = document.createElement('button');
+                        confirm.textContent = languageData.market.confirm;
+                        const cancel = document.createElement('button');
+                        cancel.textContent = languageData.market.cancel;
+
+                        popupUtilsCheck.appendChild(confirm);
+                        popupUtilsCheck.appendChild(cancel);
+                    });
+                    popupUtils.appendChild(popupContent);
+                    popupUtils.appendChild(confirmPurchase);
+                });
 
                 item.appendChild(itemTitle);
                 item.appendChild(itemImage);
@@ -324,6 +345,42 @@ const footerutils = (() => {
             selectSettings: selectSettings,
             selectMarket: selectMarket
         }
+    }
+    return {
+        render: render
+    }
+})();
+
+const popuputils = (() => {
+    function render() {
+        const popupBase = document.createElement('div');
+        popupBase.className = 'popup-base';
+        popupBase.classList.add('fade-in');
+        popupBase.addEventListener('animationend', () => {
+            popupBase.classList.remove('fade-in');
+        });
+        const popupPanel = document.createElement('div');
+        popupPanel.className = 'popup-panel';
+        popupPanel.classList.add('slide');
+        popupPanel.addEventListener('animationend', () => {
+            popupPanel.classList.remove('slide');
+        });
+        popupBase.addEventListener('click', (e) => {
+            if (popupPanel.contains(e.target)) return;
+            popupPanel.classList.add('remove');
+            popupPanel.addEventListener('animationend', () => {
+                popupBase.remove();
+            });
+            popupBase.classList.add('fade-out');
+            popupBase.addEventListener('animationend', () => {
+                popupBase.classList.remove('fade-out');
+            });
+        });
+
+        popupBase.appendChild(popupPanel);
+
+        document.body.appendChild(popupBase);
+        return popupPanel;
     }
     return {
         render: render

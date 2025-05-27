@@ -31,38 +31,6 @@
                     "value": 1
                 }
             ]
-        },
-        {
-            "name": "Standard Knife",
-            "cost": 100,
-            "store": true,
-            "img": "./src/image/weapon/LightWeightParingKnife.png",
-            "attr": [
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                }
-            ]
         }
     ]
 }

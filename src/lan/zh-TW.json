@@ -54,7 +54,11 @@
         "name": "代號名稱"
     },
     "market": {
-        "buy": "購買"
+        "buy": "購買",
+        "purchase-info": "確認是否購買",
+        "question-mark": "？",
+        "confirm": "確認",
+        "cancel": "取消"
     },
     "settings": {
         "editusername": "用戶名稱",

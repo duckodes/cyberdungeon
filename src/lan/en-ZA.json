@@ -54,7 +54,11 @@
         "name": "Code Name"
     },
     "market": {
-        "buy": "purchase"
+        "buy": "purchase",
+        "purchase-info": "Confirm purchase ",
+        "question-mark": "?",
+        "confirm": "確認",
+        "cancel": "取消"
     },
     "settings": {
         "editusername": "username",

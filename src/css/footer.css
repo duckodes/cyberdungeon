@@ -14,7 +14,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    z-index: 2;
 }
 
 .app>.footer>.footer-container>* {
