@@ -35,9 +35,7 @@ const items = (() => {
     }
     function parse(itemData, callback) {
         for (const [key, data] of Object.entries(itemData)) {
-            for (let i = 0; i < data.length; i++) {
-                callback(key, data, i);
-            }
+            callback(key, data);
         }
     }
 

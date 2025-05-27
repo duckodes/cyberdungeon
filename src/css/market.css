@@ -11,11 +11,23 @@
 
 .app>.content>.market>.items-key {
     color: var(--color-high-light);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
-.app>.content>.market>.item {
+.app>.content>.market>.items-key>.items{
+    color: #000000;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.app>.content>.market>.items-key>.items>.item {
+    background: #000000;
     margin: 10px;
-    background: #000;
     width: 100%;
     min-width: 150px;
     max-width: 250px;
@@ -27,8 +39,9 @@
     border-image: linear-gradient(to left bottom, #c24347aa 10%, transparent 20%, transparent 80%, #c24347aa 90%) 1;
 }
 
-.app>.content>.market>div>.item-title {
-    background: red;
+.app>.content>.market>.items-key>.items>.item>.item-title {
+    background: #ff0000;
+    border-right: 5px solid #962b2e;
     width: 120px;
     display: -webkit-box;
     line-clamp: 1;
@@ -39,16 +52,16 @@
     padding: 5px;
     font-size: smaller;
     line-height: 2;
-    border-right: 5px solid #962b2e;
     overflow-wrap: break-word;
 }
 
-.app>.content>.market>div>.item-title:hover {
+.app>.content>.market>.items-key>.items>.item>.item-title:hover {
     line-clamp: 999;
     -webkit-line-clamp: 999;
 }
 
-.app>.content>.market>div>.item-image {
+.app>.content>.market>.items-key>.items>.item>.item-image {
+    background-color: #fff5;
     margin: 10px;
     height: 250px;
     display: grid;
@@ -58,10 +71,9 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: #fff5;
 }
 
-.app>.content>.market>div>.item-image::before {
+.app>.content>.market>.items-key>.items>.item>.item-image::before {
     content: '';
     grid-column: 1 / span 3;
     grid-row: 1 / span 3;
@@ -69,22 +81,22 @@
     background-size: 5px 5px;
 }
 
-.app>.content>.market>div>.item-buy-button {
+.app>.content>.market>.items-key>.items>.item>.item-buy-button {
+    background: #ff0000;
+    border-left: 5px solid #962b2e;
     cursor: pointer;
-    background: red;
     width: 70%;
     margin-left: 30%;
     text-align: center;
-    border-left: 5px solid #962b2e;
     transition: all 100ms ease-out;
     font-family: var(--font-1);
     font-size: medium;
 }
 
-.app>.content>.market>div>.item-buy-button:hover {
+.app>.content>.market>.items-key>.items>.item>.item-buy-button:hover {
     background: #ad2b2b;
 }
 
-.app>.content>.market>div>.item-buy-button:active {
+.app>.content>.market>.items-key>.items>.item>.item-buy-button:active {
     background: #7c2020;
 }

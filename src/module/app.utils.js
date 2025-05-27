@@ -123,33 +123,37 @@ const marketutils = (() => {
         const market = document.createElement('div');
         market.className = 'market';
 
-        const itemskey = document.createElement('div');
-        itemskey.className = 'items-key';
-        items.parse(itemData, (key, data, i) => {
-            const itemkey = document.createElement('div');
-            itemkey.textContent = languageData.itemskey[key];
-            if (!data[i].store) return;
-            const item = document.createElement('div');
-            item.className = 'item';
-            item.setAttribute('data', data[i].name);
-            const itemTitle = document.createElement('div');
-            itemTitle.className = 'item-title';
-            itemTitle.textContent = data[i].name;
-            const itemImage = document.createElement('div');
-            itemImage.className = 'item-image';
-            itemImage.style.backgroundImage = `url(${data[i].img})`;
-            const itemBuyButton = document.createElement('div');
-            itemBuyButton.className = 'item-buy-button';
-            itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
+        items.parse(itemData, (key, data) => {
+            const itemskey = document.createElement('div');
+            itemskey.className = 'items-key';
+            itemskey.textContent = languageData.itemskey[key];
+            const items = document.createElement('div');
+            items.className = 'items';
+            for (let i = 0; i < data.length; i++) {
+                if (!data[i].store) return;
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.setAttribute('data', data[i].name);
+                const itemTitle = document.createElement('div');
+                itemTitle.className = 'item-title';
+                itemTitle.textContent = data[i].name;
+                const itemImage = document.createElement('div');
+                itemImage.className = 'item-image';
+                itemImage.style.backgroundImage = `url(${data[i].img})`;
+                const itemBuyButton = document.createElement('div');
+                itemBuyButton.className = 'item-buy-button';
+                itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
 
-            item.appendChild(itemTitle);
-            item.appendChild(itemImage);
-            item.appendChild(itemBuyButton);
+                item.appendChild(itemTitle);
+                item.appendChild(itemImage);
+                item.appendChild(itemBuyButton);
 
-            itemskey.appendChild(itemkey);
+                items.appendChild(item);
 
-            market.appendChild(item);
-            market.appendChild(itemskey);
+                itemskey.appendChild(items);
+
+                market.appendChild(itemskey);
+            }
         });
         return {
             market: market
