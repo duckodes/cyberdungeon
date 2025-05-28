@@ -4,7 +4,7 @@
             "name": "Standard Knife",
             "cost": 100,
             "store": true,
-            "img": "./src/image/weapon/LightWeightParingKnife.png",
+            "img": "./src/image/weapon/StandardKnife.png",
             "attr": [
                 {
                     "type": "dmg",

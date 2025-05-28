@@ -4,7 +4,7 @@
             "name": "Standard Helmet",
             "cost": 100,
             "store": true,
-            "img": "",
+            "img": "./src/image/helmet/StandardHelmet.png",
             "attr": [
                 {
                     "type": "def",

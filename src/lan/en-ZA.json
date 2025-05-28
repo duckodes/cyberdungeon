@@ -26,6 +26,10 @@
             "logout": "Logout"
         }
     },
+    "wallet":{
+        "bitcoin": "BTC",
+        "neuralchips": "N"
+    },
     "itemskey": {
         "helmet": "Helmet",
         "jacket": "Jacket",
@@ -57,8 +61,13 @@
         "buy": "purchase",
         "purchase-info": "Confirm purchase ",
         "question-mark": "?",
-        "confirm": "確認",
-        "cancel": "取消"
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "purchase-failed": "Insufficient balance, purchase unsuccessful",
+        "purchase-success": [
+            "Thank you",
+            "Purchased black market goods"
+        ]
     },
     "settings": {
         "editusername": "username",

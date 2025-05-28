@@ -29,7 +29,7 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
-        const marketUtils = marketutils.render(languageData, itemData);
+        const marketUtils = marketutils.render(app, languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
         content.appendChild(settingsUtils.settings);
@@ -54,7 +54,7 @@ const appUtils = (() => {
                     navUtils.navName.textContent = textContent === undefined ? languageData.nav.name : textContent;
                 },
                 btc: (textContent) => {
-                    navUtils.navWalletBTC.textContent = textContent === undefined ? '0 BTC' : textContent + ' BTC';
+                    navUtils.navWalletBTC.textContent = textContent === undefined ? '0 ' + languageData.wallet.bitcoin : textContent + ' ' + languageData.wallet.bitcoin;
                 },
                 nc: (textContent) => {
                     navUtils.navWalletNC.textContent = textContent === undefined ? '0 N' : textContent + ' N';
@@ -94,7 +94,7 @@ const navutils = (() => {
         const navWalletBTC = document.createElement('div');
         navWalletBTC.className = 'nav-wallet nav-wallet-btc';
         navWalletBTC.title = 'Bitcoin';
-        navWalletBTC.textContent = '0 BTC';
+        navWalletBTC.textContent = '0 ' + languageData.wallet.bitcoin;
         const navWalletNC = document.createElement('div');
         navWalletNC.className = 'nav-wallet nav-wallet-nc';
         navWalletNC.title = 'NeuralChips';
@@ -119,7 +119,7 @@ const navutils = (() => {
 })();
 
 const marketutils = (() => {
-    function render(languageData, itemData) {
+    function render(app, languageData, itemData) {
         const market = document.createElement('div');
         market.className = 'market';
 
@@ -142,27 +142,61 @@ const marketutils = (() => {
                 itemImage.style.backgroundImage = `url(${data[i].img})`;
                 const itemBuyButton = document.createElement('div');
                 itemBuyButton.className = 'item-buy-button';
-                itemBuyButton.textContent = data[i].cost + 'BTC ' + languageData.market.buy;
+                itemBuyButton.textContent = `${data[i].cost}${languageData.wallet.bitcoin} ${languageData.market.buy}`;
                 itemBuyButton.addEventListener('click', () => {
-                    const popupUtils = popuputils.render();
+                    const popupUtils = popuputils.render(app);
+                    popupUtils.popupPanel.classList.add('popup-panel-confirm');
                     const popupContent = document.createElement('div');
                     popupContent.className = 'popup-content';
-                    popupContent.textContent = languageData.market['purchase-info'] + data[i].name + languageData.market['question-mark'];
+                    popupContent.innerHTML = `${languageData.market['purchase-info']}<span class="text-yellow">${data[i].name}</span>${languageData.market['question-mark']}`;
                     const confirmPurchase = document.createElement('button');
-                    confirmPurchase.className = 'confirm-purchase';
                     confirmPurchase.textContent = languageData.market.buy;
-                    confirmPurchase.addEventListener('click', () => {
-                        const popupUtilsCheck = popuputils.render();
+                    confirmPurchase.addEventListener('click', async () => {
+                        const btcData = await authData.getData('btc');
+
+                        const popupUtilsCheck = popuputils.render(app);
+                        popupUtilsCheck.popupPanel.classList.add('popup-panel-confirm-check');
+                        popupUtilsCheck.popupPanel.textContent = `${btcData} - ${data[i].cost} = ${btcData - data[i].cost} ${languageData.wallet.bitcoin}`;
+                        const confirmCancel = document.createElement('div');
+                        confirmCancel.className = 'confirm-cancel'
                         const confirm = document.createElement('button');
                         confirm.textContent = languageData.market.confirm;
+                        confirm.addEventListener('click', () => {
+                            popupUtils.removePanel();
+                            popupUtilsCheck.removePanel();
+
+                            if (btcData < data[i].cost) {
+                                const popupUtilsPurchaseFailed = popuputils.render(app);
+                                popupUtilsPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
+                                popupUtilsPurchaseFailed.popupPanel.textContent = languageData.market['purchase-failed'];
+                                setTimeout(() => {
+                                    popupUtilsPurchaseFailed.removePanel();
+                                }, 1000);
+                                return;
+                            }
+
+                            const popupUtilsPurchaseSuccess = popuputils.render(app);
+                            popupUtilsPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
+                            popupUtilsPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
+                            setTimeout(() => {
+                                popupUtilsPurchaseSuccess.removePanel();
+                            }, 1000);
+                            authData.setData('btc', btcData - data[i].cost);
+                        });
                         const cancel = document.createElement('button');
                         cancel.textContent = languageData.market.cancel;
+                        cancel.addEventListener('click', () => {
+                            popupUtils.removePanel();
+                            popupUtilsCheck.removePanel();
+                        });
 
-                        popupUtilsCheck.appendChild(confirm);
-                        popupUtilsCheck.appendChild(cancel);
+                        confirmCancel.appendChild(confirm);
+                        confirmCancel.appendChild(cancel);
+
+                        popupUtilsCheck.popupPanel.appendChild(confirmCancel);
                     });
-                    popupUtils.appendChild(popupContent);
-                    popupUtils.appendChild(confirmPurchase);
+                    popupUtils.popupPanel.appendChild(popupContent);
+                    popupUtils.popupPanel.appendChild(confirmPurchase);
                 });
 
                 item.appendChild(itemTitle);
@@ -352,7 +386,7 @@ const footerutils = (() => {
 })();
 
 const popuputils = (() => {
-    function render() {
+    function render(app) {
         const popupBase = document.createElement('div');
         popupBase.className = 'popup-base';
         popupBase.classList.add('fade-in');
@@ -367,6 +401,9 @@ const popuputils = (() => {
         });
         popupBase.addEventListener('click', (e) => {
             if (popupPanel.contains(e.target)) return;
+            removePanel();
+        });
+        function removePanel() {
             popupPanel.classList.add('remove');
             popupPanel.addEventListener('animationend', () => {
                 popupBase.remove();
@@ -375,12 +412,15 @@ const popuputils = (() => {
             popupBase.addEventListener('animationend', () => {
                 popupBase.classList.remove('fade-out');
             });
-        });
+        }
 
         popupBase.appendChild(popupPanel);
 
-        document.body.appendChild(popupBase);
-        return popupPanel;
+        app.appendChild(popupBase);
+        return {
+            popupPanel: popupPanel,
+            removePanel: removePanel
+        }
     }
     return {
         render: render

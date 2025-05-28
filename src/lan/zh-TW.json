@@ -26,6 +26,10 @@
             "logout": "登出"
         }
     },
+    "wallet":{
+        "bitcoin": "BTC",
+        "neuralchips": "N"
+    },
     "itemskey": {
         "helmet": "頭盔",
         "jacket": "夾克",
@@ -58,7 +62,12 @@
         "purchase-info": "確認是否購買",
         "question-mark": "？",
         "confirm": "確認",
-        "cancel": "取消"
+        "cancel": "取消",
+        "purchase-failed": "餘額不足購買失敗",
+        "purchase-success": [
+            "感謝",
+            "購買黑市商品"
+        ]
     },
     "settings": {
         "editusername": "用戶名稱",

@@ -26,6 +26,10 @@
             "logout": "ログアウト"
         }
     },
+    "wallet":{
+        "bitcoin": "BTC",
+        "neuralchips": "N"
+    },
     "itemskey": {
         "helmet": "ヘルメット",
         "jacket": "ジャケット",
@@ -58,7 +62,12 @@
         "purchase-info": "購入を確認しますか",
         "question-mark": "？",
         "confirm": "確認",
-        "cancel": "取消"
+        "cancel": "キャンセル",
+        "purchase-failed": "残高不足のため購入できません",
+        "purchase-success": [
+            "感謝",
+            "ブラックマーケット商品を購入"
+        ]
     },
     "settings": {
         "editusername": "ユーザー名",

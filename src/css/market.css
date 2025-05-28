@@ -105,29 +105,66 @@
     background: #7c2020;
 }
 
-
-.popup-base>.popup-panel {
+.popup-base>.popup-panel-confirm {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.popup-base>.popup-panel>.popup-content {
+.popup-base>.popup-panel-confirm>.popup-content {
     color: var(--color-high-light);
     font-family: var(--font-main), var(--font-5), var(--font-4);
 }
 
-.popup-base>.popup-panel>.confirm-purchase:active {
-    color: var(--color-high-light-darkness);
-}
-
-.popup-base>.popup-panel>.confirm-purchase {
+.popup-base>.popup-panel-confirm>button {
     color: var(--color-high-light);
     font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-size: 20px;
     position: fixed;
     border: 0px;
     padding: 10px;
     right: 0px;
     bottom: 0px;
+}
+
+.popup-base>.popup-panel-confirm>button:active {
+    color: var(--color-high-light-darkness);
+}
+
+.popup-base>.popup-panel-confirm-check {
+    color: var(--color-yellow);
+    font-family: var(--font-2);
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.popup-base>.popup-panel-confirm-check>.confirm-cancel>button {
+    color: var(--color-high-light);
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-size: 20px;
+    margin: 30px 30px 0px 30px;
+    border: 0px;
+    border-bottom: 1px solid var(--color-high-light);
+}
+
+.popup-base>.popup-panel-purchase-failed {
+    color: #d43636;
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35%;
+}
+
+.popup-base>.popup-panel-purchase-success {
+    color: var(--color-high-light);
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -52,3 +52,7 @@ button {
 button:hover {
     border: 1px solid #ffffffaa;
 }
+
+.text-yellow {
+    color: var(--color-yellow);
+}
