@@ -127,8 +127,8 @@ const marketutils = (() => {
             const itemskey = document.createElement('div');
             itemskey.className = 'items-key';
             itemskey.textContent = languageData.itemskey[key];
-            const items = document.createElement('div');
-            items.className = 'items';
+            const itemsEntire = document.createElement('div');
+            itemsEntire.className = 'items-entire';
             for (let i = 0; i < data.length; i++) {
                 if (!data[i].store) return;
                 const item = document.createElement('div');
@@ -161,7 +161,7 @@ const marketutils = (() => {
                         confirmCancel.className = 'confirm-cancel'
                         const confirm = document.createElement('button');
                         confirm.textContent = languageData.market.confirm;
-                        confirm.addEventListener('click', () => {
+                        confirm.addEventListener('click', async () => {
                             popupUtils.removePanel();
                             popupUtilsCheck.removePanel();
 
@@ -182,6 +182,10 @@ const marketutils = (() => {
                                 popupUtilsPurchaseSuccess.removePanel();
                             }, 1000);
                             authData.setData('btc', btcData - data[i].cost);
+                            const currentUserItemData = await authData.getData('userItemData/' + key) || [];
+                            authData.setData('userItemData/' + key, [...currentUserItemData, i]);
+                            console.log('user items:');
+                            console.log(items.getUserItems(await authData.getData('userItemData'), itemData));
                         });
                         const cancel = document.createElement('button');
                         cancel.textContent = languageData.market.cancel;
@@ -203,9 +207,9 @@ const marketutils = (() => {
                 item.appendChild(itemImage);
                 item.appendChild(itemBuyButton);
 
-                items.appendChild(item);
+                itemsEntire.appendChild(item);
 
-                itemskey.appendChild(items);
+                itemskey.appendChild(itemsEntire);
 
                 market.appendChild(itemskey);
             }

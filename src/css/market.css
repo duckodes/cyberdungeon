@@ -19,7 +19,7 @@
     font-size: 20px;
 }
 
-.app>.content>.market>.items-key>.items {
+.app>.content>.market>.items-key>.items-entire {
     color: #000000;
     width: 100%;
     display: flex;
@@ -29,7 +29,7 @@
     margin-bottom: 50px;
 }
 
-.app>.content>.market>.items-key>.items>.item {
+.app>.content>.market>.items-key>.items-entire>.item {
     background: #000000;
     margin: 10px;
     width: 100%;
@@ -43,7 +43,7 @@
     border-image: linear-gradient(to left bottom, #c24347aa 10%, transparent 20%, transparent 80%, #c24347aa 90%) 1;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-title {
+.app>.content>.market>.items-key>.items-entire>.item>.item-title {
     background: #ff0000;
     border-right: 5px solid #962b2e;
     width: 120px;
@@ -59,12 +59,12 @@
     overflow-wrap: break-word;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-title:hover {
+.app>.content>.market>.items-key>.items-entire>.item>.item-title:hover {
     line-clamp: 999;
     -webkit-line-clamp: 999;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-image {
+.app>.content>.market>.items-key>.items-entire>.item>.item-image {
     background-color: #fff5;
     margin: 10px;
     display: grid;
@@ -77,7 +77,7 @@
     background-position: center;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-image::before {
+.app>.content>.market>.items-key>.items-entire>.item>.item-image::before {
     content: '';
     grid-column: 1 / span 3;
     grid-row: 1 / span 3;
@@ -85,7 +85,7 @@
     background-size: 5px 5px;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-buy-button {
+.app>.content>.market>.items-key>.items-entire>.item>.item-buy-button {
     background: #ff0000;
     border-left: 5px solid #962b2e;
     cursor: pointer;
@@ -97,11 +97,11 @@
     font-size: medium;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-buy-button:hover {
+.app>.content>.market>.items-key>.items-entire>.item>.item-buy-button:hover {
     background: #ad2b2b;
 }
 
-.app>.content>.market>.items-key>.items>.item>.item-buy-button:active {
+.app>.content>.market>.items-key>.items-entire>.item>.item-buy-button:active {
     background: #7c2020;
 }
 
@@ -139,6 +139,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    height: fit-content;
+    padding: 20px;
 }
 
 .popup-base>.popup-panel-confirm-check>.confirm-cancel>button {

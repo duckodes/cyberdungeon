@@ -38,10 +38,24 @@ const items = (() => {
             callback(key, data);
         }
     }
+    function getUserItems(userItemData, itemData) {
+        return Object.entries(userItemData).reduce(function (acc, entry) {
+            const category = entry[0];
+            const indices = entry[1];
+
+            acc[category] = indices.map(function (index) {
+                return itemData[category][index];
+            });
+
+            return acc;
+        }, {});
+    }
+
 
     return {
         get: get,
-        parse: parse
+        parse: parse,
+        getUserItems: getUserItems
     }
 })();
 
