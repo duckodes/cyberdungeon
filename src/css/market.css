@@ -31,6 +31,8 @@
 
 .app>.content>.market>.items-key>.items-entire>.item {
     background: #000000;
+    border: 2px solid;
+    border-image: linear-gradient(to left bottom, var(--color-red-darkness) 10%, transparent 20%, transparent 80%, var(--color-red-darkness) 90%) 1;
     margin: 10px;
     width: 100%;
     min-width: 150px;
@@ -39,13 +41,11 @@
     display: flex;
     flex-direction: column;
     justify-content: right;
-    border: 2px solid;
-    border-image: linear-gradient(to left bottom, #c24347aa 10%, transparent 20%, transparent 80%, #c24347aa 90%) 1;
 }
 
 .app>.content>.market>.items-key>.items-entire>.item>.item-title {
-    background: #ff0000;
-    border-right: 5px solid #962b2e;
+    background: var(--color-red);
+    border-right: 5px solid var(--color-red-darkness);
     width: 120px;
     display: -webkit-box;
     line-clamp: 1;
@@ -86,8 +86,8 @@
 }
 
 .app>.content>.market>.items-key>.items-entire>.item>.item-buy-button {
-    background: #ff0000;
-    border-left: 5px solid #962b2e;
+    background: var(--color-red);
+    border-left: 5px solid var(--color-red-darkness-max);
     cursor: pointer;
     width: 70%;
     margin-left: 30%;
@@ -98,17 +98,18 @@
 }
 
 .app>.content>.market>.items-key>.items-entire>.item>.item-buy-button:hover {
-    background: #ad2b2b;
+    background: var(--color-red-darkness);
 }
 
 .app>.content>.market>.items-key>.items-entire>.item>.item-buy-button:active {
-    background: #7c2020;
+    background: var(--color-red-darkness-max);
 }
 
 .popup-base>.popup-panel-confirm {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 35%;
 }
 
 .popup-base>.popup-panel-confirm>.popup-content {
@@ -132,7 +133,7 @@
 }
 
 .popup-base>.popup-panel-confirm-check {
-    color: var(--color-yellow);
+    color: var(--color-red);
     font-family: var(--font-2);
     font-size: 20px;
     display: flex;
@@ -160,7 +161,7 @@
 }
 
 .popup-base>.popup-panel-purchase-failed {
-    color: #d43636;
+    color: var(--color-red);
     font-family: var(--font-main), var(--font-5), var(--font-4);
     font-size: 20px;
     display: flex;

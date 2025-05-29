@@ -4,6 +4,13 @@
     --color-high-light-darkness: #bcfff999;
     --color-high-light-darkness-max: #bcfff930;
     --color-yellow: #f7d967;
+    --color-red: #f57371;
+    --color-red-darkness: #b44e4e;
+    --color-red-darkness-max: #962b2e;
+    --color-pink: #d43d8a;
+    --color-green-blue: #68aca3;
+    --color-light-blue: #597497;
+    --color-dark-blue: #542a71;
 
     --font-main: 'Road_Rage';
     --font-2: 'CyberwarRegular-7BX0E';
@@ -53,6 +60,6 @@ button:hover {
     border: 1px solid #ffffffaa;
 }
 
-.text-yellow {
-    color: var(--color-yellow);
+.text-red {
+    color: var(--color-red);
 }

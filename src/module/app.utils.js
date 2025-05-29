@@ -148,7 +148,7 @@ const marketutils = (() => {
                     popupUtils.popupPanel.classList.add('popup-panel-confirm');
                     const popupContent = document.createElement('div');
                     popupContent.className = 'popup-content';
-                    popupContent.innerHTML = `${languageData.market['purchase-info']}<span class="text-yellow">${data[i].name}</span>${languageData.market['question-mark']}`;
+                    popupContent.innerHTML = `${languageData.market['purchase-info']}<span class="text-red">${data[i].name}</span>${languageData.market['question-mark']}`;
                     const confirmPurchase = document.createElement('button');
                     confirmPurchase.textContent = languageData.market.buy;
                     confirmPurchase.addEventListener('click', async () => {
