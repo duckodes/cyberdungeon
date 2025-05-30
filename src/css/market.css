@@ -72,6 +72,8 @@
     grid-template-rows: repeat(3, 1fr);
     gap: 1px;
     aspect-ratio: 1;
+    max-width: 100%;
+    max-height: 100dvh;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -110,6 +112,7 @@
     align-items: center;
     justify-content: center;
     height: 35%;
+    padding: 20px;
 }
 
 .popup-base>.popup-panel-confirm>.popup-content {
@@ -123,9 +126,8 @@
     font-size: 20px;
     position: fixed;
     border: 0px;
-    padding: 10px;
-    right: 0px;
-    bottom: 0px;
+    right: 20px;
+    bottom: 20px;
 }
 
 .popup-base>.popup-panel-confirm>button:active {
@@ -144,7 +146,7 @@
     padding: 20px;
 }
 
-.popup-base>.popup-panel-confirm-check>.confirm-cancel{
+.popup-base>.popup-panel-confirm-check>.confirm-cancel {
     display: flex;
     align-items: center;
     justify-content: center;
