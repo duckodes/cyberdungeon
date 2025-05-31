@@ -190,10 +190,8 @@ const marketutils = (() => {
                                 popupUtilsPurchaseSuccess.removePanel();
                             }, 1000);
                             authData.setData('btc', btcData - data[i].cost);
-                            const currentUserItemData = await authData.getData('userItemData/' + key) || [];
-                            authData.setData('userItemData/' + key, [...currentUserItemData, i]);
-                            console.log('user items:');
-                            console.log(await items.getUserItems(itemData));
+                            await items.setUserItems(key, i);
+                            console.log('user items:', await items.getUserItems(itemData));
                         });
                         const cancel = document.createElement('button');
                         cancel.textContent = languageData.market.cancel;

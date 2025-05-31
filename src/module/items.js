@@ -36,12 +36,21 @@ const items = (() => {
         return itemData;
     }
     function parse(itemData, callback) {
+        if (!itemData) return;
         for (const [key, data] of Object.entries(itemData)) {
             callback(key, data);
         }
     }
+
+    const userItemDataKey = 'userItemData';
+    async function setUserItems(key, data) {
+        const currentUserItemData = await authData.getData(userItemDataKey + '/' + key) || [];
+        authData.setData(userItemDataKey + '/' + key, [...currentUserItemData, data]);
+    }
     async function getUserItems(itemData) {
-        return userItems(await authData.getData('userItemData'), itemData);
+        const userItemData = await authData.getData(userItemDataKey);
+        if (!userItemData) return;
+        return userItems(userItemData, itemData);
     }
     function userItems(userItemData, itemData) {
         return Object.entries(userItemData).reduce(function (acc, entry) {
@@ -59,6 +68,7 @@ const items = (() => {
     return {
         get: get,
         parse: parse,
+        setUserItems: setUserItems,
         getUserItems: getUserItems
     }
 })();
