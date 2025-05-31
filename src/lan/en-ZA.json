@@ -67,7 +67,8 @@
         "purchase-success": [
             "Thank you",
             "Purchased black market goods"
-        ]
+        ],
+        "owned": "already got"
     },
     "settings": {
         "editusername": "username",

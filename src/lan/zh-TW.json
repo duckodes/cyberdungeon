@@ -67,7 +67,8 @@
         "purchase-success": [
             "感謝",
             "購買黑市商品"
-        ]
+        ],
+        "owned": "已擁有"
     },
     "settings": {
         "editusername": "用戶名稱",

@@ -143,12 +143,20 @@ const marketutils = (() => {
                 const itemBuyButton = document.createElement('div');
                 itemBuyButton.className = 'item-buy-button';
                 itemBuyButton.textContent = `${data[i].cost}${languageData.wallet.bitcoin} ${languageData.market.buy}`;
-                itemBuyButton.addEventListener('click', () => {
+                itemBuyButton.addEventListener('click', async () => {
                     const popupUtils = popuputils.render(app);
                     popupUtils.popupPanel.classList.add('popup-panel-confirm');
                     const popupContent = document.createElement('div');
                     popupContent.className = 'popup-content';
-                    popupContent.innerHTML = `${languageData.market['purchase-info']}<span class="text-red">${data[i].name}</span>${languageData.market['question-mark']}`;
+                    let counter = 0;
+                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+                        for (let j = 0; j < userData.length; j++) {
+                            if (userData[j].name === data[i].name) {
+                                counter++;
+                            }
+                        }
+                    });
+                    popupContent.innerHTML = `${languageData.market['purchase-info']}<span class="text-red">${data[i].name}${counter > 0 ? ` ( ${languageData.market.owned} x ${counter} ) ` : ''}</span>${languageData.market['question-mark']}`;
                     const confirmPurchase = document.createElement('button');
                     confirmPurchase.textContent = languageData.market.buy;
                     confirmPurchase.addEventListener('click', async () => {
@@ -185,7 +193,7 @@ const marketutils = (() => {
                             const currentUserItemData = await authData.getData('userItemData/' + key) || [];
                             authData.setData('userItemData/' + key, [...currentUserItemData, i]);
                             console.log('user items:');
-                            console.log(items.getUserItems(await authData.getData('userItemData'), itemData));
+                            console.log(await items.getUserItems(itemData));
                         });
                         const cancel = document.createElement('button');
                         cancel.textContent = languageData.market.cancel;

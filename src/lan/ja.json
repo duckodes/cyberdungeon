@@ -67,7 +67,8 @@
         "purchase-success": [
             "感謝",
             "ブラックマーケット商品を購入"
-        ]
+        ],
+        "owned": "すでに持っている"
     },
     "settings": {
         "editusername": "ユーザー名",

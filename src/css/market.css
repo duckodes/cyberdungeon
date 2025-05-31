@@ -46,7 +46,7 @@
 .app>.content>.market>.items-key>.items-entire>.item>.item-title {
     background: var(--color-red);
     border-right: 5px solid var(--color-red-darkness);
-    width: 100px;
+    width: 70%;
     display: -webkit-box;
     line-clamp: 1;
     -webkit-line-clamp: 1;

@@ -1,3 +1,5 @@
+import authData from "./auth.data.js";
+
 import fetcher from "./fetcher.js";
 
 const items = (() => {
@@ -38,7 +40,10 @@ const items = (() => {
             callback(key, data);
         }
     }
-    function getUserItems(userItemData, itemData) {
+    async function getUserItems(itemData) {
+        return userItems(await authData.getData('userItemData'), itemData);
+    }
+    function userItems(userItemData, itemData) {
         return Object.entries(userItemData).reduce(function (acc, entry) {
             const category = entry[0];
             const indices = entry[1];
@@ -50,7 +55,6 @@ const items = (() => {
             return acc;
         }, {});
     }
-
 
     return {
         get: get,
