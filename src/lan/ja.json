@@ -74,6 +74,12 @@
         "editusername": "ユーザー名",
         "logout": "ログアウト"
     },
+    "equip": {
+        "sell-question": "この装備を売却しますか",
+        "question-mark": "？",
+        "sell-confirm": "売却",
+        "sell-cancel": "やめておく"
+    },
     "prompter": {
         "timeout": "ログインタイムアウトしました。再度ログインしてください。",
         "confirm": "画面をクリックして確認"

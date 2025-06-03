@@ -72,3 +72,31 @@
         transform: translateY(100%);
     }
 }
+
+.popup-base>.popup-panel-confirm-check {
+    color: var(--color-red);
+    font-family: var(--font-2);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: fit-content;
+    padding: 20px;
+}
+
+.popup-base>.popup-panel-confirm-check>.confirm-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.popup-base>.popup-panel-confirm-check>.confirm-cancel>button {
+    color: var(--color-high-light);
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-size: 20px;
+    margin: 30px 30px 0px 30px;
+    border: 0px;
+    border-bottom: 1px solid var(--color-high-light);
+}

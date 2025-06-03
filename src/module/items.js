@@ -53,6 +53,11 @@ const items = (() => {
         if (!userItemData) return;
         return userItems(userItemData, itemData);
     }
+    async function removeUserItems(key, data) {
+        const currentUserItemData = await authData.getData(userItemDataKey + '/' + key) || [];
+        currentUserItemData.splice(data, 1);
+        authData.setData(userItemDataKey + '/' + key, currentUserItemData);
+    }
     function userItems(userItemData, itemData) {
         return Object.entries(userItemData).reduce(function (acc, entry) {
             const category = entry[0];
@@ -95,6 +100,7 @@ const items = (() => {
         parse: parse,
         setUserItems: setUserItems,
         getUserItems: getUserItems,
+        removeUserItems: removeUserItems,
         setEquipData: setEquipData,
         getEquipData: getEquipData
     }

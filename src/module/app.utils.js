@@ -165,16 +165,12 @@ const marketutils = (() => {
                     confirmPurchase.addEventListener('click', async () => {
                         const btcData = await authData.getData('btc');
 
-                        const popupUtilsCheck = popuputils.render(app);
-                        popupUtilsCheck.popupPanel.classList.add('popup-panel-confirm-check');
-                        popupUtilsCheck.popupPanel.textContent = `${btcData} - ${data[i].cost} = ${btcData - data[i].cost} ${languageData.wallet.bitcoin}`;
-                        const confirmCancel = document.createElement('div');
-                        confirmCancel.className = 'confirm-cancel'
-                        const confirm = document.createElement('button');
-                        confirm.textContent = languageData.market.confirm;
-                        confirm.addEventListener('click', async () => {
+                        const popupUtilsCheck = popuputils.renderCheck(app);
+                        popupUtilsCheck.popupUtilsCheck.popupPanel.textContent = `${btcData} - ${data[i].cost} = ${btcData - data[i].cost} ${languageData.wallet.bitcoin}`;
+                        popupUtilsCheck.confirm.textContent = languageData.market.confirm;
+                        popupUtilsCheck.confirm.addEventListener('click', async () => {
                             popupUtils.removePanel();
-                            popupUtilsCheck.removePanel();
+                            popupUtilsCheck.popupUtilsCheck.removePanel();
 
                             if (btcData < data[i].cost) {
                                 const popupUtilsPurchaseFailed = popuputils.render(app);
@@ -196,17 +192,12 @@ const marketutils = (() => {
                             await items.setUserItems(key, i);
                             console.log('user items:', await items.getUserItems(itemData));
                         });
-                        const cancel = document.createElement('button');
-                        cancel.textContent = languageData.market.cancel;
-                        cancel.addEventListener('click', () => {
+                        popupUtilsCheck.cancel.textContent = languageData.market.cancel;
+                        popupUtilsCheck.cancel.addEventListener('click', () => {
                             popupUtils.removePanel();
-                            popupUtilsCheck.removePanel();
+                            popupUtilsCheck.popupUtilsCheck.removePanel();
                         });
-
-                        confirmCancel.appendChild(confirm);
-                        confirmCancel.appendChild(cancel);
-
-                        popupUtilsCheck.popupPanel.appendChild(confirmCancel);
+                        popupUtilsCheck.render();
                     });
                     popupUtils.popupPanel.appendChild(popupContent);
                     popupUtils.popupPanel.appendChild(confirmPurchase);
@@ -361,52 +352,17 @@ const equiputils = (() => {
         const equip = document.createElement('div');
         equip.className = 'equip';
 
-        //     const userEquip = document.createElement('div');
-        //     userEquip.className = 'user-equip';
-        //     userEquip.addEventListener('click', async () => {
-        //         const popupUtilsUserItems = popuputils.render(app);
-        //         popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
-        //         items.parse(await items.getUserItems(itemData), (userkey, userData) => {
-        //             for (let i = 0; i < userData.length; i++) {
-        //                 if (equipKey === userkey) {
-        //                     console.log(userData[i].name);
-        //                     const userItems = document.createElement('div');
-        //                     userItems.textContent = userData[i].name;
-        //                     userItems.addEventListener('click', () => {
-        //                         items.parse(itemData, async (key, data) => {
-        //                             for (let j = 0; j < data.length; j++) {
-        //                                 if (data[j].name === userData[i].name) {
-        //                                     items.setEquipData(Object.keys(itemData).indexOf(key), j);
-        //                                     while (equip.firstChild) {
-        //                                         equip.removeChild(equip.firstChild);
-        //                                     }
-        //                                     setTimeout(async () => {
-        //                                         await updateEquip();
-        //                                     });
-        //                                 }
-        //                             }
-        //                         });
-        //                     });
-        //                     popupUtilsUserItems.popupPanel.appendChild(userItems);
-        //                 }
-        //             }
-        //         });
-        //     });
-        //     const userEquipType = document.createElement('div');
-        //     userEquipType.className = 'user-equip-type';
-        //     userEquipType.textContent = languageData.itemskey[equipKey];
-        //     for (let i = 0; i < equipData.length; i++) {
-        //         userEquip.style.backgroundImage = `url(${equipData[i].img})`;
-        //         userEquipType.textContent = equipData[i].name;
-        //     }
-
-        //     userEquip.appendChild(userEquipType);
-
-        //     equip.appendChild(userEquip);
-        // });
         await updateEquip();
 
         async function updateEquip() {
+            function update() {
+                while (equip.firstChild) {
+                    equip.removeChild(equip.firstChild);
+                }
+                setTimeout(async () => {
+                    await updateEquip();
+                });
+            }
             items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
                 const userEquipContainer = document.createElement('div');
                 userEquipContainer.className = 'user-equip-container';
@@ -419,37 +375,82 @@ const equiputils = (() => {
                     unEquip.className = 'un-equip';
                     unEquip.addEventListener('click', () => {
                         items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
-                        while (equip.firstChild) {
-                            equip.removeChild(equip.firstChild);
-                        }
-                        setTimeout(async () => {
-                            await updateEquip();
-                        });
+                        update();
+                        popupUtilsUserItems.removePanel();
                     });
                     popupUtilsUserItems.popupPanel.appendChild(unEquip);
                     items.parse(await items.getUserItems(itemData), (userkey, userData) => {
                         for (let i = 0; i < userData.length; i++) {
                             if (equipKey === userkey) {
-                                console.log(userData[i].name);
                                 const userItemsContainer = document.createElement('div');
                                 userItemsContainer.className = 'user-items-container';
                                 const userItemsImage = document.createElement('div');
                                 userItemsImage.className = 'user-items-img';
+                                for (let j = 0; j < equipData.length; j++) {
+                                    if (userData[i].name === equipData[j].name) {
+                                        userItemsImage.style.border = '1px solid var(--color-yellow)';
+                                    }
+                                }
                                 userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
-                                userItemsImage.addEventListener('click', () => {
+                                let timer;
+                                let isLongPress = false;
+                                const longPressDuration = 500;
+                                userItemsImage.addEventListener('pointerdown', () => {
+                                    isLongPress = false;
+                                    timer = setTimeout(() => {
+                                        isLongPress = true;
+                                        const popupUtilsCheck = popuputils.renderCheck(app);
+                                        popupUtilsCheck.popupUtilsCheck.popupPanel.textContent = languageData.equip['sell-question'] + languageData.equip['question-mark'];
+                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'];
+                                        popupUtilsCheck.confirm.addEventListener('click', async () => {
+                                            popupUtilsUserItems.removePanel();
+                                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                                            items.parse(itemData, async (key, data) => {
+                                                for (let j = 0; j < data.length; j++) {
+                                                    if (userData[i].name === data[j].name) {
+                                                        console.log(userData[j].name, i);
+                                                        await items.removeUserItems(key, i);
+
+                                                        // Remove unowned equipped items
+                                                        let array = [];
+                                                        items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
+                                                            for (let f = 0; f < newUserData.length; f++) {
+                                                                array.push(newUserData[f].name);
+                                                            }
+                                                        });
+                                                        console.log(array, userData[i].name);
+                                                        if (!array.includes(userData[i].name)) {
+                                                            // if(userData[i].name === )
+                                                            await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
+                                                            update();
+                                                        }
+                                                        console.log(equipData);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                        popupUtilsCheck.cancel.textContent = languageData.equip['sell-cancel'];
+                                        popupUtilsCheck.cancel.addEventListener('click', async () => {
+                                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                                        });
+                                        popupUtilsCheck.render();
+                                    }, longPressDuration);
+                                });
+                                userItemsImage.addEventListener('pointerup', () => {
+                                    clearTimeout(timer);
+                                    if (isLongPress) return;
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (data[j].name === userData[i].name) {
                                                 items.setEquipData(Object.keys(itemData).indexOf(key), j);
-                                                while (equip.firstChild) {
-                                                    equip.removeChild(equip.firstChild);
-                                                }
-                                                setTimeout(async () => {
-                                                    await updateEquip();
-                                                });
+                                                update();
+                                                popupUtilsUserItems.removePanel();
                                             }
                                         }
                                     });
+                                });
+                                userItemsImage.addEventListener('pointercancel', () => {
+                                    clearTimeout(timer);
                                 });
                                 const userItemsName = document.createElement('div');
                                 userItemsName.className = 'user-items-name';
@@ -568,8 +569,29 @@ const popuputils = (() => {
             removePanel: removePanel
         }
     }
+    function renderCheck(app) {
+        const popupUtilsCheck = render(app);
+        popupUtilsCheck.popupPanel.classList.add('popup-panel-confirm-check');
+        const confirmCancel = document.createElement('div');
+        confirmCancel.className = 'confirm-cancel';
+        const confirm = document.createElement('button');
+        const cancel = document.createElement('button');
+
+        confirmCancel.appendChild(confirm);
+        confirmCancel.appendChild(cancel);
+        return {
+            popupUtilsCheck: popupUtilsCheck,
+            confirmCancel: confirmCancel,
+            confirm: confirm,
+            cancel: cancel,
+            render: () => {
+                popupUtilsCheck.popupPanel.appendChild(confirmCancel);
+            }
+        }
+    }
     return {
-        render: render
+        render: render,
+        renderCheck: renderCheck
     }
 })();
 

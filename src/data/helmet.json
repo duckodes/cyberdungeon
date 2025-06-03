@@ -31,6 +31,38 @@
                     "value": 1
                 }
             ]
+        },
+        {
+            "name": "Standard Helmet2",
+            "cost": 100,
+            "store": true,
+            "img": "./src/image/helmet/StandardHelmet.png",
+            "attr": [
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                },
+                {
+                    "type": "def",
+                    "value": 1
+                }
+            ]
         }
     ]
 }
