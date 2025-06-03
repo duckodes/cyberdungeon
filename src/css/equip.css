@@ -17,7 +17,10 @@
 .app>.content>.equip>.user-equip-container {
     width: 100px;
     height: 200px;
-    margin: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .app>.content>.equip>.user-equip-container>.user-equip-img {
