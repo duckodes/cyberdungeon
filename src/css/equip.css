@@ -1,0 +1,128 @@
+.app>.content>.equip {
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    user-select: none;
+    -moz-user-select: none;
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+    background-image: url(../image/human/human.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.app>.content>.equip>.user-equip-container {
+    width: 100px;
+    height: 200px;
+    margin: 10px;
+}
+
+.app>.content>.equip>.user-equip-container>.user-equip-img {
+    color: var(--color-high-light-darkness);
+    background-color: #ffffff20;
+    border: 1px solid var(--color-high-light);
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: grid;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.app>.content>.equip>.user-equip-container>.user-equip-img::before {
+    content: '';
+    width: 100px;
+    height: 100px;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    background: linear-gradient(45deg, #e0e0e050 25%, transparent 25%, transparent 50%, #e0e0e050 50%, #e0e0e050 75%, transparent 75%, transparent);
+    background-size: 5px 5px;
+}
+
+.app>.content>.equip>.user-equip-container>.user-equip-type {
+    color: var(--color-high-light-darkness);
+    text-align: center;
+    width: 100px;
+    font-size: xx-small;
+}
+
+.app>.content>.equip>.user-equip-container>.user-equip-img:hover {
+    background-color: var(--color-high-light-darkness);
+    border: 1px solid var(--color-high-light-darkness);
+}
+
+.app>.content>.equip>.user-equip-container>.user-equip-img:active {
+    background-color: var(--color-high-light-darkness-max);
+}
+
+.popup-base>.popup-panel-user-items {
+    color: var(--color-high-light-darkness);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    overflow: auto;
+    font-family: var(--font-main), var(--font-5), var(--font-4);
+}
+
+.popup-base>.popup-panel-user-items>.user-items-container {
+    width: 100px;
+    height: fit-content;
+    margin: 10px;
+}
+
+.popup-base>.popup-panel-user-items>.user-items-container>.user-items-name {
+    width: 100%;
+    font-size: xx-small;
+    text-align: center;
+}
+
+.popup-base>.popup-panel-user-items>.user-items-container>.user-items-img {
+    background-color: #ffffff20;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: grid;
+}
+
+.popup-base>.popup-panel-user-items>.user-items-container>.user-items-img::before {
+    content: '';
+    width: 100px;
+    height: 100px;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    background: linear-gradient(45deg, #e0e0e020 25%, transparent 25%, transparent 50%, #e0e0e020 50%, #e0e0e020 75%, transparent 75%, transparent);
+    background-size: 5px 5px;
+}
+
+.popup-base>.popup-panel-user-items>.un-equip {
+    background-color: #ffffff20;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: grid;
+}
+
+.popup-base>.popup-panel-user-items>.un-equip::before {
+    content: '';
+    width: 100px;
+    height: 100px;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    background: linear-gradient(45deg, #e0e0e020 25%, #e0e0e050 25%, #e0e0e050 50%, #e0e0e020 50%, #e0e0e020 75%, #e0e0e050 75%, #e0e0e050);
+    background-size: 5px 5px;
+}

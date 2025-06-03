@@ -10,7 +10,7 @@ import cssUtils from "./css.utils.js";
 import items from "./items.js";
 
 const appUtils = (() => {
-    function render(languageData, itemData) {
+    async function render(languageData, itemData) {
         const app = document.createElement('div');
         app.className = 'app';
 
@@ -31,8 +31,10 @@ const appUtils = (() => {
 
         const marketUtils = marketutils.render(app, languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
+        const equipUtils = await equiputils.render(app, languageData, itemData);
         content.appendChild(marketUtils.market);
         content.appendChild(settingsUtils.settings);
+        content.appendChild(equipUtils.equip);
 
         const footerUtils = footerutils.render(content);
         footer.appendChild(footerUtils.footerContainer);
@@ -66,7 +68,7 @@ const appUtils = (() => {
         document.title = languageData.appname;
         const itemData = await items.get(languageData);
         console.log(itemData);
-        const appUtilsRender = render(languageData, itemData);
+        const appUtilsRender = await render(languageData, itemData);
         authData.init(appUtilsRender);
         audioSource.render(appUtilsRender, languageData);
     }
@@ -125,9 +127,9 @@ const marketutils = (() => {
         market.className = 'market';
 
         items.parse(itemData, (key, data) => {
-            const itemskey = document.createElement('div');
-            itemskey.className = 'items-key';
-            itemskey.textContent = languageData.itemskey[key];
+            const itemsKey = document.createElement('div');
+            itemsKey.className = 'items-key';
+            itemsKey.textContent = languageData.itemskey[key];
             const itemsEntire = document.createElement('div');
             itemsEntire.className = 'items-entire';
             for (let i = 0; i < data.length; i++) {
@@ -216,9 +218,9 @@ const marketutils = (() => {
 
                 itemsEntire.appendChild(item);
 
-                itemskey.appendChild(itemsEntire);
+                itemsKey.appendChild(itemsEntire);
 
-                market.appendChild(itemskey);
+                market.appendChild(itemsKey);
             }
         });
         return {
@@ -354,6 +356,137 @@ const settingsutils = (() => {
     }
 })();
 
+const equiputils = (() => {
+    async function render(app, languageData, itemData) {
+        const equip = document.createElement('div');
+        equip.className = 'equip';
+
+        //     const userEquip = document.createElement('div');
+        //     userEquip.className = 'user-equip';
+        //     userEquip.addEventListener('click', async () => {
+        //         const popupUtilsUserItems = popuputils.render(app);
+        //         popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
+        //         items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+        //             for (let i = 0; i < userData.length; i++) {
+        //                 if (equipKey === userkey) {
+        //                     console.log(userData[i].name);
+        //                     const userItems = document.createElement('div');
+        //                     userItems.textContent = userData[i].name;
+        //                     userItems.addEventListener('click', () => {
+        //                         items.parse(itemData, async (key, data) => {
+        //                             for (let j = 0; j < data.length; j++) {
+        //                                 if (data[j].name === userData[i].name) {
+        //                                     items.setEquipData(Object.keys(itemData).indexOf(key), j);
+        //                                     while (equip.firstChild) {
+        //                                         equip.removeChild(equip.firstChild);
+        //                                     }
+        //                                     setTimeout(async () => {
+        //                                         await updateEquip();
+        //                                     });
+        //                                 }
+        //                             }
+        //                         });
+        //                     });
+        //                     popupUtilsUserItems.popupPanel.appendChild(userItems);
+        //                 }
+        //             }
+        //         });
+        //     });
+        //     const userEquipType = document.createElement('div');
+        //     userEquipType.className = 'user-equip-type';
+        //     userEquipType.textContent = languageData.itemskey[equipKey];
+        //     for (let i = 0; i < equipData.length; i++) {
+        //         userEquip.style.backgroundImage = `url(${equipData[i].img})`;
+        //         userEquipType.textContent = equipData[i].name;
+        //     }
+
+        //     userEquip.appendChild(userEquipType);
+
+        //     equip.appendChild(userEquip);
+        // });
+        await updateEquip();
+
+        async function updateEquip() {
+            items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
+                const userEquipContainer = document.createElement('div');
+                userEquipContainer.className = 'user-equip-container';
+                const userEquipImage = document.createElement('div');
+                userEquipImage.className = 'user-equip-img';
+                userEquipImage.addEventListener('click', async () => {
+                    const popupUtilsUserItems = popuputils.render(app);
+                    popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
+                    const unEquip = document.createElement('div');
+                    unEquip.className = 'un-equip';
+                    unEquip.addEventListener('click', () => {
+                        items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
+                        while (equip.firstChild) {
+                            equip.removeChild(equip.firstChild);
+                        }
+                        setTimeout(async () => {
+                            await updateEquip();
+                        });
+                    });
+                    popupUtilsUserItems.popupPanel.appendChild(unEquip);
+                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+                        for (let i = 0; i < userData.length; i++) {
+                            if (equipKey === userkey) {
+                                console.log(userData[i].name);
+                                const userItemsContainer = document.createElement('div');
+                                userItemsContainer.className = 'user-items-container';
+                                const userItemsImage = document.createElement('div');
+                                userItemsImage.className = 'user-items-img';
+                                userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
+                                userItemsImage.addEventListener('click', () => {
+                                    items.parse(itemData, async (key, data) => {
+                                        for (let j = 0; j < data.length; j++) {
+                                            if (data[j].name === userData[i].name) {
+                                                items.setEquipData(Object.keys(itemData).indexOf(key), j);
+                                                while (equip.firstChild) {
+                                                    equip.removeChild(equip.firstChild);
+                                                }
+                                                setTimeout(async () => {
+                                                    await updateEquip();
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
+                                const userItemsName = document.createElement('div');
+                                userItemsName.className = 'user-items-name';
+                                userItemsName.textContent = userData[i].name;
+
+                                userItemsContainer.appendChild(userItemsName);
+                                userItemsContainer.appendChild(userItemsImage);
+
+                                popupUtilsUserItems.popupPanel.appendChild(userItemsContainer);
+                            }
+                        }
+                    });
+                });
+                const userEquipType = document.createElement('div');
+                userEquipType.className = 'user-equip-type';
+                userEquipType.textContent = languageData.itemskey[equipKey];
+                for (let i = 0; i < equipData.length; i++) {
+                    userEquipImage.style.backgroundImage = `url(${equipData[i].img})`;
+                    userEquipType.textContent = equipData[i].name;
+                }
+
+                userEquipContainer.appendChild(userEquipType);
+                userEquipContainer.appendChild(userEquipImage);
+
+                equip.appendChild(userEquipContainer);
+            });
+        }
+
+        return {
+            equip: equip
+        }
+    }
+    return {
+        render: render
+    }
+})();
+
 const footerutils = (() => {
     function render(content) {
         const footerContainer = document.createElement('div');
@@ -364,9 +497,9 @@ const footerutils = (() => {
         const selectSettings = document.createElement('div');
         selectSettings.className = 'select-settings';
         selectSettings.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>';
-        const selectUserItems = document.createElement('div');
-        selectUserItems.className = 'select-user-items';
-        selectUserItems.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light-darkness-max)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
+        const selectEquip = document.createElement('div');
+        selectEquip.className = 'select-equip';
+        selectEquip.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light-darkness-max)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
 
         footerContainer.addEventListener('click', (e) => {
             const eTargetIndexMetchContent = content.querySelectorAll(':scope>*')[Array.from(footerContainer.querySelectorAll(':scope>*')).indexOf(e.target)];
@@ -388,11 +521,9 @@ const footerutils = (() => {
 
         footerContainer.appendChild(selectMarket);
         footerContainer.appendChild(selectSettings);
-        footerContainer.appendChild(selectUserItems);
+        footerContainer.appendChild(selectEquip);
         return {
-            footerContainer: footerContainer,
-            selectSettings: selectSettings,
-            selectMarket: selectMarket
+            footerContainer: footerContainer
         }
     }
     return {

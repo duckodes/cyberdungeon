@@ -2,11 +2,11 @@
     width: 100%;
     height: 100%;
     display: none;
+    justify-content: center;
+    flex-wrap: wrap;
     user-select: none;
     -moz-user-select: none;
     font-family: var(--font-main), var(--font-5), var(--font-4);
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
 .app>.content>.market>.items-key {

@@ -42,6 +42,7 @@ const items = (() => {
         }
     }
 
+    // user items
     const userItemDataKey = 'userItemData';
     async function setUserItems(key, data) {
         const currentUserItemData = await authData.getData(userItemDataKey + '/' + key) || [];
@@ -65,11 +66,37 @@ const items = (() => {
         }, {});
     }
 
+    // Equip
+    const equipDataKey = 'equip';
+    async function setEquipData(index, data) {
+        let equipData = await authData.getData(equipDataKey);
+        equipData[index] = data;
+        authData.setData(equipDataKey, equipData);
+    }
+    async function getEquipData(itemData) {
+        const categories = Object.keys(itemData);
+        const result = {};
+        let equipData = await authData.getData(equipDataKey);
+        if (!equipData) {
+            equipData = [-1, -1, -1, -1, -1];
+            authData.setData(equipDataKey, equipData);
+        }
+
+        categories.forEach((category, index) => {
+            const equipIndex = equipData[index];
+            result[category] = equipIndex !== -1 ? [itemData[category][equipIndex]] : [];
+        });
+
+        return result;
+    }
+
     return {
         get: get,
         parse: parse,
         setUserItems: setUserItems,
-        getUserItems: getUserItems
+        getUserItems: getUserItems,
+        setEquipData: setEquipData,
+        getEquipData: getEquipData
     }
 })();
 
