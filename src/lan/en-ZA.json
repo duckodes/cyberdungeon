@@ -75,7 +75,7 @@
         "logout": "Logout"
     },
     "equip": {
-        "sell-question": "Would you like to sell this equipment?",
+        "sell-question": "Would you like to sell this equipment",
         "question-mark": "?",
         "sell-confirm": "Sell",
         "sell-cancel": "Never mind"

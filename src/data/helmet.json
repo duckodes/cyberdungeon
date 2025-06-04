@@ -34,7 +34,7 @@
         },
         {
             "name": "Standard Helmet2",
-            "cost": 100,
+            "cost": 200,
             "store": true,
             "img": "./src/image/helmet/StandardHelmet.png",
             "attr": [

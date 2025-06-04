@@ -74,8 +74,8 @@
 }
 
 .popup-base>.popup-panel-confirm-check {
-    color: var(--color-red);
-    font-family: var(--font-2);
+    color: var(--color-high-light);
+    font-family: var(--font-2), var(--font-main), var(--font-5), var(--font-4);
     font-size: 20px;
     display: flex;
     align-items: center;

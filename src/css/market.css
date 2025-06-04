@@ -141,6 +141,7 @@
     align-items: center;
     justify-content: center;
     height: 35%;
+    padding: 20px;
 }
 
 .popup-base>.popup-panel-purchase-success {
@@ -150,4 +151,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }

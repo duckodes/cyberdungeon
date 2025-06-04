@@ -163,10 +163,10 @@ const marketutils = (() => {
                     const confirmPurchase = document.createElement('button');
                     confirmPurchase.textContent = languageData.market.buy;
                     confirmPurchase.addEventListener('click', async () => {
-                        const btcData = await authData.getData('btc');
+                        const btcData = await authData.getBtc();
 
                         const popupUtilsCheck = popuputils.renderCheck(app);
-                        popupUtilsCheck.popupUtilsCheck.popupPanel.textContent = `${btcData} - ${data[i].cost} = ${btcData - data[i].cost} ${languageData.wallet.bitcoin}`;
+                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
                         popupUtilsCheck.confirm.textContent = languageData.market.confirm;
                         popupUtilsCheck.confirm.addEventListener('click', async () => {
                             popupUtils.removePanel();
@@ -188,7 +188,7 @@ const marketutils = (() => {
                             setTimeout(() => {
                                 popupUtilsPurchaseSuccess.removePanel();
                             }, 1000);
-                            authData.setData('btc', btcData - data[i].cost);
+                            authData.setBtc(btcData - data[i].cost);
                             await items.setUserItems(key, i);
                             console.log('user items:', await items.getUserItems(itemData));
                         });
@@ -373,6 +373,10 @@ const equiputils = (() => {
                     popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
                     const unEquip = document.createElement('div');
                     unEquip.className = 'un-equip';
+                    if (equipData.length === 0) {
+                        unEquip.classList.add('border-red');
+                    }
+                    unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="#DD2E44" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
                     unEquip.addEventListener('click', () => {
                         items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
                         update();
@@ -388,7 +392,7 @@ const equiputils = (() => {
                                 userItemsImage.className = 'user-items-img';
                                 for (let j = 0; j < equipData.length; j++) {
                                     if (userData[i].name === equipData[j].name) {
-                                        userItemsImage.style.border = '1px solid var(--color-yellow)';
+                                        userItemsImage.classList.add('border-red');
                                     }
                                 }
                                 userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
@@ -397,34 +401,36 @@ const equiputils = (() => {
                                 const longPressDuration = 500;
                                 userItemsImage.addEventListener('pointerdown', () => {
                                     isLongPress = false;
-                                    timer = setTimeout(() => {
+                                    timer = setTimeout(async () => {
                                         isLongPress = true;
                                         const popupUtilsCheck = popuputils.renderCheck(app);
-                                        popupUtilsCheck.popupUtilsCheck.popupPanel.textContent = languageData.equip['sell-question'] + languageData.equip['question-mark'];
-                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'];
+                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = languageData.equip['sell-question'] + languageData.equip['question-mark'] + '<span class="text-red">' + userData[i].name + '</span>';
+                                        const sellBtc = userData[i].cost * 0.7;
+                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'] + ` + ${sellBtc} = ${await authData.getBtc() + sellBtc}`;
                                         popupUtilsCheck.confirm.addEventListener('click', async () => {
                                             popupUtilsUserItems.removePanel();
                                             popupUtilsCheck.popupUtilsCheck.removePanel();
                                             items.parse(itemData, async (key, data) => {
                                                 for (let j = 0; j < data.length; j++) {
                                                     if (userData[i].name === data[j].name) {
-                                                        console.log(userData[j].name, i);
                                                         await items.removeUserItems(key, i);
 
                                                         // Remove unowned equipped items
-                                                        let array = [];
+                                                        let itemDataNames = [];
                                                         items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
                                                             for (let f = 0; f < newUserData.length; f++) {
-                                                                array.push(newUserData[f].name);
+                                                                itemDataNames.push(newUserData[f].name);
                                                             }
                                                         });
-                                                        console.log(array, userData[i].name);
-                                                        if (!array.includes(userData[i].name)) {
-                                                            // if(userData[i].name === )
-                                                            await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
-                                                            update();
+                                                        // userData[i].name: sell item
+                                                        authData.setBtc(await authData.getBtc() + sellBtc);
+                                                        for (let f = 0; f < equipData.length; f++) {
+                                                            console.log(itemDataNames, userData[i].name, equipData[f].name);
+                                                            if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
+                                                                await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
+                                                                update();
+                                                            }
                                                         }
-                                                        console.log(equipData);
                                                     }
                                                 }
                                             });
@@ -455,6 +461,11 @@ const equiputils = (() => {
                                 const userItemsName = document.createElement('div');
                                 userItemsName.className = 'user-items-name';
                                 userItemsName.textContent = userData[i].name;
+                                for (let j = 0; j < equipData.length; j++) {
+                                    if (userData[i].name === equipData[j].name) {
+                                        userItemsName.classList.add('text-red');
+                                    }
+                                }
 
                                 userItemsContainer.appendChild(userItemsName);
                                 userItemsContainer.appendChild(userItemsImage);
