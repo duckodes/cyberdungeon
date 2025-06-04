@@ -1,4 +1,6 @@
 import AudioUtils from "./audio.utils.js";
+import authData from "./auth.data.js";
+import math from "./math.js";
 
 const audioSource = (() => {
     const audioUtils = new AudioUtils();
@@ -38,7 +40,7 @@ const audioSource = (() => {
     function playSoundEffect(name) {
         audioUtils.playSoundEffect(name);
     }
-    function render(appUtilsRender, languageData) {
+    async function render(appUtilsRender, languageData) {
         const createAudioInput = (id, value, text) => {
             const input = document.createElement('input');
             input.className = 'audio-slider';
@@ -61,9 +63,23 @@ const audioSource = (() => {
                 div: div
             };
         }
-        const audioMS = createAudioInput('audio-ms', '1', languageData.audio.master);
-        const audioBG = createAudioInput('audio-bgm', '0.25', languageData.audio.bgm);
-        const audioFX = createAudioInput('audio-fx', '0.5', languageData.audio.fx);
+        const audioDataKey = 'audio';
+        const defaultAudioData = {
+            MS: 1,
+            BG: 0.25,
+            FX: 0.5
+        }
+        let audioData = await authData.getData(audioDataKey);
+        if (!audioData) {
+            audioData = defaultAudioData;
+            authData.setData(audioDataKey, audioData);
+        }
+        audioUtils.setMasterVolume(audioData.MS);
+        audioUtils.setMusicVolume(audioData.BG);
+        audioUtils.setEffectVolume(audioData.FX);
+        const audioMS = createAudioInput('audio-ms', audioData.MS, languageData.audio.master);
+        const audioBG = createAudioInput('audio-bgm', audioData.BG, languageData.audio.bgm);
+        const audioFX = createAudioInput('audio-fx', audioData.FX, languageData.audio.fx);
         audioMS.input.addEventListener("input", e => {
             audioUtils.setMasterVolume(e.target.value);
             audioMS.div.textContent = parseInt(e.target.value * 100);
@@ -81,6 +97,23 @@ const audioSource = (() => {
         });
         audioFX.input.addEventListener("click", () => {
             audioUtils.playSoundEffect('click1');
+        });
+
+        // data
+        audioMS.input.addEventListener('change', async e => {
+            let audioData = await authData.getData(audioDataKey);
+            audioData.MS = math.truncateDecimal(parseFloat(e.target.value), 2);
+            authData.setData(audioDataKey, audioData);
+        });
+        audioBG.input.addEventListener('change', async e => {
+            let audioData = await authData.getData(audioDataKey);
+            audioData.BG = math.truncateDecimal(parseFloat(e.target.value), 2);
+            authData.setData(audioDataKey, audioData);
+        });
+        audioFX.input.addEventListener('change', async e => {
+            let audioData = await authData.getData(audioDataKey);
+            audioData.FX = math.truncateDecimal(parseFloat(e.target.value), 2);
+            authData.setData(audioDataKey, audioData);
         });
     }
     return {

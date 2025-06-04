@@ -8,6 +8,7 @@ import authSign from "./auth.sign.js";
 import audioSource from "./audio.source.js";
 import cssUtils from "./css.utils.js";
 import items from "./items.js";
+import math from "./math.js";
 
 const appUtils = (() => {
     async function render(languageData, itemData) {
@@ -30,11 +31,11 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navRight);
 
         const marketUtils = marketutils.render(app, languageData, itemData);
-        const settingsUtils = settingsutils.render(app, languageData);
         const equipUtils = await equiputils.render(app, languageData, itemData);
+        const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
-        content.appendChild(settingsUtils.settings);
         content.appendChild(equipUtils.equip);
+        content.appendChild(settingsUtils.settings);
 
         const footerUtils = footerutils.render(content);
         footer.appendChild(footerUtils.footerContainer);
@@ -70,7 +71,7 @@ const appUtils = (() => {
         console.log(itemData);
         const appUtilsRender = await render(languageData, itemData);
         authData.init(appUtilsRender);
-        audioSource.render(appUtilsRender, languageData);
+        await audioSource.render(appUtilsRender, languageData);
     }
     return {
         update: update,
@@ -223,6 +224,160 @@ const marketutils = (() => {
     }
 })();
 
+const equiputils = (() => {
+    async function render(app, languageData, itemData) {
+        const equip = document.createElement('div');
+        equip.className = 'equip';
+
+        await updateEquip();
+
+        async function updateEquip() {
+            function update() {
+                while (equip.firstChild) {
+                    equip.removeChild(equip.firstChild);
+                }
+                setTimeout(async () => {
+                    await updateEquip();
+                });
+            }
+            items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
+                const userEquipContainer = document.createElement('div');
+                userEquipContainer.className = 'user-equip-container';
+                const userEquipImage = document.createElement('div');
+                userEquipImage.className = 'user-equip-img';
+                userEquipImage.addEventListener('click', async () => {
+                    const popupUtilsUserItems = popuputils.render(app);
+                    popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
+                    const unEquip = document.createElement('div');
+                    unEquip.className = 'un-equip';
+                    if (equipData.length === 0) {
+                        unEquip.classList.add('border-red');
+                    }
+                    unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="#DD2E44" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
+                    unEquip.addEventListener('click', () => {
+                        items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
+                        update();
+                        popupUtilsUserItems.removePanel();
+                    });
+                    popupUtilsUserItems.popupPanel.appendChild(unEquip);
+                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+                        for (let i = 0; i < userData.length; i++) {
+                            if (equipKey === userkey) {
+                                const userItemsContainer = document.createElement('div');
+                                userItemsContainer.className = 'user-items-container';
+                                const userItemsImage = document.createElement('div');
+                                userItemsImage.className = 'user-items-img';
+                                for (let j = 0; j < equipData.length; j++) {
+                                    if (userData[i].name === equipData[j].name) {
+                                        userItemsImage.classList.add('border-red');
+                                    }
+                                }
+                                userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
+                                let timer;
+                                let isLongPress = false;
+                                const longPressDuration = 500;
+                                userItemsImage.addEventListener('pointerdown', () => {
+                                    isLongPress = false;
+                                    timer = setTimeout(async () => {
+                                        isLongPress = true;
+                                        const sellBtc = userData[i].cost * 0.7;
+                                        const btcData = await authData.getBtc();
+
+                                        const popupUtilsCheck = popuputils.renderCheck(app);
+                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = languageData.equip['sell-question'] + languageData.equip['question-mark'] + '<span class="text-red">' + userData[i].name + '</span>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'];
+                                        popupUtilsCheck.confirm.addEventListener('click', async () => {
+                                            popupUtilsUserItems.removePanel();
+                                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                                            items.parse(itemData, async (key, data) => {
+                                                for (let j = 0; j < data.length; j++) {
+                                                    if (userData[i].name === data[j].name) {
+                                                        await items.removeUserItems(key, i);
+
+                                                        // Remove unowned equipped items
+                                                        let itemDataNames = [];
+                                                        items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
+                                                            for (let f = 0; f < newUserData.length; f++) {
+                                                                itemDataNames.push(newUserData[f].name);
+                                                            }
+                                                        });
+                                                        // userData[i].name: sell item
+                                                        authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
+                                                        for (let f = 0; f < equipData.length; f++) {
+                                                            console.log(itemDataNames, userData[i].name, equipData[f].name);
+                                                            if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
+                                                                await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
+                                                                update();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        });
+                                        popupUtilsCheck.cancel.textContent = languageData.equip['sell-cancel'];
+                                        popupUtilsCheck.cancel.addEventListener('click', async () => {
+                                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                                        });
+                                        popupUtilsCheck.render();
+                                    }, longPressDuration);
+                                });
+                                userItemsImage.addEventListener('pointerup', () => {
+                                    clearTimeout(timer);
+                                    if (isLongPress) return;
+                                    items.parse(itemData, async (key, data) => {
+                                        for (let j = 0; j < data.length; j++) {
+                                            if (data[j].name === userData[i].name) {
+                                                items.setEquipData(Object.keys(itemData).indexOf(key), j);
+                                                update();
+                                                popupUtilsUserItems.removePanel();
+                                            }
+                                        }
+                                    });
+                                });
+                                userItemsImage.addEventListener('pointercancel', () => {
+                                    clearTimeout(timer);
+                                });
+                                const userItemsName = document.createElement('div');
+                                userItemsName.className = 'user-items-name';
+                                userItemsName.textContent = userData[i].name;
+                                for (let j = 0; j < equipData.length; j++) {
+                                    if (userData[i].name === equipData[j].name) {
+                                        userItemsName.classList.add('text-red');
+                                    }
+                                }
+
+                                userItemsContainer.appendChild(userItemsName);
+                                userItemsContainer.appendChild(userItemsImage);
+
+                                popupUtilsUserItems.popupPanel.appendChild(userItemsContainer);
+                            }
+                        }
+                    });
+                });
+                const userEquipType = document.createElement('div');
+                userEquipType.className = 'user-equip-type';
+                userEquipType.textContent = languageData.itemskey[equipKey];
+                for (let i = 0; i < equipData.length; i++) {
+                    userEquipImage.style.backgroundImage = `url(${equipData[i].img})`;
+                    userEquipType.textContent = equipData[i].name;
+                }
+
+                userEquipContainer.appendChild(userEquipType);
+                userEquipContainer.appendChild(userEquipImage);
+
+                equip.appendChild(userEquipContainer);
+            });
+        }
+
+        return {
+            equip: equip
+        }
+    }
+    return {
+        render: render
+    }
+})();
+
 const settingsutils = (() => {
     /**
     * @param {HTMLDivElement} app
@@ -347,158 +502,6 @@ const settingsutils = (() => {
     }
 })();
 
-const equiputils = (() => {
-    async function render(app, languageData, itemData) {
-        const equip = document.createElement('div');
-        equip.className = 'equip';
-
-        await updateEquip();
-
-        async function updateEquip() {
-            function update() {
-                while (equip.firstChild) {
-                    equip.removeChild(equip.firstChild);
-                }
-                setTimeout(async () => {
-                    await updateEquip();
-                });
-            }
-            items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
-                const userEquipContainer = document.createElement('div');
-                userEquipContainer.className = 'user-equip-container';
-                const userEquipImage = document.createElement('div');
-                userEquipImage.className = 'user-equip-img';
-                userEquipImage.addEventListener('click', async () => {
-                    const popupUtilsUserItems = popuputils.render(app);
-                    popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
-                    const unEquip = document.createElement('div');
-                    unEquip.className = 'un-equip';
-                    if (equipData.length === 0) {
-                        unEquip.classList.add('border-red');
-                    }
-                    unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="#DD2E44" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
-                    unEquip.addEventListener('click', () => {
-                        items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
-                        update();
-                        popupUtilsUserItems.removePanel();
-                    });
-                    popupUtilsUserItems.popupPanel.appendChild(unEquip);
-                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
-                        for (let i = 0; i < userData.length; i++) {
-                            if (equipKey === userkey) {
-                                const userItemsContainer = document.createElement('div');
-                                userItemsContainer.className = 'user-items-container';
-                                const userItemsImage = document.createElement('div');
-                                userItemsImage.className = 'user-items-img';
-                                for (let j = 0; j < equipData.length; j++) {
-                                    if (userData[i].name === equipData[j].name) {
-                                        userItemsImage.classList.add('border-red');
-                                    }
-                                }
-                                userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
-                                let timer;
-                                let isLongPress = false;
-                                const longPressDuration = 500;
-                                userItemsImage.addEventListener('pointerdown', () => {
-                                    isLongPress = false;
-                                    timer = setTimeout(async () => {
-                                        isLongPress = true;
-                                        const popupUtilsCheck = popuputils.renderCheck(app);
-                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = languageData.equip['sell-question'] + languageData.equip['question-mark'] + '<span class="text-red">' + userData[i].name + '</span>';
-                                        const sellBtc = userData[i].cost * 0.7;
-                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'] + ` + ${sellBtc} = ${await authData.getBtc() + sellBtc}`;
-                                        popupUtilsCheck.confirm.addEventListener('click', async () => {
-                                            popupUtilsUserItems.removePanel();
-                                            popupUtilsCheck.popupUtilsCheck.removePanel();
-                                            items.parse(itemData, async (key, data) => {
-                                                for (let j = 0; j < data.length; j++) {
-                                                    if (userData[i].name === data[j].name) {
-                                                        await items.removeUserItems(key, i);
-
-                                                        // Remove unowned equipped items
-                                                        let itemDataNames = [];
-                                                        items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
-                                                            for (let f = 0; f < newUserData.length; f++) {
-                                                                itemDataNames.push(newUserData[f].name);
-                                                            }
-                                                        });
-                                                        // userData[i].name: sell item
-                                                        authData.setBtc(await authData.getBtc() + sellBtc);
-                                                        for (let f = 0; f < equipData.length; f++) {
-                                                            console.log(itemDataNames, userData[i].name, equipData[f].name);
-                                                            if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
-                                                                await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
-                                                                update();
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                        });
-                                        popupUtilsCheck.cancel.textContent = languageData.equip['sell-cancel'];
-                                        popupUtilsCheck.cancel.addEventListener('click', async () => {
-                                            popupUtilsCheck.popupUtilsCheck.removePanel();
-                                        });
-                                        popupUtilsCheck.render();
-                                    }, longPressDuration);
-                                });
-                                userItemsImage.addEventListener('pointerup', () => {
-                                    clearTimeout(timer);
-                                    if (isLongPress) return;
-                                    items.parse(itemData, async (key, data) => {
-                                        for (let j = 0; j < data.length; j++) {
-                                            if (data[j].name === userData[i].name) {
-                                                items.setEquipData(Object.keys(itemData).indexOf(key), j);
-                                                update();
-                                                popupUtilsUserItems.removePanel();
-                                            }
-                                        }
-                                    });
-                                });
-                                userItemsImage.addEventListener('pointercancel', () => {
-                                    clearTimeout(timer);
-                                });
-                                const userItemsName = document.createElement('div');
-                                userItemsName.className = 'user-items-name';
-                                userItemsName.textContent = userData[i].name;
-                                for (let j = 0; j < equipData.length; j++) {
-                                    if (userData[i].name === equipData[j].name) {
-                                        userItemsName.classList.add('text-red');
-                                    }
-                                }
-
-                                userItemsContainer.appendChild(userItemsName);
-                                userItemsContainer.appendChild(userItemsImage);
-
-                                popupUtilsUserItems.popupPanel.appendChild(userItemsContainer);
-                            }
-                        }
-                    });
-                });
-                const userEquipType = document.createElement('div');
-                userEquipType.className = 'user-equip-type';
-                userEquipType.textContent = languageData.itemskey[equipKey];
-                for (let i = 0; i < equipData.length; i++) {
-                    userEquipImage.style.backgroundImage = `url(${equipData[i].img})`;
-                    userEquipType.textContent = equipData[i].name;
-                }
-
-                userEquipContainer.appendChild(userEquipType);
-                userEquipContainer.appendChild(userEquipImage);
-
-                equip.appendChild(userEquipContainer);
-            });
-        }
-
-        return {
-            equip: equip
-        }
-    }
-    return {
-        render: render
-    }
-})();
-
 const footerutils = (() => {
     function render(content) {
         const footerContainer = document.createElement('div');
@@ -506,12 +509,12 @@ const footerutils = (() => {
         const selectMarket = document.createElement('div');
         selectMarket.className = 'select-market';
         selectMarket.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16" fill="var(--color-high-light-darkness-max)"><path fill-rule="evenodd" d="M11.5 14c2.49 0 4.5-1 4.5-2.5V2c0-1-2-2-4.5-2S7 1 7 2v3.5c1.17.49 2.17 1.31 2.88 2.35c.49.096 1.03.149 1.62.149c1.31 0 2.4-.261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .235-.187.6-.802.936c-.596.325-1.51.564-2.7.564q-.357 0-.68-.027q.12.495.16 1.01q.253.014.52.014c1.31 0 2.4-.261 3.18-.686a4 4 0 0 0 .323-.198v1.38c0 .236-.149.586-.791.932c-.632.34-1.58.568-2.71.568q-.345 0-.668-.028a6.4 6.4 0 0 1-.309.974q.472.053.976.053zm2.7-7.56c.615-.336.802-.701.802-.936v-1.38q-.155.106-.323.198c-.778.425-1.87.686-3.18.686s-2.4-.261-3.18-.686a4 4 0 0 1-.323-.198v1.38c0 .235.187.6.802.935c.596.325 1.51.564 2.7.564s2.1-.239 2.7-.564zM8 2.5c0-.288.125-.565.358-.734c.127-.092.265-.184.374-.234c.273-.126 1.64-.533 2.77-.533s2.11.227 2.77.533c.124.057.261.146.382.234c.231.167.35.442.35.727v.006c0 .235-.187.6-.802.936c-.596.325-1.51.564-2.7.564s-2.1-.24-2.7-.564C8.187 3.1 8 2.734 8 2.5" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M9 11.5C9 13.99 6.99 16 4.5 16S0 13.99 0 11.5S2.01 7 4.5 7S9 9.01 9 11.5m-1 0C8 13.43 6.43 15 4.5 15S1 13.43 1 11.5S2.57 8 4.5 8S8 9.57 8 11.5" clip-rule="evenodd"></path></svg>';
-        const selectSettings = document.createElement('div');
-        selectSettings.className = 'select-settings';
-        selectSettings.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>';
         const selectEquip = document.createElement('div');
         selectEquip.className = 'select-equip';
         selectEquip.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light-darkness-max)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
+        const selectSettings = document.createElement('div');
+        selectSettings.className = 'select-settings';
+        selectSettings.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>';
 
         footerContainer.addEventListener('click', (e) => {
             const eTargetIndexMetchContent = content.querySelectorAll(':scope>*')[Array.from(footerContainer.querySelectorAll(':scope>*')).indexOf(e.target)];
@@ -532,8 +535,8 @@ const footerutils = (() => {
         });
 
         footerContainer.appendChild(selectMarket);
-        footerContainer.appendChild(selectSettings);
         footerContainer.appendChild(selectEquip);
+        footerContainer.appendChild(selectSettings);
         return {
             footerContainer: footerContainer
         }
