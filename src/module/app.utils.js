@@ -275,7 +275,7 @@ const equiputils = (() => {
                                 userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
                                 let timer;
                                 let isLongPress = false;
-                                const longPressDuration = 500;
+                                const longPressDuration = 200;
                                 userItemsImage.addEventListener('pointerdown', () => {
                                     isLongPress = false;
                                     timer = setTimeout(async () => {
@@ -284,7 +284,7 @@ const equiputils = (() => {
                                         const btcData = await authData.getBtc();
 
                                         const popupUtilsCheck = popuputils.renderCheck(app);
-                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = languageData.equip['sell-question'] + languageData.equip['question-mark'] + '<span class="text-red">' + userData[i].name + '</span>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = '<div>' + languageData.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.equip['sell-question'][1] + languageData.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
                                         popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'];
                                         popupUtilsCheck.confirm.addEventListener('click', async () => {
                                             popupUtilsUserItems.removePanel();

@@ -75,7 +75,10 @@
         "logout": "登出"
     },
     "equip": {
-        "sell-question": "您想要將此裝備賣出嗎",
+        "sell-question": [
+            "您想要將",
+            "賣出嗎"
+        ],
         "question-mark": "？",
         "sell-confirm": "賣出",
         "sell-cancel": "還是算了"

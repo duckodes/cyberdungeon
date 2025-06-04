@@ -26,7 +26,7 @@
             "logout": "ログアウト"
         }
     },
-    "wallet":{
+    "wallet": {
         "bitcoin": "BTC",
         "neuralchips": "N"
     },
@@ -75,7 +75,10 @@
         "logout": "ログアウト"
     },
     "equip": {
-        "sell-question": "この装備を売却しますか",
+        "sell-question": [
+            "あなたは",
+            "売りたいですか"
+        ],
         "question-mark": "？",
         "sell-confirm": "売却",
         "sell-cancel": "やめておく"
