@@ -1,0 +1,91 @@
+{
+    "appname": "가상 던전",
+    "languagetype": {
+        "system": "-",
+        "en-ZA": "남아프리카 영어",
+        "zh-TW": "번체 중국어",
+        "ja": "일본어",
+        "ko": "한국어"
+    },
+    "audio": {
+        "master": "마스터 볼륨",
+        "bgm": "배경음",
+        "fx": "효과음"
+    },
+    "auth": {
+        "placeholder": {
+            "email": "이메일/사용자명..",
+            "password": "비밀번호.."
+        },
+        "switchAction": {
+            "register": "등록",
+            "login": "로그인"
+        },
+        "action": {
+            "create": "생성",
+            "login": "로그인",
+            "logout": "로그아웃"
+        }
+    },
+    "wallet": {
+        "bitcoin": "BTC",
+        "neuralchips": "N"
+    },
+    "itemskey": {
+        "helmet": "헬멧",
+        "jacket": "재킷",
+        "weapon": "무기",
+        "legstrap": "다리 스트랩",
+        "boots": "부츠"
+    },
+    "items": {
+        "helmet": [
+            "일반 헬멧"
+        ],
+        "jacket": [
+            "일반 재킷"
+        ],
+        "weapon": [
+            "일반 단검"
+        ],
+        "legstrap": [
+            "일반 물약"
+        ],
+        "boots": [
+            "일반 전투화"
+        ]
+    },
+    "nav": {
+        "name": "코드명"
+    },
+    "market": {
+        "buy": "구매",
+        "purchase-info": "구매 확인",
+        "question-mark": "？",
+        "confirm": "확인",
+        "cancel": "취소",
+        "purchase-failed": "잔액 부족으로 구매 실패",
+        "purchase-success": [
+            "감사합니다",
+            "암시장 상품 구매"
+        ],
+        "owned": "소유함"
+    },
+    "settings": {
+        "editusername": "사용자명",
+        "logout": "로그아웃"
+    },
+    "equip": {
+        "sell-question": [
+            "",
+            "을 판매하시겠습니까"
+        ],
+        "question-mark": "？",
+        "sell-confirm": "판매",
+        "sell-cancel": "취소"
+    },
+    "prompter": {
+        "timeout": "로그인 시간 초과, 다시 로그인해주세요",
+        "confirm": "화면을 클릭하여 확인"
+    }
+}

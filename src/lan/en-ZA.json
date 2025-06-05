@@ -4,7 +4,8 @@
         "system": "-",
         "en-ZA": "South African English",
         "zh-TW": "Traditional Chinese",
-        "ja": "Japanese"
+        "ja": "Japanese",
+        "ko": "Korean"
     },
     "audio": {
         "master": "Main Volume",
@@ -76,8 +77,8 @@
     },
     "equip": {
         "sell-question": [
-            "Do you want to",
-            "sell it"
+            " Would you like to sell ",
+            ""
         ],
         "question-mark": "?",
         "sell-confirm": "Sell",
