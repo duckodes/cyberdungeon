@@ -1,20 +1,27 @@
-.app>.content>.equip {
+.app>.content>.game {
     width: 100%;
     height: 100%;
     display: none;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
     user-select: none;
     -moz-user-select: none;
     font-family: var(--font-main), var(--font-5), var(--font-4);
+}
+
+.app>.content>.game>.equip {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     background-image: url(../image/human/human.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.app>.content>.equip>.user-equip-container {
+.app>.content>.game>.equip>.user-equip-container {
     width: 100px;
     height: 200px;
     margin-left: 10px;
@@ -23,7 +30,7 @@
     justify-content: flex-end;
 }
 
-.app>.content>.equip>.user-equip-container>.user-equip-img {
+.app>.content>.game>.equip>.user-equip-container>.user-equip-img {
     color: var(--color-high-light-darkness);
     background-color: #ffffff20;
     border: 1px solid var(--color-high-light);
@@ -36,7 +43,7 @@
     background-position: center;
 }
 
-.app>.content>.equip>.user-equip-container>.user-equip-img::before {
+.app>.content>.game>.equip>.user-equip-container>.user-equip-img::before {
     content: '';
     width: 100px;
     height: 100px;
@@ -46,19 +53,19 @@
     background-size: 5px 5px;
 }
 
-.app>.content>.equip>.user-equip-container>.user-equip-type {
+.app>.content>.game>.equip>.user-equip-container>.user-equip-type {
     color: var(--color-high-light-darkness);
     text-align: center;
     width: 100px;
     font-size: xx-small;
 }
 
-.app>.content>.equip>.user-equip-container>.user-equip-img:hover {
+.app>.content>.game>.equip>.user-equip-container>.user-equip-img:hover {
     background-color: var(--color-high-light-darkness);
     border: 1px solid var(--color-high-light-darkness);
 }
 
-.app>.content>.equip>.user-equip-container>.user-equip-img:active {
+.app>.content>.game>.equip>.user-equip-container>.user-equip-img:active {
     background-color: var(--color-high-light-darkness-max);
 }
 
