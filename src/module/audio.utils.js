@@ -13,6 +13,7 @@ class AudioUtils {
         this.musicGainNode = this.context.createGain();
         this.musicGainNode.gain.value = this.musicVolume * this.masterVolume;
         this.musicGainNode.connect(this.context.destination);
+        this.audioCache = new WeakMap();
     }
 
     async loadBackgroundMusic(urls) {
@@ -23,6 +24,8 @@ class AudioUtils {
         const response = await fetch(url);
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
+        const audioObj = {};
+        this.audioCache.set(audioObj, audioBuffer);
         return audioBuffer;
     }
 
