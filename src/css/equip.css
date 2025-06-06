@@ -68,7 +68,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 20px;
+    padding: 10px;
     overflow: auto;
     font-family: var(--font-main), var(--font-5), var(--font-4);
 }
