@@ -37,7 +37,7 @@ const appUtils = (() => {
         content.appendChild(gameUtils.game);
         content.appendChild(settingsUtils.settings);
 
-        const footerUtils = footerutils.render(content);
+        const footerUtils = footerutils.render(content, gameUtils.game);
         footer.appendChild(footerUtils.footerContainer);
 
         document.body.appendChild(app);
@@ -228,6 +228,8 @@ const gameutils = (() => {
     async function render(app, languageData, itemData) {
         const game = document.createElement('div');
         game.className = 'game';
+        const openProjects = document.createElement('div');
+        openProjects.className = 'open-projects';
         const equip = document.createElement('div');
         equip.className = 'equip';
 
@@ -286,8 +288,8 @@ const gameutils = (() => {
                                         const btcData = await authData.getBtc();
 
                                         const popupUtilsCheck = popuputils.renderCheck(app);
-                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = '<div>' + languageData.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.equip['sell-question'][1] + languageData.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
-                                        popupUtilsCheck.confirm.textContent = languageData.equip['sell-confirm'];
+                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                        popupUtilsCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
                                         popupUtilsCheck.confirm.addEventListener('click', async () => {
                                             popupUtilsUserItems.removePanel();
                                             popupUtilsCheck.popupUtilsCheck.removePanel();
@@ -316,7 +318,7 @@ const gameutils = (() => {
                                                 }
                                             });
                                         });
-                                        popupUtilsCheck.cancel.textContent = languageData.equip['sell-cancel'];
+                                        popupUtilsCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
                                         popupUtilsCheck.cancel.addEventListener('click', async () => {
                                             popupUtilsCheck.popupUtilsCheck.removePanel();
                                         });
@@ -371,9 +373,21 @@ const gameutils = (() => {
             });
         }
 
+        game.appendChild(openProjects);
         game.appendChild(equip);
+        for (let i = game.children.length - 1; i >= game.children.length - 1; i--) {
+            const select = document.createElement('div');
+            select.className = 'select';
+            select.textContent = languageData.game['open-project'][game.children[i].className];
+            select.addEventListener('click', () => {
+                game.children[i].style.display = 'flex';
+                openProjects.style.display = 'none';
+            });
+            openProjects.appendChild(select);
+        }
         return {
-            game: game
+            game: game,
+            openProjects: openProjects
         }
     }
     return {
@@ -506,7 +520,11 @@ const settingsutils = (() => {
 })();
 
 const footerutils = (() => {
-    function render(content) {
+    /**
+    * @param {HTMLDivElement} content
+    * @param {HTMLDivElement} game
+    */
+    function render(content, game) {
         const footerContainer = document.createElement('div');
         footerContainer.className = 'footer-container';
         const selectMarket = document.createElement('div');
@@ -515,6 +533,11 @@ const footerutils = (() => {
         const selectGame = document.createElement('div');
         selectGame.className = 'select-game';
         selectGame.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light-darkness-max)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
+        selectGame.addEventListener('click', () => {
+            game.querySelectorAll(':scope>*').forEach(element => {
+                element.style.display = '';
+            });
+        });
         const selectSettings = document.createElement('div');
         selectSettings.className = 'select-settings';
         selectSettings.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>';

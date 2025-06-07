@@ -75,14 +75,19 @@
         "editusername": "ユーザー名",
         "logout": "ログアウト"
     },
-    "equip": {
-        "sell-question": [
-            "",
-            "を売りたいですか"
-        ],
-        "question-mark": "？",
-        "sell-confirm": "売却",
-        "sell-cancel": "やめておく"
+    "game": {
+        "open-project": {
+            "equip": "装備する"
+        },
+        "equip": {
+            "sell-question": [
+                "",
+                "を売りたいですか"
+            ],
+            "question-mark": "？",
+            "sell-confirm": "売却",
+            "sell-cancel": "やめておく"
+        }
     },
     "prompter": {
         "timeout": "ログインタイムアウトしました。再度ログインしてください。",

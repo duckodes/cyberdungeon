@@ -75,14 +75,19 @@
         "editusername": "사용자명",
         "logout": "로그아웃"
     },
-    "equip": {
-        "sell-question": [
-            "",
-            "을 판매하시겠습니까"
-        ],
-        "question-mark": "？",
-        "sell-confirm": "판매",
-        "sell-cancel": "취소"
+    "game": {
+        "open-project": {
+            "equip": "장비하다"
+        },
+        "equip": {
+            "sell-question": [
+                "",
+                "을 판매하시겠습니까"
+            ],
+            "question-mark": "？",
+            "sell-confirm": "판매",
+            "sell-cancel": "취소"
+        }
     },
     "prompter": {
         "timeout": "로그인 시간 초과, 다시 로그인해주세요",

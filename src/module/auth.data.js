@@ -30,12 +30,12 @@ const authData = (() => {
         return snapshot.val();
     }
 
-    const BtcKey = 'btc';
+    const btcKey = 'btc';
     function setBtc(data) {
-        authData.setData(BtcKey, data);
+        authData.setData(btcKey, data);
     }
     async function getBtc() {
-        return await getData(BtcKey);
+        return await getData(btcKey);
     }
 
     return {
