@@ -373,9 +373,11 @@ const gameutils = (() => {
             });
         }
 
-        game.appendChild(openProjects);
         game.appendChild(equip);
-        for (let i = game.children.length - 1; i >= game.children.length - 1; i--) {
+
+        game.appendChild(openProjects);
+        
+        for (let i = 0; i < game.children.length - 1; i++) {
             const select = document.createElement('div');
             select.className = 'select';
             select.textContent = languageData.game['open-project'][game.children[i].className];
