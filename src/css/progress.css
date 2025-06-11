@@ -1,0 +1,30 @@
+.progress {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.progress>.progress-bar {
+    appearance: none;
+    height: 1px;
+    width: 90%;
+    margin-bottom: 55px;
+}
+
+.progress>.progress-bar::-webkit-progress-bar {
+    background-color: var(--color-high-light-darkness-max);
+}
+
+.progress>.progress-bar::-moz-progress-bar {
+    background-color: var(--color-high-light-darkness-max);
+}
+
+.progress>.progress-bar::-webkit-progress-value {
+    background-color: var(--color-high-light-darkness-max);
+    transition: width 1s linear;
+}

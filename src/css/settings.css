@@ -128,7 +128,6 @@
 }
 
 .audio-slider {
-    -webkit-appearance: none;
     appearance: none;
     outline: none;
     background: none;
@@ -147,7 +146,6 @@
 .audio-slider::-webkit-slider-thumb {
     background: transparent;
     border: 3px dashed var(--color-high-light-darkness);
-    -webkit-appearance: none;
     appearance: none;
     width: 15px;
     height: 15px;

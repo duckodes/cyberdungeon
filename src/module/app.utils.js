@@ -9,6 +9,7 @@ import audioSource from "./audio.source.js";
 import cssUtils from "./css.utils.js";
 import items from "./items.js";
 import math from "./math.js";
+import timer from "./timer.js";
 
 const appUtils = (() => {
     async function render(languageData, itemData) {
@@ -372,7 +373,7 @@ const gameutils = (() => {
                 equip.appendChild(userEquipContainer);
             });
         }
-        
+
         const connectDungeon = document.createElement('div');
         connectDungeon.className = 'connect-dungeon';
 
@@ -380,7 +381,7 @@ const gameutils = (() => {
         game.appendChild(equip);
 
         game.appendChild(openProjects);
-        
+
         for (let i = 0; i < game.children.length - 1; i++) {
             const select = document.createElement('div');
             select.className = 'select';
@@ -389,6 +390,26 @@ const gameutils = (() => {
                 game.children[i].style.display = 'flex';
                 openProjects.style.display = 'none';
             });
+            switch (game.children[i].className) {
+                case 'connect-dungeon':
+                    select.addEventListener('click', async () => {
+                        const progressUtils = progressutils.render(app);
+                        await progressUtils.set(5);
+                        await progressUtils.set(10);
+                        await progressUtils.set(15);
+                        await progressUtils.set(20);
+                        await progressUtils.set(25);
+                        await progressUtils.set(30);
+                        await progressUtils.set(35);
+                        await progressUtils.set(40);
+                        await progressUtils.set(45);
+                        await progressUtils.set(50);
+                        await progressUtils.set(100);
+                    });
+                    break;
+                default:
+                    break;
+            }
             openProjects.appendChild(select);
         }
         return {
@@ -588,16 +609,16 @@ const popuputils = (() => {
         });
         const popupPanel = document.createElement('div');
         popupPanel.className = 'popup-panel';
-        popupPanel.classList.add('slide');
+        popupPanel.classList.add('slide-in');
         popupPanel.addEventListener('animationend', () => {
-            popupPanel.classList.remove('slide');
+            popupPanel.classList.remove('slide-in');
         });
         popupBase.addEventListener('click', (e) => {
             if (popupPanel.contains(e.target)) return;
             removePanel();
         });
         function removePanel() {
-            popupPanel.classList.add('remove');
+            popupPanel.classList.add('slide-out');
             popupPanel.addEventListener('animationend', () => {
                 popupBase.remove();
             });
@@ -638,6 +659,37 @@ const popuputils = (() => {
     return {
         render: render,
         renderCheck: renderCheck
+    }
+})();
+
+const progressutils = (() => {
+    function render(app) {
+        const progress = document.createElement('div');
+        progress.className = 'progress';
+        const progressBar = document.createElement('progress');
+        progressBar.className = 'progress-bar';
+        progressBar.max = '100';
+        progressBar.value = '0';
+
+        progress.appendChild(progressBar);
+
+        app.appendChild(progress);
+
+        return {
+            set: async (value) => {
+                progressBar.value = value;
+                await timer.delay(100);
+                if (value < 100) return;
+                await timer.delay(2000);
+                progressBar.classList.add('fade-out');
+                progressBar.addEventListener('animationend', () => {
+                    progress.remove();
+                });
+            }
+        }
+    }
+    return {
+        render: render
     }
 })();
 
