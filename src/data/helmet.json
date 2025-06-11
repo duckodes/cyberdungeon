@@ -2,7 +2,7 @@
     "helmet": [
         {
             "name": "Standard Helmet",
-            "cost": 1750000,
+            "cost": 175,
             "store": true,
             "img": "./src/image/helmet/StandardHelmet.png",
             "attr": [
