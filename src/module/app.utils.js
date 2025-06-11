@@ -372,7 +372,11 @@ const gameutils = (() => {
                 equip.appendChild(userEquipContainer);
             });
         }
+        
+        const connectDungeon = document.createElement('div');
+        connectDungeon.className = 'connect-dungeon';
 
+        game.appendChild(connectDungeon);
         game.appendChild(equip);
 
         game.appendChild(openProjects);

@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     cursor: default;
+    font-family: var(--font-family-main);
 }
 
 .app>.nav>* {
@@ -31,7 +32,6 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    font-family: var(--font-main), var(--font-4);
 }
 
 .app>.nav>.nav-left>.nav-level {
@@ -42,7 +42,6 @@
     justify-content: flex-end;
     align-items: center;
     padding: 10px;
-    font-family: var(--font-main);
     font-size: 20px;
 }
 

@@ -75,7 +75,7 @@
 
 .popup-base>.popup-panel-confirm-check {
     color: var(--color-high-light);
-    font-family: var(--font-4), var(--font-main), var(--font-5);
+    font-family: var(--font-family-main);
     font-size: 20px;
     display: flex;
     align-items: center;
@@ -94,7 +94,7 @@
 
 .popup-base>.popup-panel-confirm-check>.confirm-cancel>button {
     color: var(--color-high-light);
-    font-family: var(--font-4), var(--font-main), var(--font-5);
+    font-family: var(--font-family-main);
     font-size: 20px;
     margin: 30px 30px 0px 30px;
     border: 0px;

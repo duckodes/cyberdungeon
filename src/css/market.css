@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     user-select: none;
     -moz-user-select: none;
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .app>.content>.market>.items-key {
@@ -94,7 +94,6 @@
     margin-left: 30%;
     text-align: center;
     transition: all 100ms ease-out;
-    font-family: var(--font-1);
     font-size: medium;
 }
 
@@ -116,12 +115,12 @@
 
 .popup-base>.popup-panel-confirm>.popup-content {
     color: var(--color-high-light);
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .popup-base>.popup-panel-confirm>button {
     color: var(--color-high-light);
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
     font-size: 20px;
     position: fixed;
     border: 0px;
@@ -135,7 +134,7 @@
 
 .popup-base>.popup-panel-purchase-failed {
     color: var(--color-red);
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
     font-size: 20px;
     display: flex;
     align-items: center;
@@ -146,7 +145,7 @@
 
 .popup-base>.popup-panel-purchase-success {
     color: var(--color-high-light);
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
     font-size: 20px;
     display: flex;
     align-items: center;

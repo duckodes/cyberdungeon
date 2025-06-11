@@ -18,6 +18,7 @@
     --font-4: 'TaipeiSansTCBetaBold';
     --font-5: 'SoukouMincho';
     --font-6: 'pressStart2P';
+    --font-family-main: var(--font-main), var(--font-4), var(--font-5);
 
     --text-shadow-main: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);

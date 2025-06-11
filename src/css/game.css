@@ -5,13 +5,15 @@
     flex-direction: column;
     user-select: none;
     -moz-user-select: none;
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .app>.content>.game>.open-projects {
     display: flex;
-    justify-content: center;
-    padding-top: 100px;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .app>.content>.game>.open-projects>.select {
@@ -27,6 +29,9 @@
     cursor: pointer;
     background: linear-gradient(45deg, #e0e0e050 25%, transparent 25%, transparent 50%, #e0e0e050 50%, #e0e0e050 75%, transparent 75%, transparent);
     background-size: 5px 5px;
+    padding: 3px;
+    margin: 2px;
+    text-align: center;
 }
 
 .app>.content>.game>.open-projects>.select:hover {
@@ -107,7 +112,7 @@
     flex-wrap: wrap;
     padding: 10px;
     overflow: auto;
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .popup-base>.popup-panel-user-items>.user-items-container {

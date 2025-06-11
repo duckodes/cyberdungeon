@@ -6,7 +6,7 @@
     align-items: center;
     user-select: none;
     -moz-user-select: none;
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .app>.content>.settings>.edit-username {
@@ -97,7 +97,7 @@
     font-size: 16px;
     margin-top: 2px;
     padding: 2px;
-    font-family: var(--font-main), var(--font-5), var(--font-4);
+    font-family: var(--font-family-main);
 }
 
 .app>.content>.settings>.system-info {
