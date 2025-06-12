@@ -7,24 +7,36 @@
     display: flex;
     align-items: end;
     justify-content: center;
+    font-family: var(--font-family-main);
 }
 
 .progress>.progress-bar {
     appearance: none;
     height: 1px;
     width: 90%;
-    margin-bottom: 55px;
+    margin-bottom: 56px;
 }
 
 .progress>.progress-bar::-webkit-progress-bar {
-    background-color: var(--color-high-light-darkness-max);
+    background-color: transparent;
 }
 
 .progress>.progress-bar::-moz-progress-bar {
-    background-color: var(--color-high-light-darkness-max);
+    background-color: transparent;
 }
 
 .progress>.progress-bar::-webkit-progress-value {
-    background-color: var(--color-high-light-darkness-max);
+    background-color: var(--color-high-light-darkness);
     transition: width 1s linear;
+}
+
+.progress>.progress-text {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    color: var(--color-high-light-darkness);
+    width: fit-content;
+    height: fit-content;
+    margin-left: 10%;
+    margin-bottom: 65px;
 }

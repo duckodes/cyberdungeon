@@ -93,5 +93,10 @@
     "prompter": {
         "timeout": "登入逾時，請重新登入",
         "confirm": "點擊螢幕確認"
+    },
+    "progress": {
+        "dungeon-crack": "破解地下城",
+        "port-load": "通訊埠加載31337",
+        "loading": "加載中"
     }
 }

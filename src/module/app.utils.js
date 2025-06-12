@@ -394,17 +394,10 @@ const gameutils = (() => {
                 case 'connect-dungeon':
                     select.addEventListener('click', async () => {
                         const progressUtils = progressutils.render(app);
-                        await progressUtils.set(5);
-                        await progressUtils.set(10);
-                        await progressUtils.set(15);
-                        await progressUtils.set(20);
-                        await progressUtils.set(25);
-                        await progressUtils.set(30);
-                        await progressUtils.set(35);
-                        await progressUtils.set(40);
-                        await progressUtils.set(45);
-                        await progressUtils.set(50);
-                        await progressUtils.set(100);
+                        await progressUtils.set(0, languageData.progress.loading + ' ', 300, '.');
+                        await progressUtils.set(20, languageData.progress['port-load'] + ' ', 2000, '.');
+                        await progressUtils.set(50, languageData.progress['dungeon-crack'] + ' ', 2000);
+                        await progressUtils.set(100, null, 100, '.');
                     });
                     break;
                 default:
@@ -670,20 +663,59 @@ const progressutils = (() => {
         progressBar.className = 'progress-bar';
         progressBar.max = '100';
         progressBar.value = '0';
+        const progressText = document.createElement('div');
+        progressText.className = 'progress-text';
+        const progressState = {
+            saveText: '',
+            dotCount: 0,
+            increasing: true,
+            loadText: '',
+            animationId: null
+        };
+        const dotAnimation = () => {
+            if (!progressState.loadText) return;
+            progressState.animationId = setTimeout(() => {
+                if (!progressState.loadText) return;
+
+                progressState.dotCount += progressState.increasing ? 1 : -1;
+                if (progressState.dotCount === 3) progressState.increasing = false;
+                if (progressState.dotCount === 1) progressState.increasing = true;
+
+                progressText.textContent = progressState.saveText + progressState.loadText.repeat(progressState.dotCount);
+                dotAnimation();
+            }, 200);
+        };
 
         progress.appendChild(progressBar);
+        progress.appendChild(progressText);
 
         app.appendChild(progress);
 
         return {
-            set: async (value) => {
+            set: async (value, text = '', delay = 100, loadText = '') => {
                 progressBar.value = value;
-                await timer.delay(100);
+                progressState.loadText = loadText;
+
+                if (text) progressState.saveText = text;
+                progressText.textContent = progressState.saveText + (loadText ? loadText.repeat(progressState.dotCount) : '');
+
+                if (loadText) {
+                    clearTimeout(progressState.animationId);
+                    dotAnimation();
+                } else {
+                    progressState.dotCount = 0;
+                    clearTimeout(progressState.animationId);
+                }
+
+                await timer.delay(delay);
                 if (value < 100) return;
                 await timer.delay(2000);
-                progressBar.classList.add('fade-out');
+                progressBar.classList.add('fade-out-noise');
                 progressBar.addEventListener('animationend', () => {
-                    progress.remove();
+                    progressText.classList.add('fade-out');
+                    progressText.addEventListener('animationend', () => {
+                        progress.remove();
+                    });
                 });
             }
         }

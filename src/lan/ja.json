@@ -93,5 +93,10 @@
     "prompter": {
         "timeout": "ログインタイムアウトしました。再度ログインしてください。",
         "confirm": "画面をクリックして確認"
+    },
+    "progress": {
+        "dungeon-crack": "ダンジョンを攻略",
+        "port-load": "ポートロード 31337",
+        "loading": "ロード中"
     }
 }

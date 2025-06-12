@@ -93,5 +93,10 @@
     "prompter": {
         "timeout": "로그인 시간 초과, 다시 로그인해주세요",
         "confirm": "화면을 클릭하여 확인"
+    },
+    "progress": {
+        "dungeon-crack": "던전 해킹",
+        "port-load": "포트 로딩 31337",
+        "loading": "로딩 중"
     }
 }

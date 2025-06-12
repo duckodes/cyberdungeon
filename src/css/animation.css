@@ -26,6 +26,33 @@
     }
 }
 
+.fade-out-noise {
+    animation: fade-out-noise 200ms ease-out forwards;
+    filter: contrast(200%) brightness(80%);
+}
+
+@keyframes fade-out-noise {
+    0% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 .slide-in {
     animation: slide-in 200ms ease-out forwards;
 }

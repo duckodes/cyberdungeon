@@ -93,5 +93,10 @@
     "prompter": {
         "timeout": "Login timed out, please log in again.",
         "confirm": "Click the screen to confirm"
+    },
+    "progress": {
+        "dungeon-crack": "Dungeon crack",
+        "port-load": "Port load 31337",
+        "loading": "Loading"
     }
 }
