@@ -5,11 +5,15 @@ import auth from "./auth.js";
 import authData from "./auth.data.js";
 import authSign from "./auth.sign.js";
 
+import popup from "./popup.js";
+import progress from "./progress.js";
 import audioSource from "./audio.source.js";
 import cssUtils from "./css.utils.js";
 import items from "./items.js";
 import math from "./math.js";
 import timer from "./timer.js";
+import scroller from "./scroller.js";
+import press from "./press.js";
 
 const appUtils = (() => {
     async function render(languageData, itemData) {
@@ -32,7 +36,7 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navRight);
 
         const marketUtils = marketutils.render(app, languageData, itemData);
-        const gameUtils = await gameutils.render(app, languageData, itemData);
+        const gameUtils = await gameutils.render(app, content, languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
         content.appendChild(gameUtils.game);
@@ -149,8 +153,8 @@ const marketutils = (() => {
                 itemBuyButton.className = 'item-buy-button';
                 itemBuyButton.textContent = `${data[i].cost}${languageData.wallet.bitcoin} ${languageData.market.buy}`;
                 itemBuyButton.addEventListener('click', async () => {
-                    const popupUtils = popuputils.render(app);
-                    popupUtils.popupPanel.classList.add('popup-panel-confirm');
+                    const popupConfirm = popup.render(app);
+                    popupConfirm.popupPanel.classList.add('popup-panel-confirm');
                     const popupContent = document.createElement('div');
                     popupContent.className = 'popup-content';
                     let counter = 0;
@@ -167,42 +171,40 @@ const marketutils = (() => {
                     confirmPurchase.addEventListener('click', async () => {
                         const btcData = await authData.getBtc();
 
-                        const popupUtilsCheck = popuputils.renderCheck(app);
-                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
-                        popupUtilsCheck.confirm.textContent = languageData.market.confirm;
-                        popupUtilsCheck.confirm.addEventListener('click', async () => {
-                            popupUtils.removePanel();
-                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                        const popupCheck = popup.renderCheck(app);
+                        popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
+                        popupCheck.confirm.textContent = languageData.market.confirm;
+                        popupCheck.confirm.addEventListener('click', async () => {
+                            popupConfirm.removePanel();
+                            popupCheck.removePanel();
 
                             if (btcData < data[i].cost) {
-                                const popupUtilsPurchaseFailed = popuputils.render(app);
-                                popupUtilsPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
-                                popupUtilsPurchaseFailed.popupPanel.textContent = languageData.market['purchase-failed'];
-                                setTimeout(() => {
-                                    popupUtilsPurchaseFailed.removePanel();
-                                }, 1000);
+                                const popupPurchaseFailed = popup.render(app);
+                                popupPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
+                                popupPurchaseFailed.popupPanel.textContent = languageData.market['purchase-failed'];
+                                await timer.delay(1000);
+                                popupPurchaseFailed.removePanel();
                                 return;
                             }
 
-                            const popupUtilsPurchaseSuccess = popuputils.render(app);
-                            popupUtilsPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
-                            popupUtilsPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
-                            setTimeout(() => {
-                                popupUtilsPurchaseSuccess.removePanel();
-                            }, 1000);
+                            const popupPurchaseSuccess = popup.render(app);
+                            popupPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
+                            popupPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
+                            await timer.delay(1000);
+                            popupPurchaseSuccess.removePanel();
                             authData.setBtc(btcData - data[i].cost);
                             await items.setUserItems(key, i);
                             console.log('user items:', await items.getUserItems(itemData));
                         });
-                        popupUtilsCheck.cancel.textContent = languageData.market.cancel;
-                        popupUtilsCheck.cancel.addEventListener('click', () => {
-                            popupUtils.removePanel();
-                            popupUtilsCheck.popupUtilsCheck.removePanel();
+                        popupCheck.cancel.textContent = languageData.market.cancel;
+                        popupCheck.cancel.addEventListener('click', () => {
+                            popupConfirm.removePanel();
+                            popupCheck.removePanel();
                         });
-                        popupUtilsCheck.render();
+                        popupCheck.render();
                     });
-                    popupUtils.popupPanel.appendChild(popupContent);
-                    popupUtils.popupPanel.appendChild(confirmPurchase);
+                    popupConfirm.popupPanel.appendChild(popupContent);
+                    popupConfirm.popupPanel.appendChild(confirmPurchase);
                 });
 
                 item.appendChild(itemTitle);
@@ -226,7 +228,7 @@ const marketutils = (() => {
 })();
 
 const gameutils = (() => {
-    async function render(app, languageData, itemData) {
+    async function render(app, content, languageData, itemData) {
         const game = document.createElement('div');
         game.className = 'game';
         const openProjects = document.createElement('div');
@@ -251,20 +253,22 @@ const gameutils = (() => {
                 const userEquipImage = document.createElement('div');
                 userEquipImage.className = 'user-equip-img';
                 userEquipImage.addEventListener('click', async () => {
-                    const popupUtilsUserItems = popuputils.render(app);
-                    popupUtilsUserItems.popupPanel.classList.add('popup-panel-user-items');
+                    const popupUserItems = popup.render(app);
+                    popupUserItems.popupPanel.classList.add('popup-panel-user-items');
                     const unEquip = document.createElement('div');
                     unEquip.className = 'un-equip';
                     if (equipData.length === 0) {
                         unEquip.classList.add('border-red');
                     }
                     unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="var(--color-red)" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
-                    unEquip.addEventListener('click', () => {
+                    unEquip.addEventListener('click', async () => {
                         items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
+                        scroller.savePosition(content);
                         update();
-                        popupUtilsUserItems.removePanel();
+                        popupUserItems.removePanel();
+                        scroller.resetPosition(content);
                     });
-                    popupUtilsUserItems.popupPanel.appendChild(unEquip);
+                    popupUserItems.popupPanel.appendChild(unEquip);
                     items.parse(await items.getUserItems(itemData), (userkey, userData) => {
                         for (let i = 0; i < userData.length; i++) {
                             if (equipKey === userkey) {
@@ -278,69 +282,62 @@ const gameutils = (() => {
                                     }
                                 }
                                 userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
-                                let timer;
-                                let isLongPress = false;
-                                const longPressDuration = 200;
-                                userItemsImage.addEventListener('pointerdown', () => {
-                                    isLongPress = false;
-                                    timer = setTimeout(async () => {
-                                        isLongPress = true;
-                                        const sellBtc = userData[i].cost * 0.7;
-                                        const btcData = await authData.getBtc();
-
-                                        const popupUtilsCheck = popuputils.renderCheck(app);
-                                        popupUtilsCheck.popupUtilsCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
-                                        popupUtilsCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
-                                        popupUtilsCheck.confirm.addEventListener('click', async () => {
-                                            popupUtilsUserItems.removePanel();
-                                            popupUtilsCheck.popupUtilsCheck.removePanel();
-                                            items.parse(itemData, async (key, data) => {
-                                                for (let j = 0; j < data.length; j++) {
-                                                    if (userData[i].name === data[j].name) {
-                                                        await items.removeUserItems(key, i);
-
-                                                        // Remove unowned equipped items
-                                                        let itemDataNames = [];
-                                                        items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
-                                                            for (let f = 0; f < newUserData.length; f++) {
-                                                                itemDataNames.push(newUserData[f].name);
-                                                            }
-                                                        });
-                                                        // userData[i].name: sell item
-                                                        authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
-                                                        for (let f = 0; f < equipData.length; f++) {
-                                                            console.log(itemDataNames, userData[i].name, equipData[f].name);
-                                                            if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
-                                                                await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
-                                                                update();
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                        });
-                                        popupUtilsCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
-                                        popupUtilsCheck.cancel.addEventListener('click', async () => {
-                                            popupUtilsCheck.popupUtilsCheck.removePanel();
-                                        });
-                                        popupUtilsCheck.render();
-                                    }, longPressDuration);
-                                });
-                                userItemsImage.addEventListener('pointerup', () => {
-                                    clearTimeout(timer);
-                                    if (isLongPress) return;
+                                const shortLongPress = press.InitShortLongPress(userItemsImage);
+                                shortLongPress.shortPress(() => {
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (data[j].name === userData[i].name) {
                                                 items.setEquipData(Object.keys(itemData).indexOf(key), j);
+                                                scroller.savePosition(content);
                                                 update();
-                                                popupUtilsUserItems.removePanel();
+                                                popupUserItems.removePanel();
+                                                scroller.resetPosition(content);
                                             }
                                         }
                                     });
                                 });
-                                userItemsImage.addEventListener('pointercancel', () => {
-                                    clearTimeout(timer);
+                                shortLongPress.longPress(async () => {
+                                    const sellBtc = userData[i].cost * 0.7;
+                                    const btcData = await authData.getBtc();
+
+                                    const popupCheck = popup.renderCheck(app);
+                                    popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                    popupCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
+                                    popupCheck.confirm.addEventListener('click', async () => {
+                                        popupUserItems.removePanel();
+                                        popupCheck.removePanel();
+                                        items.parse(itemData, async (key, data) => {
+                                            for (let j = 0; j < data.length; j++) {
+                                                if (userData[i].name === data[j].name) {
+                                                    await items.removeUserItems(key, i);
+
+                                                    // Remove unowned equipped items
+                                                    let itemDataNames = [];
+                                                    items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
+                                                        for (let f = 0; f < newUserData.length; f++) {
+                                                            itemDataNames.push(newUserData[f].name);
+                                                        }
+                                                    });
+                                                    // userData[i].name: sell item
+                                                    authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
+                                                    for (let f = 0; f < equipData.length; f++) {
+                                                        console.log(itemDataNames, userData[i].name, equipData[f].name);
+                                                        if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
+                                                            await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
+                                                            scroller.savePosition(content);
+                                                            update();
+                                                            scroller.resetPosition(content);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    });
+                                    popupCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
+                                    popupCheck.cancel.addEventListener('click', async () => {
+                                        popupCheck.removePanel();
+                                    });
+                                    popupCheck.render();
                                 });
                                 const userItemsName = document.createElement('div');
                                 userItemsName.className = 'user-items-name';
@@ -354,7 +351,7 @@ const gameutils = (() => {
                                 userItemsContainer.appendChild(userItemsName);
                                 userItemsContainer.appendChild(userItemsImage);
 
-                                popupUtilsUserItems.popupPanel.appendChild(userItemsContainer);
+                                popupUserItems.popupPanel.appendChild(userItemsContainer);
                             }
                         }
                     });
@@ -393,11 +390,11 @@ const gameutils = (() => {
             switch (game.children[i].className) {
                 case 'connect-dungeon':
                     select.addEventListener('click', async () => {
-                        const progressUtils = progressutils.render(app);
-                        await progressUtils.set(0, languageData.progress.loading + ' ', 300, '.');
-                        await progressUtils.set(20, languageData.progress['port-load'] + ' ', 2000, '.');
-                        await progressUtils.set(50, languageData.progress['dungeon-crack'] + ' ', 2000);
-                        await progressUtils.set(100, null, 100, '.');
+                        const progressDungeon = progress.render(app);
+                        await progressDungeon.set(0, languageData.progress.loading + ' ', 300, '.');
+                        await progressDungeon.set(20, languageData.progress['port-load'] + ' ', 2000, '.');
+                        await progressDungeon.set(50, languageData.progress['dungeon-crack'] + ' ', 2000);
+                        await progressDungeon.set(100, null, 100, '.');
                     });
                     break;
                 default:
@@ -585,139 +582,6 @@ const footerutils = (() => {
         footerContainer.appendChild(selectSettings);
         return {
             footerContainer: footerContainer
-        }
-    }
-    return {
-        render: render
-    }
-})();
-
-const popuputils = (() => {
-    function render(app) {
-        const popupBase = document.createElement('div');
-        popupBase.className = 'popup-base';
-        popupBase.classList.add('fade-in');
-        popupBase.addEventListener('animationend', () => {
-            popupBase.classList.remove('fade-in');
-        });
-        const popupPanel = document.createElement('div');
-        popupPanel.className = 'popup-panel';
-        popupPanel.classList.add('slide-in');
-        popupPanel.addEventListener('animationend', () => {
-            popupPanel.classList.remove('slide-in');
-        });
-        popupBase.addEventListener('click', (e) => {
-            if (popupPanel.contains(e.target)) return;
-            removePanel();
-        });
-        function removePanel() {
-            popupPanel.classList.add('slide-out');
-            popupPanel.addEventListener('animationend', () => {
-                popupBase.remove();
-            });
-            popupBase.classList.add('fade-out');
-            popupBase.addEventListener('animationend', () => {
-                popupBase.classList.remove('fade-out');
-            });
-        }
-
-        popupBase.appendChild(popupPanel);
-
-        app.appendChild(popupBase);
-        return {
-            popupPanel: popupPanel,
-            removePanel: removePanel
-        }
-    }
-    function renderCheck(app) {
-        const popupUtilsCheck = render(app);
-        popupUtilsCheck.popupPanel.classList.add('popup-panel-confirm-check');
-        const confirmCancel = document.createElement('div');
-        confirmCancel.className = 'confirm-cancel';
-        const confirm = document.createElement('button');
-        const cancel = document.createElement('button');
-
-        confirmCancel.appendChild(confirm);
-        confirmCancel.appendChild(cancel);
-        return {
-            popupUtilsCheck: popupUtilsCheck,
-            confirmCancel: confirmCancel,
-            confirm: confirm,
-            cancel: cancel,
-            render: () => {
-                popupUtilsCheck.popupPanel.appendChild(confirmCancel);
-            }
-        }
-    }
-    return {
-        render: render,
-        renderCheck: renderCheck
-    }
-})();
-
-const progressutils = (() => {
-    function render(app) {
-        const progress = document.createElement('div');
-        progress.className = 'progress';
-        const progressBar = document.createElement('progress');
-        progressBar.className = 'progress-bar';
-        progressBar.max = '100';
-        progressBar.value = '0';
-        const progressText = document.createElement('div');
-        progressText.className = 'progress-text';
-        const progressState = {
-            saveText: '',
-            dotCount: 0,
-            increasing: true,
-            loadText: '',
-            animationId: null
-        };
-        const dotAnimation = () => {
-            if (!progressState.loadText) return;
-            progressState.animationId = setTimeout(() => {
-                if (!progressState.loadText) return;
-
-                progressState.dotCount += progressState.increasing ? 1 : -1;
-                if (progressState.dotCount === 3) progressState.increasing = false;
-                if (progressState.dotCount === 1) progressState.increasing = true;
-
-                progressText.textContent = progressState.saveText + progressState.loadText.repeat(progressState.dotCount);
-                dotAnimation();
-            }, 200);
-        };
-
-        progress.appendChild(progressBar);
-        progress.appendChild(progressText);
-
-        app.appendChild(progress);
-
-        return {
-            set: async (value, text = '', delay = 100, loadText = '') => {
-                progressBar.value = value;
-                progressState.loadText = loadText;
-
-                if (text) progressState.saveText = text;
-                progressText.textContent = progressState.saveText + (loadText ? loadText.repeat(progressState.dotCount) : '');
-
-                if (loadText) {
-                    clearTimeout(progressState.animationId);
-                    dotAnimation();
-                } else {
-                    progressState.dotCount = 0;
-                    clearTimeout(progressState.animationId);
-                }
-
-                await timer.delay(delay);
-                if (value < 100) return;
-                await timer.delay(2000);
-                progressBar.classList.add('fade-out-noise');
-                progressBar.addEventListener('animationend', () => {
-                    progressText.classList.add('fade-out');
-                    progressText.addEventListener('animationend', () => {
-                        progress.remove();
-                    });
-                });
-            }
         }
     }
     return {
