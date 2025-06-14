@@ -233,146 +233,14 @@ const gameutils = (() => {
         game.className = 'game';
         const openProjects = document.createElement('div');
         openProjects.className = 'open-projects';
-        const equip = document.createElement('div');
-        equip.className = 'equip';
-
-        await updateEquip();
-
-        async function updateEquip() {
-            function update() {
-                while (equip.firstChild) {
-                    equip.removeChild(equip.firstChild);
-                }
-                setTimeout(async () => {
-                    await updateEquip();
-                });
-            }
-            items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
-                const userEquipContainer = document.createElement('div');
-                userEquipContainer.className = 'user-equip-container';
-                const userEquipImage = document.createElement('div');
-                userEquipImage.className = 'user-equip-img';
-                userEquipImage.addEventListener('click', async () => {
-                    const popupUserItems = popup.render(app);
-                    popupUserItems.popupPanel.classList.add('popup-panel-user-items');
-                    const unEquip = document.createElement('div');
-                    unEquip.className = 'un-equip';
-                    if (equipData.length === 0) {
-                        unEquip.classList.add('border-red');
-                    }
-                    unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="var(--color-red)" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
-                    unEquip.addEventListener('click', async () => {
-                        items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
-                        scroller.savePosition(content);
-                        update();
-                        popupUserItems.removePanel();
-                        scroller.resetPosition(content);
-                    });
-                    popupUserItems.popupPanel.appendChild(unEquip);
-                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
-                        for (let i = 0; i < userData.length; i++) {
-                            if (equipKey === userkey) {
-                                const userItemsContainer = document.createElement('div');
-                                userItemsContainer.className = 'user-items-container';
-                                const userItemsImage = document.createElement('div');
-                                userItemsImage.className = 'user-items-img';
-                                for (let j = 0; j < equipData.length; j++) {
-                                    if (userData[i].name === equipData[j].name) {
-                                        userItemsImage.classList.add('border-red');
-                                    }
-                                }
-                                userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
-                                const shortLongPress = press.InitShortLongPress(userItemsImage);
-                                shortLongPress.shortPress(() => {
-                                    items.parse(itemData, async (key, data) => {
-                                        for (let j = 0; j < data.length; j++) {
-                                            if (data[j].name === userData[i].name) {
-                                                items.setEquipData(Object.keys(itemData).indexOf(key), j);
-                                                scroller.savePosition(content);
-                                                update();
-                                                popupUserItems.removePanel();
-                                                scroller.resetPosition(content);
-                                            }
-                                        }
-                                    });
-                                });
-                                shortLongPress.longPress(async () => {
-                                    const sellBtc = userData[i].cost * 0.7;
-                                    const btcData = await authData.getBtc();
-
-                                    const popupCheck = popup.renderCheck(app);
-                                    popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
-                                    popupCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
-                                    popupCheck.confirm.addEventListener('click', async () => {
-                                        popupUserItems.removePanel();
-                                        popupCheck.removePanel();
-                                        items.parse(itemData, async (key, data) => {
-                                            for (let j = 0; j < data.length; j++) {
-                                                if (userData[i].name === data[j].name) {
-                                                    await items.removeUserItems(key, i);
-
-                                                    // Remove unowned equipped items
-                                                    let itemDataNames = [];
-                                                    items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
-                                                        for (let f = 0; f < newUserData.length; f++) {
-                                                            itemDataNames.push(newUserData[f].name);
-                                                        }
-                                                    });
-                                                    // userData[i].name: sell item
-                                                    authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
-                                                    for (let f = 0; f < equipData.length; f++) {
-                                                        console.log(itemDataNames, userData[i].name, equipData[f].name);
-                                                        if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
-                                                            await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
-                                                            scroller.savePosition(content);
-                                                            update();
-                                                            scroller.resetPosition(content);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    });
-                                    popupCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
-                                    popupCheck.cancel.addEventListener('click', async () => {
-                                        popupCheck.removePanel();
-                                    });
-                                    popupCheck.render();
-                                });
-                                const userItemsName = document.createElement('div');
-                                userItemsName.className = 'user-items-name';
-                                userItemsName.textContent = userData[i].name;
-                                for (let j = 0; j < equipData.length; j++) {
-                                    if (userData[i].name === equipData[j].name) {
-                                        userItemsName.classList.add('text-red');
-                                    }
-                                }
-
-                                userItemsContainer.appendChild(userItemsName);
-                                userItemsContainer.appendChild(userItemsImage);
-
-                                popupUserItems.popupPanel.appendChild(userItemsContainer);
-                            }
-                        }
-                    });
-                });
-                const userEquipType = document.createElement('div');
-                userEquipType.className = 'user-equip-type';
-                userEquipType.textContent = languageData.itemskey[equipKey];
-                for (let i = 0; i < equipData.length; i++) {
-                    userEquipImage.style.backgroundImage = `url(${equipData[i].img})`;
-                    userEquipType.textContent = equipData[i].name;
-                }
-
-                userEquipContainer.appendChild(userEquipType);
-                userEquipContainer.appendChild(userEquipImage);
-
-                equip.appendChild(userEquipContainer);
-            });
-        }
 
         const connectDungeon = document.createElement('div');
         connectDungeon.className = 'connect-dungeon';
+        dungeonutils.render(connectDungeon, languageData);
+
+        const equip = document.createElement('div');
+        equip.className = 'equip';
+        await equiputils.render(app, content, equip, languageData, itemData);
 
         game.appendChild(connectDungeon);
         game.appendChild(equip);
@@ -392,7 +260,7 @@ const gameutils = (() => {
                     select.addEventListener('click', async () => {
                         const progressDungeon = progress.render(app);
                         await progressDungeon.set(0, languageData.progress.loading + ' ', 300, '.');
-                        await progressDungeon.set(20, languageData.progress['port-load'] + ' ', 2000, '.');
+                        await progressDungeon.set(20, languageData.progress['port-load'] + ' ', 500, '.');
                         await progressDungeon.set(50, languageData.progress['dungeon-crack'] + ' ', 2000);
                         await progressDungeon.set(100, null, 100, '.');
                     });
@@ -406,6 +274,155 @@ const gameutils = (() => {
             game: game,
             openProjects: openProjects
         }
+    }
+    return {
+        render: render
+    }
+})();
+
+const dungeonutils = (() => {
+    function render(connectDungeon, languageData) {
+        const dungeonArea = document.createElement('div');
+
+        connectDungeon.appendChild(dungeonArea);
+    }
+    return {
+        render: render
+    }
+})();
+
+const equiputils = (() => {
+    async function render(app, content, equip, languageData, itemData) {
+        function update() {
+            while (equip.firstChild) {
+                equip.removeChild(equip.firstChild);
+            }
+            setTimeout(async () => {
+                await render(app, content, equip, languageData, itemData);
+            });
+        }
+        items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
+            const userEquipContainer = document.createElement('div');
+            userEquipContainer.className = 'user-equip-container';
+            const userEquipImage = document.createElement('div');
+            userEquipImage.className = 'user-equip-img';
+            userEquipImage.addEventListener('click', async () => {
+                const popupUserItems = popup.render(app);
+                popupUserItems.popupPanel.classList.add('popup-panel-user-items');
+                const unEquip = document.createElement('div');
+                unEquip.className = 'un-equip';
+                if (equipData.length === 0) {
+                    unEquip.classList.add('border-red');
+                }
+                unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="var(--color-red)" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
+                unEquip.addEventListener('click', async () => {
+                    items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
+                    scroller.savePosition(content);
+                    update();
+                    popupUserItems.removePanel();
+                    scroller.resetPosition(content);
+                });
+                popupUserItems.popupPanel.appendChild(unEquip);
+                items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+                    for (let i = 0; i < userData.length; i++) {
+                        if (equipKey === userkey) {
+                            const userItemsContainer = document.createElement('div');
+                            userItemsContainer.className = 'user-items-container';
+                            const userItemsImage = document.createElement('div');
+                            userItemsImage.className = 'user-items-img';
+                            for (let j = 0; j < equipData.length; j++) {
+                                if (userData[i].name === equipData[j].name) {
+                                    userItemsImage.classList.add('border-red');
+                                }
+                            }
+                            userItemsImage.style.backgroundImage = `url(${userData[i].img})`;
+                            const shortLongPress = press.InitShortLongPress(userItemsImage);
+                            shortLongPress.shortPress(() => {
+                                items.parse(itemData, async (key, data) => {
+                                    for (let j = 0; j < data.length; j++) {
+                                        if (data[j].name === userData[i].name) {
+                                            items.setEquipData(Object.keys(itemData).indexOf(key), j);
+                                            scroller.savePosition(content);
+                                            update();
+                                            popupUserItems.removePanel();
+                                            scroller.resetPosition(content);
+                                        }
+                                    }
+                                });
+                            });
+                            shortLongPress.longPress(async () => {
+                                const sellBtc = userData[i].cost * 0.7;
+                                const btcData = await authData.getBtc();
+
+                                const popupCheck = popup.renderCheck(app);
+                                popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                popupCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
+                                popupCheck.confirm.addEventListener('click', async () => {
+                                    popupUserItems.removePanel();
+                                    popupCheck.removePanel();
+                                    items.parse(itemData, async (key, data) => {
+                                        for (let j = 0; j < data.length; j++) {
+                                            if (userData[i].name === data[j].name) {
+                                                await items.removeUserItems(key, i);
+
+                                                // Remove unowned equipped items
+                                                let itemDataNames = [];
+                                                items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
+                                                    for (let f = 0; f < newUserData.length; f++) {
+                                                        itemDataNames.push(newUserData[f].name);
+                                                    }
+                                                });
+                                                // userData[i].name: sell item
+                                                authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
+                                                for (let f = 0; f < equipData.length; f++) {
+                                                    console.log(itemDataNames, userData[i].name, equipData[f].name);
+                                                    if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
+                                                        await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
+                                                        scroller.savePosition(content);
+                                                        update();
+                                                        scroller.resetPosition(content);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                                popupCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
+                                popupCheck.cancel.addEventListener('click', async () => {
+                                    popupCheck.removePanel();
+                                });
+                                popupCheck.render();
+                            });
+                            const userItemsName = document.createElement('div');
+                            userItemsName.className = 'user-items-name';
+                            userItemsName.textContent = userData[i].name;
+                            for (let j = 0; j < equipData.length; j++) {
+                                if (userData[i].name === equipData[j].name) {
+                                    userItemsName.classList.add('text-red');
+                                }
+                            }
+
+                            userItemsContainer.appendChild(userItemsName);
+                            userItemsContainer.appendChild(userItemsImage);
+
+                            popupUserItems.popupPanel.appendChild(userItemsContainer);
+                        }
+                    }
+                });
+            });
+            const userEquipType = document.createElement('div');
+            userEquipType.className = 'user-equip-type';
+            userEquipType.textContent = languageData.itemskey[equipKey];
+            for (let i = 0; i < equipData.length; i++) {
+                userEquipImage.style.backgroundImage = `url(${equipData[i].img})`;
+                userEquipType.textContent = equipData[i].name;
+            }
+
+            userEquipContainer.appendChild(userEquipType);
+            userEquipContainer.appendChild(userEquipImage);
+
+            equip.appendChild(userEquipContainer);
+        });
     }
     return {
         render: render

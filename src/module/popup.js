@@ -1,7 +1,5 @@
-
-
 const popup = (() => {
-    function render(app) {
+    function render(parent) {
         const popupBase = document.createElement('div');
         popupBase.className = 'popup-base';
         popupBase.classList.add('fade-in');
@@ -31,14 +29,14 @@ const popup = (() => {
 
         popupBase.appendChild(popupPanel);
 
-        app.appendChild(popupBase);
+        parent.appendChild(popupBase);
         return {
             popupPanel: popupPanel,
             removePanel: removePanel
         }
     }
-    function renderCheck(app) {
-        const popupCheck = render(app);
+    function renderCheck(parent) {
+        const popupCheck = render(parent);
         popupCheck.popupPanel.classList.add('popup-panel-confirm-check');
         const confirmCancel = document.createElement('div');
         confirmCancel.className = 'confirm-cancel';

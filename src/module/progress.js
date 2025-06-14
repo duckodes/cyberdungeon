@@ -26,6 +26,7 @@ const progress = (() => {
                 if (progressState.dotCount === 3) progressState.increasing = false;
                 if (progressState.dotCount === 1) progressState.increasing = true;
 
+                console.log(progressState.dotCount);
                 progressText.textContent = progressState.saveText + progressState.loadText.repeat(progressState.dotCount);
                 dotAnimation();
             }, 200);
@@ -49,6 +50,7 @@ const progress = (() => {
                     dotAnimation();
                 } else {
                     progressState.dotCount = 0;
+                    progressState.increasing = true;
                     clearTimeout(progressState.animationId);
                 }
 
@@ -59,6 +61,7 @@ const progress = (() => {
                 progressBar.addEventListener('animationend', () => {
                     progressText.classList.add('fade-out-noise');
                     progressText.addEventListener('animationend', () => {
+                        clearTimeout(progressState.animationId);
                         progress.remove();
                     });
                 });
