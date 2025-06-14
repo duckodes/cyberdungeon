@@ -26,7 +26,6 @@ const progress = (() => {
                 if (progressState.dotCount === 3) progressState.increasing = false;
                 if (progressState.dotCount === 1) progressState.increasing = true;
 
-                console.log(progressState.dotCount);
                 progressText.textContent = progressState.saveText + progressState.loadText.repeat(progressState.dotCount);
                 dotAnimation();
             }, 200);
