@@ -37,7 +37,7 @@ const progress = (() => {
         app.appendChild(progress);
 
         return {
-            set: async (value, text = '', delay = 100, loadText = '') => {
+            set: async ({ value = 0, text = '', delay = 100, loadText = '', endDelay = 2000 }) => {
                 progressBar.value = value;
                 progressState.loadText = loadText;
 
@@ -55,7 +55,7 @@ const progress = (() => {
 
                 await timer.delay(delay);
                 if (value < 100) return;
-                await timer.delay(2000);
+                await timer.delay(endDelay);
                 progressBar.classList.add('fade-out-noise');
                 progressBar.addEventListener('animationend', () => {
                     progressText.classList.add('fade-out-noise');
