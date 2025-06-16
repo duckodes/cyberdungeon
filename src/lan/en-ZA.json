@@ -77,7 +77,7 @@
     },
     "game": {
         "open-project": {
-            "connect-dungeon": "Virtual dungeon connection",
+            "dungeon": "Virtual dungeon connection",
             "equip": "kit out"
         },
         "equip": {

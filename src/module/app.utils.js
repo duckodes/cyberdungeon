@@ -14,8 +14,13 @@ import math from "./math.js";
 import timer from "./timer.js";
 import scroller from "./scroller.js";
 import press from "./press.js";
+import languageJson from "../lan/language.json.js";
 
 const appUtils = (() => {
+    /**
+    * @param {languageJson} languageData
+    * @param {Object} itemData
+    */
     async function render(languageData, itemData) {
         const app = document.createElement('div');
         app.className = 'app';
@@ -70,6 +75,9 @@ const appUtils = (() => {
             }
         }
     }
+    /**
+    * @param {languageJson} languageData
+    */
     async function update(languageData) {
         document.title = languageData.appname;
         const itemData = await items.get(languageData);
@@ -87,6 +95,9 @@ const appUtils = (() => {
 })();
 
 const navutils = (() => {
+    /**
+    * @param {languageJson} languageData
+    */
     function render(languageData) {
         const navLeft = document.createElement('div');
         navLeft.className = 'nav-left';
@@ -128,6 +139,11 @@ const navutils = (() => {
 })();
 
 const marketutils = (() => {
+    /**
+    * @param {HTMLDivElement} app
+    * @param {languageJson} languageData
+    * @param {Object} itemData
+    */
     function render(app, languageData, itemData) {
         const market = document.createElement('div');
         market.className = 'market';
@@ -228,21 +244,27 @@ const marketutils = (() => {
 })();
 
 const gameutils = (() => {
+    /**
+    * @param {HTMLDivElement} app
+    * @param {HTMLDivElement} content
+    * @param {languageJson} languageData
+    * @param {Object} itemData
+    */
     async function render(app, content, languageData, itemData) {
         const game = document.createElement('div');
         game.className = 'game';
         const openProjects = document.createElement('div');
         openProjects.className = 'open-projects';
 
-        const connectDungeon = document.createElement('div');
-        connectDungeon.className = 'connect-dungeon';
-        dungeonutils.render(connectDungeon, languageData);
+        const dungeon = document.createElement('div');
+        dungeon.className = 'dungeon';
+        dungeonutils.render(dungeon, languageData);
 
         const equip = document.createElement('div');
         equip.className = 'equip';
         await equiputils.render(app, content, equip, languageData, itemData);
 
-        game.appendChild(connectDungeon);
+        game.appendChild(dungeon);
         game.appendChild(equip);
 
         game.appendChild(openProjects);
@@ -256,7 +278,7 @@ const gameutils = (() => {
                 openProjects.style.display = 'none';
             });
             switch (game.children[i].className) {
-                case 'connect-dungeon':
+                case 'dungeon':
                     select.addEventListener('click', async () => {
                         const progressDungeon = progress.render(app);
                         await progressDungeon.set({ value: 0, text: languageData.progress.loading + ' ', delay: math.getRandomIntIncludeMax(0, 300), loadText: '.' });
@@ -281,10 +303,14 @@ const gameutils = (() => {
 })();
 
 const dungeonutils = (() => {
-    function render(connectDungeon, languageData) {
+    /**
+    * @param {HTMLDivElement} dungeon
+    * @param {languageJson} languageData
+    */
+    function render(dungeon, languageData) {
         const dungeonArea = document.createElement('div');
 
-        connectDungeon.appendChild(dungeonArea);
+        dungeon.appendChild(dungeonArea);
     }
     return {
         render: render
@@ -292,6 +318,13 @@ const dungeonutils = (() => {
 })();
 
 const equiputils = (() => {
+    /**
+    * @param {HTMLDivElement} app
+    * @param {HTMLDivElement} content
+    * @param {HTMLDivElement} equip
+    * @param {languageJson} languageData
+    * @param {Object} itemData
+    */
     async function render(app, content, equip, languageData, itemData) {
         function update() {
             while (equip.firstChild) {
@@ -432,6 +465,7 @@ const equiputils = (() => {
 const settingsutils = (() => {
     /**
     * @param {HTMLDivElement} app
+    * @param {languageJson} languageData
     */
     function render(app, languageData) {
         const settings = document.createElement('div');
@@ -555,6 +589,7 @@ const settingsutils = (() => {
 
 const footerutils = (() => {
     /**
+    * @param {HTMLDivElement} app
     * @param {HTMLDivElement} content
     * @param {HTMLDivElement} game
     */

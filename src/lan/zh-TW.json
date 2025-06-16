@@ -77,7 +77,7 @@
     },
     "game": {
         "open-project": {
-            "connect-dungeon": "連接虛擬地下城",
+            "dungeon": "連接虛擬地下城",
             "equip": "裝備"
         },
         "equip": {

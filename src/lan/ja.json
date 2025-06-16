@@ -77,7 +77,7 @@
     },
     "game": {
         "open-project": {
-            "connect-dungeon": "仮想ダンジョン接続",
+            "dungeon": "仮想ダンジョン接続",
             "equip": "装備する"
         },
         "equip": {

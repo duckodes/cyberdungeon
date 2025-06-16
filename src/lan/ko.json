@@ -77,7 +77,7 @@
     },
     "game": {
         "open-project": {
-            "connect-dungeon": "가상 던전 연결",
+            "dungeon": "가상 던전 연결",
             "equip": "장비하다"
         },
         "equip": {
