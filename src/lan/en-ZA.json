@@ -98,5 +98,11 @@
         "dungeon-crack": "Dungeon crack",
         "port-load": "Port load 31337",
         "loading": "Loading"
+    },
+    "dungeon": {
+        "area": [
+            "surface web domain",
+            "deep web domain"
+        ]
     }
 }

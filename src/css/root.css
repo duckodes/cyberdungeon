@@ -4,6 +4,7 @@
     --color-high-light-darkness: #bcfff999;
     --color-high-light-darkness-max: #bcfff930;
     --color-yellow: #f7d967;
+    --color-yellow-darkness: #f7d96730;
     --color-red: #f57371;
     --color-red-darkness: #b44e4e;
     --color-red-darkness-max: #962b2e;
@@ -23,6 +24,7 @@
     --text-shadow-main: 1px 1px 5px var(--color-high-light-darkness), 1px 1px 5px var(--color-high-light-darkness);
     --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);
     --text-shadow-3: -5px -5px 2px var(--color-high-light-darkness-max), 5px 5px 2px var(--color-high-light-darkness-max);
+    --text-shadow-4: -5px -5px 2px var(--color-red-darkness-max), 5px 5px 2px var(--color-red-darkness-max);
 }
 
 svg {

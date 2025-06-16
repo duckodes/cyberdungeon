@@ -132,6 +132,10 @@ const languageJson = {
         "port-load": String,
         /**加載中 */
         loading: String
+    },
+    dungeon: {
+        /**淺層網域, 深度網域 */
+        area: [String]
     }
 };
 

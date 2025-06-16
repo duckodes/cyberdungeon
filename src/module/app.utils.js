@@ -258,7 +258,6 @@ const gameutils = (() => {
 
         const dungeon = document.createElement('div');
         dungeon.className = 'dungeon';
-        dungeonutils.render(dungeon, languageData);
 
         const equip = document.createElement('div');
         equip.className = 'equip';
@@ -280,11 +279,13 @@ const gameutils = (() => {
             switch (game.children[i].className) {
                 case 'dungeon':
                     select.addEventListener('click', async () => {
+                        remove.child(dungeon);
                         const progressDungeon = progress.render(app);
                         await progressDungeon.set({ value: 0, text: languageData.progress.loading + ' ', delay: math.getRandomIntIncludeMax(0, 300), loadText: '.' });
                         await progressDungeon.set({ value: 20, text: languageData.progress['port-load'] + ' ', delay: math.getRandomIntIncludeMax(500, 700), loadText: '.' });
                         await progressDungeon.set({ value: 50, text: languageData.progress['dungeon-crack'] + ' ', delay: math.getRandomIntIncludeMax(500, 700) });
                         await progressDungeon.set({ value: 100, text: null, delay: 100, loadText: '.', endDelay: 500 });
+                        dungeonutils.render(dungeon, languageData);
                     });
                     break;
                 default:
@@ -309,6 +310,8 @@ const dungeonutils = (() => {
     */
     function render(dungeon, languageData) {
         const dungeonArea = document.createElement('div');
+        dungeonArea.className = 'dungeon-area';
+        dungeonArea.textContent = languageData.dungeon.area[math.getRandomIntIncludeMax(0, 1)];
 
         dungeon.appendChild(dungeonArea);
     }
@@ -327,9 +330,7 @@ const equiputils = (() => {
     */
     async function render(app, content, equip, languageData, itemData) {
         function update() {
-            while (equip.firstChild) {
-                equip.removeChild(equip.firstChild);
-            }
+            remove.child(equip);
             setTimeout(async () => {
                 await render(app, content, equip, languageData, itemData);
             });
@@ -653,6 +654,17 @@ const footerutils = (() => {
     }
     return {
         render: render
+    }
+})();
+
+const remove = (() => {
+    function child(element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+    return {
+        child: child
     }
 })();
 

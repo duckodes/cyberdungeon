@@ -98,5 +98,11 @@
         "dungeon-crack": "破解地下城",
         "port-load": "通訊埠加載31337",
         "loading": "加載中"
+    },
+    "dungeon": {
+        "area": [
+            "淺層網域",
+            "深度網域"
+        ]
     }
 }

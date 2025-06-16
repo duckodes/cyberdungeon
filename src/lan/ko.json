@@ -98,5 +98,11 @@
         "dungeon-crack": "던전 해킹",
         "port-load": "포트 로딩 31337",
         "loading": "로딩 중"
+    },
+    "dungeon": {
+        "area": [
+            "얕은 웹 영역",
+            "깊은 웹 영역"
+        ]
     }
 }

@@ -2,7 +2,13 @@
     width: 100%;
     height: 100%;
     display: none;
-    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+}
+
+.app>.content>.game>.dungeon>.dungeon-area {
+    color: var(--color-red);
+    text-shadow: var(--text-shadow-4);
+    width: 100%;
+    height: fit-content;
+    text-align: end;
 }
