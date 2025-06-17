@@ -15,6 +15,7 @@ import timer from "./timer.js";
 import scroller from "./scroller.js";
 import press from "./press.js";
 import languageJson from "../lan/language.json.js";
+import fetcher from "./fetcher.js";
 
 const appUtils = (() => {
     /**
@@ -47,7 +48,7 @@ const appUtils = (() => {
         content.appendChild(gameUtils.game);
         content.appendChild(settingsUtils.settings);
 
-        const footerUtils = footerutils.render(app, content, gameUtils.game);
+        const footerUtils = footerutils.render(app, content, gameUtils);
         footer.appendChild(footerUtils.footerContainer);
 
         document.body.appendChild(app);
@@ -258,6 +259,8 @@ const gameutils = (() => {
 
         const dungeon = document.createElement('div');
         dungeon.className = 'dungeon';
+        const isDungeon = await authData.getDungeon();
+        const dungeonAreaData = await authData.getDungeonArea();
 
         const equip = document.createElement('div');
         equip.className = 'equip';
@@ -279,14 +282,22 @@ const gameutils = (() => {
             switch (game.children[i].className) {
                 case 'dungeon':
                     select.addEventListener('click', async () => {
+                        authData.setDungeon(true);
+                        const randomInt = math.getRandomIntIncludeMax(0, 1);
+                        authData.setDungeonArea(randomInt);
                         remove.child(dungeon);
                         const progressDungeon = progress.render(app);
                         await progressDungeon.set({ value: 0, text: languageData.progress.loading + ' ', delay: math.getRandomIntIncludeMax(0, 300), loadText: '.' });
                         await progressDungeon.set({ value: 20, text: languageData.progress['port-load'] + ' ', delay: math.getRandomIntIncludeMax(500, 700), loadText: '.' });
                         await progressDungeon.set({ value: 50, text: languageData.progress['dungeon-crack'] + ' ', delay: math.getRandomIntIncludeMax(500, 700) });
                         await progressDungeon.set({ value: 100, text: null, delay: 100, loadText: '.', endDelay: 500 });
-                        dungeonutils.render(dungeon, languageData);
+                        await dungeonutils.render(dungeon, languageData, randomInt);
                     });
+                    if (isDungeon) {
+                        game.children[i].style.display = 'flex';
+                        openProjects.style.display = 'none';
+                        await dungeonutils.render(dungeon, languageData, dungeonAreaData);
+                    }
                     break;
                 default:
                     break;
@@ -295,7 +306,8 @@ const gameutils = (() => {
         }
         return {
             game: game,
-            openProjects: openProjects
+            openProjects: openProjects,
+            isDungeon: isDungeon
         }
     }
     return {
@@ -308,12 +320,45 @@ const dungeonutils = (() => {
     * @param {HTMLDivElement} dungeon
     * @param {languageJson} languageData
     */
-    function render(dungeon, languageData) {
+    async function render(dungeon, languageData, dungeonAreaData) {
         const dungeonArea = document.createElement('div');
         dungeonArea.className = 'dungeon-area';
-        dungeonArea.textContent = languageData.dungeon.area[math.getRandomIntIncludeMax(0, 1)];
+        dungeonArea.textContent = languageData.dungeon.area[dungeonAreaData];
+        const safeAreaProbability = document.createElement('div');
+        safeAreaProbability.className = 'safe-area-probability';
+        safeAreaProbability.textContent = '0';
+        const selection = document.createElement('div');
+        selection.className = 'selection';
+        await updateSelection();
+        async function updateSelection() {
+            function update() {
+                remove.child(selection);
+                setTimeout(async () => {
+                    await updateSelection();
+                });
+            }
+            const battleData = await fetcher.load(`../src/data/battle.json`);
+            
+            for (let i = 0; i < 4; i++) {
+                const selector = document.createElement('div');
+                selector.className = 'selector';
+                selector.textContent = math.weightedRandom(battleData.selector);
+                selection.appendChild(selector);
+            }
+        }
+
+        switch (dungeonAreaData) {
+            case 0:
+                dungeonArea.classList.add('dungeon-area-green');
+                safeAreaProbability.classList.add('safe-area-probability-green');
+                break;
+            default:
+                break;
+        }
 
         dungeon.appendChild(dungeonArea);
+        dungeon.appendChild(safeAreaProbability);
+        dungeon.appendChild(selection);
     }
     return {
         render: render
@@ -592,9 +637,9 @@ const footerutils = (() => {
     /**
     * @param {HTMLDivElement} app
     * @param {HTMLDivElement} content
-    * @param {HTMLDivElement} game
+    * @param {HTMLDivElement} gameUtils
     */
-    function render(app, content, game) {
+    function render(app, content, gameUtils) {
         const footerContainer = document.createElement('div');
         footerContainer.className = 'footer-container';
         const selectMarket = document.createElement('div');
@@ -604,25 +649,32 @@ const footerutils = (() => {
         selectGame.className = 'select-game';
         const selectGameSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light-darkness-max)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
         const selectGameLightSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" fill="var(--color-high-light)"><path stroke-linecap="round" stroke-linejoin="round" d="M36.9 24L24 36.9L11.1 24l8.6-8.6l-4.3-4.3L2.5 24L24 45.5L45.5 24L24 2.5l-4.3 4.3L36.9 24z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m24 19.757l4.313 4.313L24 28.384l-4.313-4.314L24 19.757z"></path></svg>';
-        const selectGameBackLightSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M22 12A10 10 0 0 0 12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10m-2 0a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8a8 8 0 0 1 8 8m-6-5l-5 5l5 5V7Z"></path></svg>';
+        const selectGameBackSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 56 56" fill="var(--color-high-light-darkness-max)"><path d="M39.215 23.137c.797.21 1.406.21 2.015-.164c.61-.375.938-.867 1.149-1.664l1.969-7.805c.257-.984-.282-1.922-1.266-2.156c-.961-.258-1.969.28-2.18 1.289l-.984 4.195l-6.352-11.32c-1.195-2.156-3.351-3.258-5.554-3.258a6.411 6.411 0 0 0-5.579 3.258l-6.468 11.554c-.586 1.055-.258 2.063.633 2.602c.937.516 2.039.188 2.578-.75l6.468-11.602c.54-.937 1.454-1.335 2.368-1.335c.914 0 1.804.398 2.32 1.335l6.445 11.508l-4.336-1.289c-.984-.305-1.945.258-2.203 1.242c-.281.938.235 1.899 1.242 2.18ZM9.965 47.418h12.562c1.102 0 1.922-.773 1.922-1.828c0-1.055-.82-1.852-1.922-1.852H9.988c-1.617 0-2.695-1.336-2.695-2.789c0-.422.07-.937.328-1.383l6-10.734l.984 4.195c.211 1.008 1.22 1.547 2.18 1.29c.984-.235 1.547-1.172 1.266-2.157l-1.97-7.804c-.21-.774-.538-1.313-1.147-1.665c-.61-.375-1.196-.398-1.993-.164l-7.734 2.18c-1.031.281-1.547 1.242-1.266 2.18c.258.984 1.219 1.57 2.203 1.242l4.336-1.29l-6.093 10.923c-.586 1.031-.891 2.133-.891 3.187c0 3.633 2.484 6.469 6.469 6.469m24.539 5.578c.726.75 1.828.703 2.531 0c.703-.68.703-1.805-.047-2.531l-3.21-3.047h12.257c3.985 0 6.469-2.836 6.469-6.469c0-1.054-.281-2.133-.867-3.187l-6.188-11.086c-.562-1.008-1.64-1.242-2.555-.703c-.914.539-1.218 1.64-.703 2.578l6.188 11.015c.234.446.351.961.351 1.383c0 1.453-1.125 2.79-2.742 2.79h-12.21l3.21-3.024c.75-.727.75-1.852.047-2.531c-.703-.727-1.805-.75-2.531 0l-5.742 5.578c-.586.562-.868 1.125-.868 1.828c0 .703.282 1.242.868 1.804Z"></path></svg>';
+        const selectGameBackLightSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 56 56" fill="var(--color-high-light)"><path d="M39.215 23.137c.797.21 1.406.21 2.015-.164c.61-.375.938-.867 1.149-1.664l1.969-7.805c.257-.984-.282-1.922-1.266-2.156c-.961-.258-1.969.28-2.18 1.289l-.984 4.195l-6.352-11.32c-1.195-2.156-3.351-3.258-5.554-3.258a6.411 6.411 0 0 0-5.579 3.258l-6.468 11.554c-.586 1.055-.258 2.063.633 2.602c.937.516 2.039.188 2.578-.75l6.468-11.602c.54-.937 1.454-1.335 2.368-1.335c.914 0 1.804.398 2.32 1.335l6.445 11.508l-4.336-1.289c-.984-.305-1.945.258-2.203 1.242c-.281.938.235 1.899 1.242 2.18ZM9.965 47.418h12.562c1.102 0 1.922-.773 1.922-1.828c0-1.055-.82-1.852-1.922-1.852H9.988c-1.617 0-2.695-1.336-2.695-2.789c0-.422.07-.937.328-1.383l6-10.734l.984 4.195c.211 1.008 1.22 1.547 2.18 1.29c.984-.235 1.547-1.172 1.266-2.157l-1.97-7.804c-.21-.774-.538-1.313-1.147-1.665c-.61-.375-1.196-.398-1.993-.164l-7.734 2.18c-1.031.281-1.547 1.242-1.266 2.18c.258.984 1.219 1.57 2.203 1.242l4.336-1.29l-6.093 10.923c-.586 1.031-.891 2.133-.891 3.187c0 3.633 2.484 6.469 6.469 6.469m24.539 5.578c.726.75 1.828.703 2.531 0c.703-.68.703-1.805-.047-2.531l-3.21-3.047h12.257c3.985 0 6.469-2.836 6.469-6.469c0-1.054-.281-2.133-.867-3.187l-6.188-11.086c-.562-1.008-1.64-1.242-2.555-.703c-.914.539-1.218 1.64-.703 2.578l6.188 11.015c.234.446.351.961.351 1.383c0 1.453-1.125 2.79-2.742 2.79h-12.21l3.21-3.024c.75-.727.75-1.852.047-2.531c-.703-.727-1.805-.75-2.531 0l-5.742 5.578c-.586.562-.868 1.125-.868 1.828c0 .703.282 1.242.868 1.804Z"></path></svg>';
         selectGame.innerHTML = selectGameSVG;
         selectGame.addEventListener('click', async () => {
-            if (game.style.display === '') return;
-            if (game.querySelector('.open-projects').style.display === '') return;
-            const progressDungeon = progress.render(app);
-            await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
-            await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
+            if (gameUtils.game.style.display === '') return;
+            if (gameUtils.game.querySelector('.dungeon').style.display === 'flex') {
+                authData.setDungeon(false);
+                const progressDungeon = progress.render(app);
+                await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
+                await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
+                await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
+            }
+
             selectGame.innerHTML = selectGameLightSVG;
-            await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
-            game.querySelectorAll(':scope>*').forEach(async element => {
+            gameUtils.game.querySelectorAll(':scope>*').forEach(async element => {
                 element.style.display = '';
             });
         });
-        game.querySelector('.open-projects').childNodes.forEach(element => {
+        gameUtils.game.querySelector('.open-projects').childNodes.forEach(element => {
             element.addEventListener('click', () => {
                 selectGame.innerHTML = selectGameBackLightSVG;
             });
         });
+        if (gameUtils.isDungeon) {
+            selectGame.innerHTML = selectGameBackSVG;
+        }
         const selectSettings = document.createElement('div');
         selectSettings.className = 'select-settings';
         selectSettings.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="var(--color-high-light)"><path d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0L19.544 6.2a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366A2.5 2.5 0 0 1 4.456 6.2l6.294-3.634ZM12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6Z"></path></svg>';

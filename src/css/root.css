@@ -10,6 +10,7 @@
     --color-red-darkness-max: #962b2e;
     --color-pink: #d43d8a;
     --color-green-blue: #68aca3;
+    --color-green-blue-darkness-max: #68aca330;
     --color-light-blue: #597497;
     --color-dark-blue: #542a71;
 
@@ -25,6 +26,7 @@
     --text-shadow-2: 1px 1px 5px var(--color-yellow), 1px 1px 5px var(--color-yellow);
     --text-shadow-3: -5px -5px 2px var(--color-high-light-darkness-max), 5px 5px 2px var(--color-high-light-darkness-max);
     --text-shadow-4: -5px -5px 2px var(--color-red-darkness-max), 5px 5px 2px var(--color-red-darkness-max);
+    --text-shadow-5: -5px -5px 2px var(--color-green-blue-darkness-max), 5px 5px 2px var(--color-green-blue-darkness-max);
 }
 
 svg {

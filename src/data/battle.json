@@ -1,0 +1,18 @@
+{
+    "selector": {
+        "direction": 1,
+        "monster": 1,
+        "treasure-chest": 1,
+        "item": 1,
+        "wall": 1,
+        "portal": 1,
+        "safe-zone": 0,
+        "boss-room": 0
+    },
+    "probability": {
+        "none": 0,
+        "low": 1,
+        "mid": 50,
+        "high": 100
+    }
+}

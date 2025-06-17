@@ -32,12 +32,29 @@ const math = (() => {
     function getRandomBool() {
         return Math.random() < 0.5;
     }
+    /**
+     * Weighted Random Selection
+     */
+    function weightedRandom(data) {
+        let entries = Object.entries(data);
+        let weightedArray = [];
+
+        entries.forEach(([key, weight]) => {
+            for (let i = 0; i < weight; i++) {
+                weightedArray.push(key);
+            }
+        });
+
+        let randomIndex = Math.floor(Math.random() * weightedArray.length);
+        return weightedArray[randomIndex];
+    }
     return {
         truncateDecimal: truncateDecimal,
         getRandomInt: getRandomInt,
         getRandomIntIncludeMax: getRandomIntIncludeMax,
-        getRandomFloat: getRandomFloat, 
-        getRandomBool: getRandomBool
+        getRandomFloat: getRandomFloat,
+        getRandomBool: getRandomBool,
+        weightedRandom: weightedRandom
     }
 })();
 

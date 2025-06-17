@@ -38,12 +38,40 @@ const authData = (() => {
         return await getData(btcKey);
     }
 
+    const isDungeon = 'dungeon/start';
+    function setDungeon(data) {
+        authData.setData(isDungeon, data);
+    }
+    async function getDungeon() {
+        return await getData(isDungeon);
+    }
+    const dungeonArea = 'dungeon/area';
+    function setDungeonArea(data) {
+        authData.setData(dungeonArea, data);
+    }
+    async function getDungeonArea() {
+        return await getData(dungeonArea);
+    }
+    const probability = 'dungeon/probability';
+    function setDungeonProbability(data) {
+        authData.setData(probability, data);
+    }
+    async function getDungeonProbability() {
+        return await getData(probability);
+    }
+
     return {
         init: init,
         setData: setData,
         getData: getData,
         setBtc: setBtc,
-        getBtc: getBtc
+        getBtc: getBtc,
+        setDungeon: setDungeon,
+        getDungeon: getDungeon,
+        setDungeonArea: setDungeonArea,
+        getDungeonArea: getDungeonArea,
+        setDungeonProbability: setDungeonProbability,
+        getDungeonProbability: getDungeonProbability
     }
 })();
 
