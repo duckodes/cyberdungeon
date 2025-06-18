@@ -48,13 +48,46 @@ const math = (() => {
         let randomIndex = Math.floor(Math.random() * weightedArray.length);
         return weightedArray[randomIndex];
     }
+    /**
+     * Weighted Random Selection (flatten nested sturcture into flattened key names)
+     */
+    function weightedRandomFlat(data) {
+        function flattenData(data, prefix = "") {
+            let flat = {};
+            for (let key in data) {
+                let value = data[key];
+                let fullKey = prefix ? `${prefix}.${key}` : key;
+                if (typeof value === "object" && value !== null) {
+                    Object.assign(flat, flattenData(value, fullKey));
+                } else {
+                    flat[fullKey] = value;
+                }
+            }
+            return flat;
+        }
+        let flatData = flattenData(data);
+        let entries = Object.entries(flatData);
+        let weightedArray = [];
+
+        entries.forEach(([key, weight]) => {
+            for (let i = 0; i < weight; i++) {
+                weightedArray.push(key);
+            }
+        });
+
+        if (weightedArray.length === 0) return null;
+
+        let randomIndex = Math.floor(Math.random() * weightedArray.length);
+        return weightedArray[randomIndex];
+    }
     return {
         truncateDecimal: truncateDecimal,
         getRandomInt: getRandomInt,
         getRandomIntIncludeMax: getRandomIntIncludeMax,
         getRandomFloat: getRandomFloat,
         getRandomBool: getRandomBool,
-        weightedRandom: weightedRandom
+        weightedRandom: weightedRandom,
+        weightedRandomFlat: weightedRandomFlat
     }
 })();
 

@@ -37,6 +37,10 @@ const authData = (() => {
     async function getBtc() {
         return await getData(btcKey);
     }
+    async function modifyBtc(data) {
+        const btcData = await getData(btcKey) || 0;
+        authData.setData(btcKey, data + btcData);
+    }
 
     const isDungeon = 'dungeon/start';
     function setDungeon(data) {
@@ -52,12 +56,12 @@ const authData = (() => {
     async function getDungeonArea() {
         return await getData(dungeonArea);
     }
-    const probability = 'dungeon/probability';
-    function setDungeonProbability(data) {
-        authData.setData(probability, data);
+    const safe = 'dungeon/safe';
+    function setDungeonSafe(data) {
+        authData.setData(safe, data);
     }
-    async function getDungeonProbability() {
-        return await getData(probability);
+    async function getDungeonSafe() {
+        return await getData(safe);
     }
     const dungeonSelector = 'dungeon/selector';
     async function setDungeonSelectorForce(data) {
@@ -71,6 +75,13 @@ const authData = (() => {
     async function getDungeonSelector() {
         return await getData(dungeonSelector);
     }
+    const treasureChestBtc = 'dungeon/treasure/btc';
+    function setDungeonTreasureBtc(data) {
+        authData.setData(treasureChestBtc, data);
+    }
+    async function getDungeonTreasureBtc() {
+        return await getData(treasureChestBtc);
+    }
 
     return {
         init: init,
@@ -78,15 +89,18 @@ const authData = (() => {
         getData: getData,
         setBtc: setBtc,
         getBtc: getBtc,
+        modifyBtc: modifyBtc,
         setDungeon: setDungeon,
         getDungeon: getDungeon,
         setDungeonArea: setDungeonArea,
         getDungeonArea: getDungeonArea,
-        setDungeonProbability: setDungeonProbability,
-        getDungeonProbability: getDungeonProbability,
+        setDungeonSafe: setDungeonSafe,
+        getDungeonSafe: getDungeonSafe,
         setDungeonSelectorForce: setDungeonSelectorForce,
         setDungeonSelector: setDungeonSelector,
-        getDungeonSelector: getDungeonSelector
+        getDungeonSelector: getDungeonSelector,
+        setDungeonTreasureBtc: setDungeonTreasureBtc,
+        getDungeonTreasureBtc: getDungeonTreasureBtc
     }
 })();
 

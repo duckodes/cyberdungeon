@@ -103,6 +103,37 @@
         "area": [
             "얕은 웹 영역",
             "깊은 웹 영역"
-        ]
+        ],
+        "selector": {
+            "direction": {
+                "forward": "전진",
+                "backward": "후퇴",
+                "turn-left": "좌회전",
+                "turn-right": "우회전"
+            },
+            "monster": {
+                "blue-slime": "파란 슬라임"
+            },
+            "treasure-chest": "보물 상자",
+            "item": {
+                "water": "물"
+            },
+            "wall": {
+                "stone-wall": "석벽",
+                "rock-wall": "암석 벽",
+                "brick-wall": "벽돌 벽",
+                "concrete-wall": "콘크리트 벽",
+                "dry-stone-wall": "건식 석벽",
+                "retaining-wall": "옹벽",
+                "magic-barrier": "마법 장벽",
+                "crystal-wall": "수정 벽",
+                "iron-wall": "철벽",
+                "obsidian-wall": "흑요석 벽",
+                "thorn-wall": "가시 벽"
+            },
+            "portal": "포탈",
+            "safe-zone": "안전 지대",
+            "boss-room": "보스 방"
+        }
     }
 }

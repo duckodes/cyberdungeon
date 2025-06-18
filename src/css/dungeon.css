@@ -41,14 +41,24 @@
     height: 100%;
     display: flex;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .app>.content>.game>.dungeon>.selection>.selector {
-    background-color: rgba(255, 144, 144, 0.432);
+    color: var(--color-high-light-darkness-max-static);
+    background-color: var(--color-high-light-darkness);
     width: 100%;
     max-width: 150px;
     height: 70px;
     margin: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app>.content>.game>.dungeon>.selection>.selector-none {
+    color: var(--color-high-light-darkness);
+    background-color: var(--color-green-blue-darkness-max);
 }

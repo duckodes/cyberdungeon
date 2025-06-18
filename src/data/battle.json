@@ -1,11 +1,32 @@
 {
     "selector": {
-        "direction": 1,
-        "monster": 1,
-        "treasure-chest": 1,
-        "item": 1,
-        "wall": 1,
-        "portal": 1,
+        "direction": {
+            "forward": 100,
+            "backward": 100,
+            "turn-left": 100,
+            "turn-right": 100
+        },
+        "monster": {
+            "blue-slime": 100
+        },
+        "treasure-chest": 85,
+        "item": {
+            "water": 80
+        },
+        "wall": {
+            "stone-wall": 100,
+            "rock-wall": 100,
+            "brick-wall": 100,
+            "concrete-wall": 100,
+            "dry-stone-wall": 100,
+            "retaining-wall": 55,
+            "magic-barrier": 55,
+            "crystal-wall": 45,
+            "iron-wall": 50,
+            "obsidian-wall": 70,
+            "thorn-wall": 60
+        },
+        "portal": 80,
         "safe-zone": 0,
         "boss-room": 0
     },

@@ -103,6 +103,37 @@
         "area": [
             "淺層網域",
             "深度網域"
-        ]
+        ],
+        "selector": {
+            "direction": {
+                "forward": "向前",
+                "backward": "向後",
+                "turn-left": "左轉",
+                "turn-right": "右轉"
+            },
+            "monster": {
+                "blue-slime": "藍色史萊姆"
+            },
+            "treasure-chest": "寶箱",
+            "item": {
+                "water": "水"
+            },
+            "wall": {
+                "stone-wall": "石牆",
+                "rock-wall": "岩石牆",
+                "brick-wall": "磚牆",
+                "concrete-wall": "混凝土牆",
+                "dry-stone-wall": "乾砌石牆",
+                "retaining-wall": "擋土牆",
+                "magic-barrier": "魔法屏障",
+                "crystal-wall": "水晶牆",
+                "iron-wall": "鐵牆",
+                "obsidian-wall": "黑曜石牆",
+                "thorn-wall": "荊棘牆"
+            },
+            "portal": "傳送門",
+            "safe-zone": "安全區域",
+            "boss-room": "頭目房間"
+        }
     }
 }

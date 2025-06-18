@@ -135,7 +135,38 @@ const languageJson = {
     },
     dungeon: {
         /**淺層網域, 深度網域 */
-        area: [String]
+        area: [String],
+        selector: {
+            direction: {
+                forward: String,
+                backward: String,
+                "turn-left": String,
+                "turn-right": String
+            },
+            monster: {
+                "blue-slime": String
+            },
+            "treasure-chest": String,
+            item: {
+                water: String
+            },
+            wall: {
+                "stone-wall": String,
+                "rock-wall": String,
+                "brick-wall": String,
+                "concrete-wall": String,
+                "dry-stone-wall": String,
+                "retaining-wall": String,
+                "magic-barrier": String,
+                "crystal-wall": String,
+                "iron-wall": String,
+                "obsidian-wall": String,
+                "thorn-wall": String
+            },
+            portal: String,
+            "safe-zone": String,
+            "boss-room": String
+        }
     }
 };
 

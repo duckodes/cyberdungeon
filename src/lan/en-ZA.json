@@ -103,6 +103,37 @@
         "area": [
             "surface web domain",
             "deep web domain"
-        ]
+        ],
+        "selector": {
+            "direction": {
+                "forward": "Forward",
+                "backward": "Backward",
+                "turn-left": "Turn Left",
+                "turn-right": "Turn Right"
+            },
+            "monster": {
+                "blue-slime": "Blue Slime"
+            },
+            "treasure-chest": "Treasure Chest",
+            "item": {
+                "water": "Water"
+            },
+            "wall": {
+                "stone-wall": "Stone Wall",
+                "rock-wall": "Rock Wall",
+                "brick-wall": "Brick Wall",
+                "concrete-wall": "Concrete Wall",
+                "dry-stone-wall": "Dry Stone Wall",
+                "retaining-wall": "Retaining Wall",
+                "magic-barrier": "Magic Barrier",
+                "crystal-wall": "Crystal Wall",
+                "iron-wall": "Iron Wall",
+                "obsidian-wall": "Obsidian Wall",
+                "thorn-wall": "Thorn Wall"
+            },
+            "portal": "Portal",
+            "safe-zone": "Safe Zone",
+            "boss-room": "Boss Room"
+        }
     }
 }

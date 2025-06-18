@@ -103,6 +103,37 @@
         "area": [
             "浅層ウェブ領域",
             "深層ウェブ領域"
-        ]
+        ],
+        "selector": {
+            "direction": {
+                "forward": "前進",
+                "backward": "後退",
+                "turn-left": "左に曲がる",
+                "turn-right": "右に曲がる"
+            },
+            "monster": {
+                "blue-slime": "ブルースライム"
+            },
+            "treasure-chest": "宝箱",
+            "item": {
+                "water": "水"
+            },
+            "wall": {
+                "stone-wall": "石の壁",
+                "rock-wall": "岩壁",
+                "brick-wall": "レンガの壁",
+                "concrete-wall": "コンクリートの壁",
+                "dry-stone-wall": "空積みの壁",
+                "retaining-wall": "擁壁",
+                "magic-barrier": "魔法の結界",
+                "crystal-wall": "クリスタルの壁",
+                "iron-wall": "鉄の壁",
+                "obsidian-wall": "黒曜石の壁",
+                "thorn-wall": "茨の壁"
+            },
+            "portal": "ポータル",
+            "safe-zone": "安全地帯",
+            "boss-room": "ボス部屋"
+        }
     }
 }
