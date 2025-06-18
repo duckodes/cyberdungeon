@@ -338,11 +338,17 @@ const dungeonutils = (() => {
                 });
             }
             const battleData = await fetcher.load(`../src/data/battle.json`);
-            
             for (let i = 0; i < 4; i++) {
                 const selector = document.createElement('div');
                 selector.className = 'selector';
-                selector.textContent = math.weightedRandom(battleData.selector);
+                const randomSelector = math.weightedRandom(battleData.selector);
+                selector.textContent = randomSelector;
+                await authData.setDungeonSelector(randomSelector);
+
+                const dungeonSelectorData = await authData.getDungeonSelector();
+                if (dungeonSelectorData) {
+                    selector.textContent = dungeonSelectorData[i];
+                }
                 selection.appendChild(selector);
             }
         }
@@ -656,6 +662,7 @@ const footerutils = (() => {
             if (gameUtils.game.style.display === '') return;
             if (gameUtils.game.querySelector('.dungeon').style.display === 'flex') {
                 authData.setDungeon(false);
+                await authData.setDungeonSelectorForce([]);
                 const progressDungeon = progress.render(app);
                 await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                 await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });

@@ -59,6 +59,18 @@ const authData = (() => {
     async function getDungeonProbability() {
         return await getData(probability);
     }
+    const dungeonSelector = 'dungeon/selector';
+    async function setDungeonSelectorForce(data) {
+        authData.setData(dungeonSelector, data);
+    }
+    async function setDungeonSelector(data) {
+        const currentSelector = await authData.getData(dungeonSelector) || [];
+        if (currentSelector.length > 3) return;
+        authData.setData(dungeonSelector, [...currentSelector, data]);
+    }
+    async function getDungeonSelector() {
+        return await getData(dungeonSelector);
+    }
 
     return {
         init: init,
@@ -71,7 +83,10 @@ const authData = (() => {
         setDungeonArea: setDungeonArea,
         getDungeonArea: getDungeonArea,
         setDungeonProbability: setDungeonProbability,
-        getDungeonProbability: getDungeonProbability
+        getDungeonProbability: getDungeonProbability,
+        setDungeonSelectorForce: setDungeonSelectorForce,
+        setDungeonSelector: setDungeonSelector,
+        getDungeonSelector: getDungeonSelector
     }
 })();
 
