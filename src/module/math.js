@@ -65,20 +65,18 @@ const math = (() => {
             }
             return flat;
         }
+
         let flatData = flattenData(data);
         let entries = Object.entries(flatData);
-        let weightedArray = [];
+        let totalWeight = entries.reduce((sum, [, w]) => sum + w, 0);
+        if (totalWeight === 0) return null;
 
-        entries.forEach(([key, weight]) => {
-            for (let i = 0; i < weight; i++) {
-                weightedArray.push(key);
-            }
-        });
-
-        if (weightedArray.length === 0) return null;
-
-        let randomIndex = Math.floor(Math.random() * weightedArray.length);
-        return weightedArray[randomIndex];
+        let rand = Math.random() * totalWeight;
+        for (let [key, weight] of entries) {
+            if (rand < weight) return key;
+            rand -= weight;
+        }
+        return null;
     }
     return {
         truncateDecimal: truncateDecimal,

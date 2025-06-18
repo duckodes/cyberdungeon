@@ -1,39 +1,33 @@
 {
     "selector": {
         "direction": {
-            "forward": 100,
-            "backward": 100,
-            "turn-left": 100,
-            "turn-right": 100
+            "forward": 380,
+            "backward": 380,
+            "turn-left": 380,
+            "turn-right": 380
         },
         "monster": {
-            "blue-slime": 100
+            "blue-slime": 400
         },
-        "treasure-chest": 85,
+        "treasure-chest": 340,
         "item": {
-            "water": 80
+            "water": 320
         },
         "wall": {
-            "stone-wall": 100,
-            "rock-wall": 100,
-            "brick-wall": 100,
-            "concrete-wall": 100,
-            "dry-stone-wall": 100,
-            "retaining-wall": 55,
-            "magic-barrier": 55,
-            "crystal-wall": 45,
-            "iron-wall": 50,
-            "obsidian-wall": 70,
-            "thorn-wall": 60
+            "stone-wall": 400,
+            "rock-wall": 400,
+            "brick-wall": 400,
+            "concrete-wall": 400,
+            "dry-stone-wall": 400,
+            "retaining-wall": 220,
+            "magic-barrier": 220,
+            "crystal-wall": 180,
+            "iron-wall": 320,
+            "obsidian-wall": 280,
+            "thorn-wall": 240
         },
-        "portal": 80,
+        "portal": 320,
         "safe-zone": 0,
         "boss-room": 0
-    },
-    "probability": {
-        "none": 0,
-        "low": 1,
-        "mid": 50,
-        "high": 100
     }
 }

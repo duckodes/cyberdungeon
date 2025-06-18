@@ -291,12 +291,12 @@ const gameutils = (() => {
                         await progressDungeon.set({ value: 20, text: languageData.progress['port-load'] + ' ', delay: math.getRandomIntIncludeMax(500, 700), loadText: '.' });
                         await progressDungeon.set({ value: 50, text: languageData.progress['dungeon-crack'] + ' ', delay: math.getRandomIntIncludeMax(500, 700) });
                         await progressDungeon.set({ value: 100, text: null, delay: 100, loadText: '.', endDelay: 500 });
-                        await dungeonutils.render(app, dungeon, languageData, randomInt);
+                        await dungeonutils.render(app, game, dungeon, languageData, randomInt);
                     });
                     if (isDungeon) {
                         game.children[i].style.display = 'flex';
                         openProjects.style.display = 'none';
-                        await dungeonutils.render(app, dungeon, languageData, dungeonAreaData);
+                        await dungeonutils.render(app, game, dungeon, languageData, dungeonAreaData);
                     }
                     break;
                 default:
@@ -317,10 +317,12 @@ const gameutils = (() => {
 
 const dungeonutils = (() => {
     /**
+    * @param {HTMLDivElement} app
+    * @param {HTMLDivElement} game
     * @param {HTMLDivElement} dungeon
     * @param {languageJson} languageData
     */
-    async function render(app, dungeon, languageData, dungeonAreaData) {
+    async function render(app, game, dungeon, languageData, dungeonAreaData) {
         const dungeonArea = document.createElement('div');
         dungeonArea.className = 'dungeon-area';
         dungeonArea.textContent = languageData.dungeon.area[dungeonAreaData];
@@ -345,6 +347,16 @@ const dungeonutils = (() => {
             if (!treasureChestBtcData) {
                 authData.setDungeonTreasureBtc(treasureChestBtc);
             }
+            const treasureType = {
+                btc: 0,
+                safe: 1
+            }
+            const treasureTypeData = await authData.getDungeonTreasureType();
+            let currentTreasureType = treasureTypeData || math.getRandomIntIncludeMax(0, 1);
+            if (!treasureTypeData) {
+                authData.setDungeonTreasureType(currentTreasureType);
+            }
+            console.log(currentTreasureType);
             for (let i = 0; i < 4; i++) {
                 const selector = document.createElement('div');
                 selector.className = 'selector';
@@ -353,8 +365,7 @@ const dungeonutils = (() => {
 
                 const dungeonSelectorData = await authData.getDungeonSelector();
                 if (dungeonSelectorData.every(item => item.split('.')[0] === 'wall')) {
-                    await authData.setDungeonSelectorForce([]);
-                    authData.setDungeonTreasureBtc(null);
+                    await resetData();
                     update();
                     console.log('Dead lock');
                     return;
@@ -369,13 +380,29 @@ const dungeonutils = (() => {
                     if (dungeonSelectorData[i].split('.')[0] === 'wall') return;
                     if (dungeonSelectorData[i].split('.')[0] === 'treasure-chest') {
                         const popupCheck = popup.renderCheck(app);
-                        popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
                         popupCheck.confirm.textContent = '確認';
-                        popupCheck.confirm.addEventListener('click', async () => {
-                            popupCheck.removePanel();
-                            await authData.modifyBtc(treasureChestBtc);
-                            await load();
-                        });
+                        switch (currentTreasureType) {
+                            case treasureType.btc:
+                                popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
+                                popupCheck.confirm.addEventListener('click', async () => {
+                                    popupCheck.removePanel();
+                                    await authData.modifyBtc(treasureChestBtc);
+                                    await load();
+                                });
+                                break;
+                            case treasureType.safe:
+                                popupCheck.popupPanel.innerHTML = `<div>safe area add 1</div>`;
+                                popupCheck.confirm.addEventListener('click', async () => {
+                                    popupCheck.removePanel();
+                                    safeProbability++;
+                                    authData.setDungeonSafe(safeProbability);
+                                    await load();
+                                });
+                                break;
+
+                            default:
+                                break;
+                        }
                         popupCheck.cancel.textContent = '取消';
                         popupCheck.cancel.addEventListener('click', () => {
                             popupCheck.removePanel();
@@ -383,18 +410,22 @@ const dungeonutils = (() => {
                         popupCheck.render();
                         return;
                     }
-                    if (dungeonSelectorData[i].split('.')[0] === 'direction') {
-                        safeProbability++;
+                    if (dungeonSelectorData[i].split('.')[0] === 'portal') {
+                        safeProbability += 10;
                         authData.setDungeonSafe(safeProbability);
+                    }
+                    if (dungeonSelectorData[i].split('.')[0] === 'safe-zone') {
+                        leaveResetData();
+                        game.querySelectorAll(':scope>*').forEach(async element => {
+                            element.style.display = '';
+                        });
                     }
                     await load();
                     async function load() {
-                        await authData.setDungeonSelectorForce([]);
-                        authData.setDungeonTreasureBtc(null);
+                        await resetData();
                         const progressDungeon = progress.render(app);
                         await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
-                        await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
-                        await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
+                        await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 500 });
                         update();
                     }
                 });
@@ -415,8 +446,19 @@ const dungeonutils = (() => {
         dungeon.appendChild(safeAreaProbability);
         dungeon.appendChild(selection);
     }
+    async function resetData() {
+        await authData.setDungeonSelectorForce([]);
+        authData.setDungeonTreasureType(null);
+        authData.setDungeonTreasureBtc(null);
+    }
+    async function leaveResetData() {
+        authData.setDungeon(false);
+        authData.setDungeonSafe(null);
+        await resetData();
+    }
     return {
-        render: render
+        render: render,
+        leaveResetData: leaveResetData
     }
 })();
 
@@ -710,9 +752,7 @@ const footerutils = (() => {
         selectGame.addEventListener('click', async () => {
             if (gameUtils.game.style.display === '') return;
             if (gameUtils.game.querySelector('.dungeon').style.display === 'flex') {
-                authData.setDungeon(false);
-                await authData.setDungeonSelectorForce([]);
-                authData.setDungeonTreasureBtc(null);
+                await dungeonutils.leaveResetData();
                 const progressDungeon = progress.render(app);
                 await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                 await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
@@ -724,7 +764,8 @@ const footerutils = (() => {
                 element.style.display = '';
             });
         });
-        gameUtils.game.querySelector('.open-projects').childNodes.forEach(element => {
+        gameUtils.game.querySelector('.open-projects').childNodes.forEach((element, index) => {
+            if (gameUtils.game.children[index].className === 'dungeon') return;
             element.addEventListener('click', () => {
                 selectGame.innerHTML = selectGameBackLightSVG;
             });

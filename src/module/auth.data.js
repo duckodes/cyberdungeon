@@ -75,6 +75,13 @@ const authData = (() => {
     async function getDungeonSelector() {
         return await getData(dungeonSelector);
     }
+    const treasureType = 'dungeon/treasure/type';
+    function setDungeonTreasureType(data) {
+        authData.setData(treasureType, data);
+    }
+    async function getDungeonTreasureType() {
+        return await getData(treasureType);
+    }
     const treasureChestBtc = 'dungeon/treasure/btc';
     function setDungeonTreasureBtc(data) {
         authData.setData(treasureChestBtc, data);
@@ -99,6 +106,8 @@ const authData = (() => {
         setDungeonSelectorForce: setDungeonSelectorForce,
         setDungeonSelector: setDungeonSelector,
         getDungeonSelector: getDungeonSelector,
+        setDungeonTreasureType: setDungeonTreasureType,
+        getDungeonTreasureType: getDungeonTreasureType,
         setDungeonTreasureBtc: setDungeonTreasureBtc,
         getDungeonTreasureBtc: getDungeonTreasureBtc
     }
