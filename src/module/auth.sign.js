@@ -126,7 +126,7 @@ const authSign = (() => {
         logout: logout,
         checkToken: checkToken,
         registerWindowEvent: registerWindowEvent,
-        updateProfiles: registerWindowEvent
+        updateProfiles: updateProfiles
     }
 })();
 

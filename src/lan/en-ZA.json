@@ -73,7 +73,9 @@
     },
     "settings": {
         "editusername": "username",
-        "logout": "Logout"
+        "logout": "Logout",
+        "id-card": "Identity Card",
+        "cybernet-credentials": "Cybernet Access Pass – C.NetID v1.7"
     },
     "game": {
         "open-project": {

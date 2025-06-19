@@ -73,7 +73,9 @@
     },
     "settings": {
         "editusername": "用戶名稱",
-        "logout": "登出"
+        "logout": "登出",
+        "id-card": "身分證",
+        "cybernet-credentials": "地網通行證 C.NetID v.1.7"
     },
     "game": {
         "open-project": {

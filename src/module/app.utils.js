@@ -634,6 +634,7 @@ const settingsutils = (() => {
                 confirmUsername.style = '';
             }
         });
+        console.log(auth.auth.currentUser.displayName);
         confirmUsername.addEventListener('click', () => {
             authSign.updateProfiles(auth.auth.currentUser, inputUsername.value);
             authData.setData('name', inputUsername.value);
@@ -641,6 +642,23 @@ const settingsutils = (() => {
         });
         editUsername.appendChild(inputUsername);
         editUsername.appendChild(confirmUsername);
+
+        const infoCard = document.createElement('div');
+        infoCard.textContent = languageData.settings['id-card'];
+        infoCard.className = 'info-card';
+        infoCard.addEventListener('click', () => {
+            const popupInfoCard = popup.render(app);
+            popupInfoCard.popupPanel.classList.add('popup-panel-info-card');
+            const card = document.createElement('div');
+            card.className = 'card';
+            const cardTitle = document.createElement('div');
+            cardTitle.className = 'card-title';
+            cardTitle.textContent = languageData.settings['cybernet-credentials'];
+
+            card.appendChild(cardTitle);
+            card.appendChild(editUsername);
+            popupInfoCard.popupPanel.appendChild(card);
+        });
 
         const languageSelect = document.createElement('div');
         languageSelect.className = 'language-select';
@@ -714,10 +732,10 @@ const settingsutils = (() => {
             `Screen Resolution: ${window.screen.width} x ${window.screen.height}\n` +
             `Online Status: ${navigator.onLine ? 'Online' : 'Offline'}`;
 
-        settings.appendChild(editUsername);
         settings.appendChild(languageSelect);
-        settings.appendChild(logout);
+        settings.appendChild(infoCard);
         settings.appendChild(systemInfo);
+        settings.appendChild(logout);
         return {
             settings: settings,
             inputUsername: inputUsername,

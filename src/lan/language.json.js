@@ -99,7 +99,11 @@ const languageJson = {
         /**用戶名稱 */
         editusername: String,
         /**登出 */
-        logout: String
+        logout: String,
+        /**身分證 */
+        "id-card": String,
+        /**地網通行證 C.NetID v.1.7 */
+        "cybernet-credentials": String
     },
     game: {
         "open-project": {

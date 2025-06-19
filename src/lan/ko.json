@@ -73,7 +73,9 @@
     },
     "settings": {
         "editusername": "사용자명",
-        "logout": "로그아웃"
+        "logout": "로그아웃",
+        "id-card": "신분증",
+        "cybernet-credentials": "사이버넷 신분증 C.NetID v.1.7"
     },
     "game": {
         "open-project": {

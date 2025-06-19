@@ -73,7 +73,9 @@
     },
     "settings": {
         "editusername": "ユーザー名",
-        "logout": "ログアウト"
+        "logout": "ログアウト",
+        "id-card": "身分証明書",
+        "cybernet-credentials": "サイバーネットIDカード C.NetID v.1.7"
     },
     "game": {
         "open-project": {

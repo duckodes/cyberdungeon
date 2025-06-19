@@ -9,34 +9,73 @@
     font-family: var(--font-family-main);
 }
 
-.app>.content>.settings>.edit-username {
-    width: 50%;
+.app>.content>.settings>.info-card {
+    color: #ffffff;
+    border: 1px solid #ffffff50;
+    width: 100%;
+    max-width: 190px;
+    text-align: center;
+    padding: 5px;
+    margin: 5px 0px 5px 0px;
+    cursor: pointer;
+}
+
+.app>.content>.settings>.info-card:hover {
+    border: 1px solid #ffffff90;
+}
+
+.popup-base>.popup-panel-info-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-base>.popup-panel-info-card>.card {
+    box-shadow: 1px 1px 2px #000000, -1px -1px 2px var(--color-high-light-darkness-max);
+    border-radius: 7px;
+    width: 225px;
+    height: 125px;
+    padding: 5px;
+}
+
+.popup-base>.popup-panel-info-card>.card>.card-title {
+    color: var(--color-main);
+    text-shadow: 1px 1px 2px #000000, -1px -1px 2px var(--color-high-light-darkness-max);
+    font-family: var(--font-family-main);
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.popup-base>.popup-panel-info-card>.card>.edit-username {
+    color: #ffffff;
+    width: 100%;
     max-width: fit-content;
     margin: 5px;
-    color: #fff;
     display: flex;
 }
 
-.app>.content>.settings>.edit-username>input[type=text] {
+.popup-base>.popup-panel-info-card>.card>.edit-username>input[type=text] {
+    color: var(--color-main);
+    caret-color: var(--color-high-light);
+    text-shadow: -1px -1px 1px var(--color-yellow);
+    background: transparent;
     width: 100%;
     height: fit-content;
     outline: none;
     border: none;
-    background: #fff2;
-    color: #fff;
     font-size: 17px;
     padding: 5px;
     margin-left: -5px;
 }
 
-.app>.content>.settings>.edit-username>.confirm-username {
+.popup-base>.popup-panel-info-card>.card>.edit-username>.confirm-username {
     display: none;
     color: #ffffff;
     cursor: pointer;
     font-size: 20px;
 }
 
-.app>.content>.settings>.edit-username>.confirm-username:hover {
+.popup-base>.popup-panel-info-card>.card>.edit-username>.confirm-username:hover {
     color: #8ffab6;
 }
 
