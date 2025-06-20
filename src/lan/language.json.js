@@ -77,6 +77,12 @@ const languageJson = {
         /**代號名稱 */
         name: String
     },
+    popup: {
+        /**確認 */
+        confirm: "",
+        /**取消 */
+        cancel: ""
+    },
     market: {
         /**購買 */
         buy: String,

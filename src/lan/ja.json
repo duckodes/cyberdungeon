@@ -58,6 +58,10 @@
     "nav": {
         "name": "コードネーム"
     },
+    "popup": {
+        "confirm": "確認",
+        "cancel": "キャンセル"
+    },
     "market": {
         "buy": "購入",
         "purchase-info": "購入を確認しますか",

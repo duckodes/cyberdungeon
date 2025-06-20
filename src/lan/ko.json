@@ -58,6 +58,10 @@
     "nav": {
         "name": "코드명"
     },
+    "popup": {
+        "confirm": "확인",
+        "cancel": "취소"
+    },
     "market": {
         "buy": "구매",
         "purchase-info": "구매 확인",

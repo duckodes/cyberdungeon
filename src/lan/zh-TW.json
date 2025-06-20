@@ -58,6 +58,10 @@
     "nav": {
         "name": "代號名稱"
     },
+    "popup": {
+        "confirm": "確認",
+        "cancel": "取消"
+    },
     "market": {
         "buy": "購買",
         "purchase-info": "確認是否購買",

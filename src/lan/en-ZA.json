@@ -58,6 +58,10 @@
     "nav": {
         "name": "Code Name"
     },
+    "popup": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+    },
     "market": {
         "buy": "purchase",
         "purchase-info": "Confirm purchase ",
