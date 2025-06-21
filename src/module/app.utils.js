@@ -825,7 +825,15 @@ const footerutils = (() => {
                     popupCheck.removePanel();
                 });
                 popupCheck.render();
+                return;
             }
+
+            selectGame.innerHTML = selectGameLightSVG;
+            selectGame.querySelector('svg').setAttribute('width', '30');
+            selectGame.querySelector('svg').setAttribute('height', '30');
+            gameUtils.game.querySelectorAll(':scope>*').forEach(async element => {
+                element.style.display = '';
+            });
         });
         gameUtils.game.querySelector('.open-projects').childNodes.forEach((element, index) => {
             element.addEventListener('click', () => {
