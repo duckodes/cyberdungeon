@@ -176,7 +176,8 @@ const languageJson = {
             portal: String,
             "safe-zone": String,
             "boss-room": String
-        }
+        },
+        leave: String
     }
 };
 

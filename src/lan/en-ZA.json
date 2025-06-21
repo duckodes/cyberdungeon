@@ -140,6 +140,7 @@
             "portal": "Portal",
             "safe-zone": "Safe Zone",
             "boss-room": "Boss Room"
-        }
+        },
+        "leave": "A forced extraction from the dungeon comes at a cost"
     }
 }

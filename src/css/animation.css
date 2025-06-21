@@ -106,3 +106,13 @@
         transform: translate(0);
     }
 }
+
+.color-fade-red {
+    animation: color-fade-red 3s ease-out forwards;
+}
+
+@keyframes color-fade-red {
+    0% {
+        color: var(--color-red);
+    }
+}
