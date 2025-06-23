@@ -42,5 +42,13 @@
     font-size: 20px;
     margin: 30px 30px 0px 30px;
     border: 0px;
-    border-bottom: 1px solid var(--color-high-light);
+    border: 1px solid var(--color-high-light-darkness-max);
+    background: linear-gradient(45deg, #e0e0e050 25%, transparent 25%, transparent 50%, #e0e0e050 50%, #e0e0e050 75%, transparent 75%, transparent);
+    background-size: 5px 5px;
+}
+
+.popup-base>.popup-panel-confirm-check>.confirm-cancel>button:hover {
+    border: 1px solid var(--color-high-light-darkness);
+    background: linear-gradient(45deg, #e0e0e025 25%, transparent 25%, transparent 50%, #e0e0e025 50%, #e0e0e025 75%, transparent 75%, transparent);
+    background-size: 5px 5px;
 }

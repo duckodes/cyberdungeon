@@ -16,6 +16,7 @@ import scroller from "./scroller.js";
 import press from "./press.js";
 import languageJson from "../lan/language.json.js";
 import fetcher from "./fetcher.js";
+import noiseText from "./noise.text.js";
 
 const appUtils = (() => {
     /**
@@ -189,8 +190,14 @@ const marketutils = (() => {
                         const btcData = await authData.getBtc();
 
                         const popupCheck = popup.renderCheck(app);
-                        popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
+                        if (btcData - data[i].cost < 0) {
+                            popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
+                        } else {
+                            popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-green">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
+                        }
                         popupCheck.confirm.textContent = languageData.market.confirm;
+                        // noiseText.render(languageData.market.confirm, '#68aca3', popupCheck.confirm);
+                        // noiseText.setNoise(2);
                         popupCheck.confirm.addEventListener('click', async () => {
                             popupConfirm.removePanel();
                             popupCheck.removePanel();

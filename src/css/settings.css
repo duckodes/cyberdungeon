@@ -68,6 +68,12 @@
     margin-left: -5px;
 }
 
+.popup-base>.popup-panel-info-card>.card>.edit-username>input[type=text]::selection {
+    color: var(--color-main);
+    background-color: var(--color-high-light-darkness-max);
+    text-shadow: -1px -1px 1px var(--color-high-light);
+}
+
 .popup-base>.popup-panel-info-card>.card>.edit-username>.confirm-username {
     display: none;
     color: #ffffff;

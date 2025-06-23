@@ -73,3 +73,7 @@ button:hover {
 .text-red {
     color: var(--color-red);
 }
+
+.text-green {
+    color: var(--color-green-blue);
+}
