@@ -192,12 +192,12 @@ const marketutils = (() => {
                         const popupCheck = popup.renderCheck(app);
                         if (btcData - data[i].cost < 0) {
                             popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-red">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
+
                         } else {
                             popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-green">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
                         }
+                        // noiseText.renderTyping(`${btcData} - ${data[i].cost} = ` + String(btcData - data[i].cost) + languageData.wallet.bitcoin, '#68aca3', popupCheck.popupPanel, 5, 20);
                         popupCheck.confirm.textContent = languageData.market.confirm;
-                        // noiseText.render(languageData.market.confirm, '#68aca3', popupCheck.confirm);
-                        // noiseText.setNoise(2);
                         popupCheck.confirm.addEventListener('click', async () => {
                             popupConfirm.removePanel();
                             popupCheck.removePanel();
