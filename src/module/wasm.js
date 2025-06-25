@@ -2,6 +2,7 @@ const wasmUtils = (() => {
     async function math() {
         const importObject = {
             env: {
+                Math_random: Math.random,
                 Math_pow: Math.pow,
                 Math_floor: Math.floor
             }
