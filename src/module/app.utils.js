@@ -197,7 +197,6 @@ const marketutils = (() => {
                         } else {
                             popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-green">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
                         }
-                        // noiseText.renderTyping(`${btcData} - ${data[i].cost} = ` + String(btcData - data[i].cost) + languageData.wallet.bitcoin, '#68aca3', popupCheck.popupPanel, 5, 20);
                         popupCheck.confirm.textContent = languageData.market.confirm;
                         popupCheck.confirm.addEventListener('click', async () => {
                             popupConfirm.removePanel();
@@ -409,7 +408,8 @@ const dungeonutils = (() => {
                         popupCheck.confirm.textContent = languageData.popup.confirm;
                         switch (currentTreasureType) {
                             case treasureType.btc:
-                                popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
+                                // popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
+                                noiseText.renderTyping(`${treasureChestBtc} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 20, 20);
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupCheck.removePanel();
                                     await authData.modifyBtc(treasureChestBtc);
