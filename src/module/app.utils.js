@@ -17,6 +17,7 @@ import press from "./press.js";
 import languageJson from "../lan/language.json.js";
 import fetcher from "./fetcher.js";
 import noiseText from "./noise.text.js";
+import wasm from "./wasm.js";
 
 const appUtils = (() => {
     /**
@@ -557,7 +558,7 @@ const equiputils = (() => {
                                 const btcData = await authData.getBtc();
 
                                 const popupCheck = popup.renderCheck(app);
-                                popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
+                                popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${wasm.math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
                                 popupCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupUserItems.removePanel();

@@ -1,14 +1,5 @@
 const math = (() => {
     /**
-     * Truncate decimal places
-     * @param {*} num decimal numbers
-     * @param {*} digits directly truncate the last few decimal places
-     */
-    function truncateDecimal(num, digits) {
-        let factor = 10 ** digits;
-        return Math.floor(num * factor) / factor;
-    }
-    /**
      * min ~ max - 1
      */
     function getRandomInt(min, max) {
@@ -79,7 +70,6 @@ const math = (() => {
         return null;
     }
     return {
-        truncateDecimal: truncateDecimal,
         getRandomInt: getRandomInt,
         getRandomIntIncludeMax: getRandomIntIncludeMax,
         getRandomFloat: getRandomFloat,
