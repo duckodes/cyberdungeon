@@ -91,11 +91,16 @@ const noiseText = (() => {
             }
         }
     }
-    function renderTyping(text, textColor, parent, speed, maxNoise, startText = 0) {
-        let displayTextLength = startText + 1;
+    function renderTyping(text, textColor, parent, speed, maxNoise, startText = 1, typeWhiteSpace = false) {
+        let displayTextLength = startText;
         let currentNoise = maxNoise;
         const typeNoise = render(text, textColor, parent);
         const noiseLoop = timer.loop(speed, async () => {
+            if (!typeWhiteSpace && /^\s+$/.test(text.substring(displayTextLength - 1, displayTextLength))) {
+                displayTextLength++;
+                currentNoise = maxNoise;
+                return;
+            }
             if (displayTextLength > text.length) {
                 noiseLoop.stop();
                 typeNoise.drawText(text.substring(0, displayTextLength), '#68aca3');
@@ -107,7 +112,6 @@ const noiseText = (() => {
                 currentNoise = maxNoise;
                 return;
             }
-            if (displayTextLength == 1) return;
             typeNoise.drawText(text.substring(0, displayTextLength), '#68aca3');
             typeNoise.setNoise(currentNoise);
             currentNoise--;
