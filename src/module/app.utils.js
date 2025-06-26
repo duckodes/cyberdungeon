@@ -398,6 +398,7 @@ const dungeonutils = (() => {
                     }
                 }
                 selector.addEventListener('click', async () => {
+                    console.log(math.randomArray(dungeonSelectorData.filter(item => item === 'treasure-chest').length, 0, 100));
                     if (dungeonSelectorData[i].split('.')[0] === 'wall') {
                         animation.init(selector, 'shake');
                         audioSource.playSoundEffect('click2');

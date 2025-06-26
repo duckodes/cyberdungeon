@@ -1,4 +1,15 @@
+import wasm from "./wasm.js";
+
 const math = (() => {
+    function randomArray(length, min, max) {
+        const result = [];
+
+        for (let i = 0; i < length; i++) {
+            result.push(wasm.math.getRandomIntIncludeMax(min, max));
+        }
+
+        return result;
+    }
     /**
      * Weighted Random Selection
      */
@@ -46,6 +57,7 @@ const math = (() => {
         return null;
     }
     return {
+        randomArray: randomArray,
         weightedRandom: weightedRandom,
         weightedRandomFlat: weightedRandomFlat
     }
