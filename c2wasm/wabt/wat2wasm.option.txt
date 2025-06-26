@@ -1,0 +1,10 @@
+--debug-names: 保留 debug 名稱
+--enable-exceptions : 啟用 例外處理（Exception Handling） 提案，允許使用 try, catch, throw 等語法，類似 JavaScript 的錯誤處理機制。
+--enable-threads : 啟用 多執行緒（Threads） 支援，允許使用 shared memory 和 atomic 指令，適合需要並行處理的應用。
+--enable-tail-call : 啟用 尾端呼叫（Tail Call） 優化，允許函式在結尾直接跳轉到另一個函式，對遞迴函式特別有幫助，可減少堆疊使用。
+--enable-annotations : 啟用 註解語法（Annotations），允許在 .wat 中使用自訂註解，這些註解不影響執行，但可用於工具分析或元資料。
+--enable-code-metadata : 啟用 程式碼中繼資料（Code Metadata），允許在 .wat 中嵌入額外資訊（如來源位置、編譯器提示等），通常用於除錯或分析。
+--enable-gc : 啟用 垃圾回收（Garbage Collection） 提案，支援高階語言（如 Kotlin/Wasm 或 Dart）需要的記憶體管理功能，包含 struct, array, ref 等型別。
+--enable-memory64 : 啟用 64 位元記憶體（Memory64），允許使用 i64 作為記憶體位址，突破 4GB 限制，適合大型資料處理。
+--enable-multi-memory : 啟用 多記憶體（Multi-Memory） 支援，允許模組擁有多個獨立的記憶體區段，可用於模組間隔離或特殊用途。
+--enable-relaxed-simd : 啟用 寬鬆 SIMD（Relaxed SIMD） 指令集，提供更高效但非確定性的 SIMD 運算，適合機器學習或影像處理等對效能要求高的場景。
