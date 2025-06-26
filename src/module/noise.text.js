@@ -96,18 +96,13 @@ const noiseText = (() => {
         let currentNoise = maxNoise;
         const typeNoise = render(text, textColor, parent);
         const noiseLoop = timer.loop(speed, async () => {
-            if (!typeWhiteSpace && /^\s+$/.test(text.substring(displayTextLength - 1, displayTextLength))) {
-                displayTextLength++;
-                currentNoise = maxNoise;
-                return;
-            }
             if (displayTextLength > text.length) {
                 noiseLoop.stop();
                 typeNoise.drawText(text.substring(0, displayTextLength), '#68aca3');
                 typeNoise.setNoise(2);
                 return;
             }
-            if (currentNoise < 1) {
+            if (currentNoise < 1 || !typeWhiteSpace && /^\s+$/.test(text.substring(displayTextLength - 1, displayTextLength))) {
                 displayTextLength++;
                 currentNoise = maxNoise;
                 return;
