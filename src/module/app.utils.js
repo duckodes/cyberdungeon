@@ -172,6 +172,7 @@ const marketutils = (() => {
                 itemBuyButton.className = 'item-buy-button';
                 itemBuyButton.textContent = `${data[i].cost}${languageData.wallet.bitcoin} ${languageData.market.buy}`;
                 itemBuyButton.addEventListener('click', async () => {
+                    scroller.to(item, "smooth", "start");
                     const popupConfirm = popup.render(app);
                     popupConfirm.popupPanel.classList.add('popup-panel-confirm');
                     const popupContent = document.createElement('div');
@@ -393,7 +394,7 @@ const dungeonutils = (() => {
 
                 if (dungeonSelectorData[i].split('.')[0] === 'treasure-chest') {
                     treasureChestCount++;
-                    selector.dataset.order = treasureChestCount;
+                    selector.dataset.treasureOrder = treasureChestCount;
                 }
                 if (i > 2 && dungeonSelectorData.includes('treasure-chest')) {
                     if (!treasureChestBtcData) {
@@ -424,13 +425,13 @@ const dungeonutils = (() => {
                     if (dungeonSelectorData[i].split('.')[0] === 'treasure-chest') {
                         const popupCheck = popup.renderCheck(app);
                         popupCheck.confirm.textContent = languageData.popup.confirm;
-                        switch (currentTreasureType[selector.dataset.order]) {
+                        switch (currentTreasureType[selector.dataset.treasureOrder]) {
                             case treasureType.btc:
                                 // popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
-                                noiseText.renderTyping(`${treasureChestBtc[selector.dataset.order]} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 10, 10, 0);
+                                noiseText.renderTyping(`${treasureChestBtc[selector.dataset.treasureOrder]} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 10, 10, 0);
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupCheck.removePanel();
-                                    await authData.modifyBtc(treasureChestBtc[selector.dataset.order]);
+                                    await authData.modifyBtc(treasureChestBtc[selector.dataset.treasureOrder]);
                                     await load();
                                 });
                                 break;

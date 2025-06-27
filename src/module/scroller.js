@@ -1,5 +1,3 @@
-import timer from "./timer.js";
-
 const scroller = (() => {
     const scrollPosition = {
         x: 0,
@@ -14,9 +12,13 @@ const scroller = (() => {
         element.scrollLeft = scrollPosition.x;
         element.scrollTop = scrollPosition.y;
     }
+    function to(element, behavior, block) {
+        element.scrollIntoView({ behavior: behavior, block: block });
+    }
     return {
         savePosition: savePosition,
-        resetPosition: resetPosition
+        resetPosition: resetPosition,
+        to: to
     }
 })();
 
