@@ -1,6 +1,13 @@
 import wasm from "./wasm.js";
 
 const math = (() => {
+    function itemsInArray(array, item) {
+        const items = array.filter(eachItem => eachItem === item);
+        return {
+            items: items,
+            count: items.length
+        }
+    }
     function randomArray(length, min, max) {
         const result = [];
 
@@ -57,6 +64,7 @@ const math = (() => {
         return null;
     }
     return {
+        itemsInArray: itemsInArray,
         randomArray: randomArray,
         weightedRandom: weightedRandom,
         weightedRandomFlat: weightedRandomFlat

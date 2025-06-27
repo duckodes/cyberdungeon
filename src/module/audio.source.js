@@ -1,6 +1,6 @@
 import AudioUtils from "./audio.utils.js";
 import authData from "./auth.data.js";
-import math from "./math.js";
+import wasm from "./wasm.js";
 
 const audioSource = (() => {
     const audioUtils = new AudioUtils();
@@ -102,17 +102,17 @@ const audioSource = (() => {
         // data
         audioMS.input.addEventListener('change', async e => {
             let audioData = await authData.getData(audioDataKey);
-            audioData.MS = math.truncateDecimal(parseFloat(e.target.value), 2);
+            audioData.MS = wasm.math.truncateDecimal(parseFloat(e.target.value), 2);
             authData.setData(audioDataKey, audioData);
         });
         audioBG.input.addEventListener('change', async e => {
             let audioData = await authData.getData(audioDataKey);
-            audioData.BG = math.truncateDecimal(parseFloat(e.target.value), 2);
+            audioData.BG = wasm.math.truncateDecimal(parseFloat(e.target.value), 2);
             authData.setData(audioDataKey, audioData);
         });
         audioFX.input.addEventListener('change', async e => {
             let audioData = await authData.getData(audioDataKey);
-            audioData.FX = math.truncateDecimal(parseFloat(e.target.value), 2);
+            audioData.FX = wasm.math.truncateDecimal(parseFloat(e.target.value), 2);
             authData.setData(audioDataKey, audioData);
         });
     }

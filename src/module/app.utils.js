@@ -362,13 +362,14 @@ const dungeonutils = (() => {
             }
             battleData.selector['safe-zone'] = safeProbability;
             const treasureChestBtcData = await authData.getDungeonTreasureBtc();
-            const treasureChestBtc = treasureChestBtcData ?? wasm.math.getRandomIntIncludeMax(1, 70);
+            let treasureChestBtc = treasureChestBtcData ?? [];
+            let treasureChestCount = -1;
             const treasureType = {
                 btc: 0,
                 safe: 1
             }
             const treasureTypeData = await authData.getDungeonTreasureType();
-            const currentTreasureType = treasureTypeData ?? wasm.math.getRandomIntIncludeMax(0, 1);
+            let currentTreasureType = treasureTypeData ?? [];
 
             for (let i = 0; i < 4; i++) {
                 const selector = document.createElement('div');
@@ -377,6 +378,23 @@ const dungeonutils = (() => {
                 await authData.setDungeonSelector(randomSelector);
 
                 const dungeonSelectorData = await authData.getDungeonSelector();
+                if (currentTreasureType.length !== 0) {
+                    if (math.itemsInArray(dungeonSelectorData, 'treasure-chest').count !== currentTreasureType.length) {
+                        authData.removeTreasure();
+                        update();
+                        return;
+                    } else {
+                        currentTreasureType = currentTreasureType;
+                    }
+                } else {
+                    currentTreasureType = math.randomArray(math.itemsInArray(dungeonSelectorData, 'treasure-chest').count, 0, 1);
+                }
+                treasureChestBtc = treasureChestBtc.length === 0 ? math.randomArray(math.itemsInArray(dungeonSelectorData, 'treasure-chest').count, 1, 70) : treasureChestBtc;
+
+                if (dungeonSelectorData[i].split('.')[0] === 'treasure-chest') {
+                    treasureChestCount++;
+                    selector.dataset.order = treasureChestCount;
+                }
                 if (i > 2 && dungeonSelectorData.includes('treasure-chest')) {
                     if (!treasureChestBtcData) {
                         authData.setDungeonTreasureBtc(treasureChestBtc);
@@ -398,7 +416,6 @@ const dungeonutils = (() => {
                     }
                 }
                 selector.addEventListener('click', async () => {
-                    console.log(math.randomArray(dungeonSelectorData.filter(item => item === 'treasure-chest').length, 0, 100));
                     if (dungeonSelectorData[i].split('.')[0] === 'wall') {
                         animation.init(selector, 'shake');
                         audioSource.playSoundEffect('click2');
@@ -407,13 +424,13 @@ const dungeonutils = (() => {
                     if (dungeonSelectorData[i].split('.')[0] === 'treasure-chest') {
                         const popupCheck = popup.renderCheck(app);
                         popupCheck.confirm.textContent = languageData.popup.confirm;
-                        switch (currentTreasureType) {
+                        switch (currentTreasureType[selector.dataset.order]) {
                             case treasureType.btc:
                                 // popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
-                                noiseText.renderTyping(`${treasureChestBtc} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 20, 20);
+                                noiseText.renderTyping(`${treasureChestBtc[selector.dataset.order]} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 10, 10, 0);
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupCheck.removePanel();
-                                    await authData.modifyBtc(treasureChestBtc);
+                                    await authData.modifyBtc(treasureChestBtc[selector.dataset.order]);
                                     await load();
                                 });
                                 break;
@@ -662,7 +679,6 @@ const settingsutils = (() => {
                 confirmUsername.style = '';
             }
         });
-        console.log(auth.auth.currentUser.displayName);
         confirmUsername.addEventListener('click', () => {
             authSign.updateProfiles(auth.auth.currentUser, inputUsername.value);
             authData.setData('name', inputUsername.value);
