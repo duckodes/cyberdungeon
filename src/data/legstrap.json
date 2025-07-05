@@ -2,6 +2,7 @@
     "legstrap": [
         {
             "name": "Standard Potion",
+            "id": "StandardPotion",
             "cost": 100,
             "store": true,
             "img": "",

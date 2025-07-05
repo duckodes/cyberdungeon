@@ -217,7 +217,35 @@ const marketutils = (() => {
                             popupPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
                             await timer.delay(1000);
                             popupPurchaseSuccess.removePanel();
-                            authData.setBtc(btcData - data[i].cost);
+                            // authData.setBtc(btcData - data[i].cost);
+                            const idToken = await authSign.idToken();
+                            await authData.purchaseItem({
+                                idToken: idToken,
+                                itemType: key,
+                                itemId: data[i].id,
+                                quantity: 1
+                            });
+                            // fetch('https://buyitems-uqj7m73rbq-uc.a.run.app', {
+                            //     method: 'POST',
+                            //     headers: {
+                            //         'authorization': `Bearer ${idToken}`,
+                            //         'Content-Type': 'application/json'
+                            //     },
+                            //     body: JSON.stringify({
+                            //         itemType: 'boots',
+                            //         itemId: 'StandardBoots',
+                            //         quantity: 1
+                            //     })
+                            // }).then(async response => {
+                            //     const result = await response.json();
+                            //     if (!response.ok) {
+                            //         console.error('請求失敗：', result.message);
+                            //     } else {
+                            //         console.log('成功：', result.message);
+                            //     }
+                            // }).catch(error => {
+                            //     console.error('網路錯誤：', error.message);
+                            // });
                             await items.setUserItems(key, i);
                             console.log('user items:', await items.getUserItems(itemData));
                         });

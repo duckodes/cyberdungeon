@@ -20,6 +20,36 @@ const authData = (() => {
             !snapshot.val()?.nc && updateData('nc', 0);
         });
     }
+    async function purchaseItem({ idToken, itemType, itemId, quantity }) {
+        try {
+            const response = await fetch('https://buyitems-uqj7m73rbq-uc.a.run.app', {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    itemType,
+                    itemId,
+                    quantity
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error('request failed', result.message);
+                return { success: false, message: result.message };
+            }
+
+            console.log('success: ', result.message);
+            return { success: true, message: result.message };
+
+        } catch (error) {
+            console.error('Connect Error：', error.message);
+            return { success: false, message: error.message };
+        }
+    }
     function setData(key, data) {
         const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/${key}`);
         set(dataRef, data);
@@ -103,6 +133,7 @@ const authData = (() => {
 
     return {
         init: init,
+        purchaseItem: purchaseItem,
         setData: setData,
         getData: getData,
         setBtc: setBtc,

@@ -2,6 +2,7 @@
     "jacket": [
         {
             "name": "Standard Jacket",
+            "id": "StandardJacket",
             "cost": 130,
             "store": true,
             "img": "./src/image/jacket/StandardJacket.png",

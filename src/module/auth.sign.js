@@ -126,7 +126,10 @@ const authSign = (() => {
         logout: logout,
         checkToken: checkToken,
         registerWindowEvent: registerWindowEvent,
-        updateProfiles: updateProfiles
+        updateProfiles: updateProfiles,
+        idToken: async () => {
+            return await auth.auth.currentUser.getIdToken();
+        }
     }
 })();
 
