@@ -217,14 +217,11 @@ const marketutils = (() => {
                             popupPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
                             await timer.delay(1000);
                             popupPurchaseSuccess.removePanel();
-                            const idToken = await authSign.idToken();
                             await authData.purchaseItem({
-                                idToken: idToken,
                                 itemType: key,
                                 itemId: data[i].id,
                                 quantity: 1
                             });
-                            await items.setUserItems(key, i);
                             console.log('user items:', await items.getUserItems(itemData));
                         });
                         popupCheck.cancel.textContent = languageData.market.cancel;
@@ -591,29 +588,14 @@ const equiputils = (() => {
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (userData[i].name === data[j].name) {
-                                                const idToken = await authSign.idToken();
-                                                authData.sellItems({
-                                                    idToken: idToken,
+                                                await authData.sellItems({
                                                     itemType: key,
                                                     itemId: userData[i].id
+                                                }, () => {
+                                                    scroller.savePosition(content);
+                                                    update();
+                                                    scroller.resetPosition(content);
                                                 });
-                                                // Remove unowned equipped items
-                                                let itemDataNames = [];
-                                                items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
-                                                    for (let f = 0; f < newUserData.length; f++) {
-                                                        itemDataNames.push(newUserData[f].name);
-                                                    }
-                                                });
-                                                // userData[i].name: sell item
-                                                for (let f = 0; f < equipData.length; f++) {
-                                                    console.log(itemDataNames, userData[i].name, equipData[f].name);
-                                                    if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {
-                                                        await items.setEquipData(Object.keys(itemData).indexOf(key), -1);
-                                                        scroller.savePosition(content);
-                                                        update();
-                                                        scroller.resetPosition(content);
-                                                    }
-                                                }
                                             }
                                         }
                                     });

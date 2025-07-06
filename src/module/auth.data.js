@@ -1,6 +1,7 @@
 import { ref, update, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
 import auth from "./auth.js";
+import authSign from "./auth.sign.js";
 
 const authData = (() => {
     function init(appUtilsRender) {
@@ -20,7 +21,8 @@ const authData = (() => {
             !snapshot.val()?.nc && updateData('nc', 0);
         });
     }
-    async function purchaseItem({ idToken, itemType, itemId, quantity }) {
+    async function purchaseItem({ itemType, itemId, quantity }) {
+        const idToken = await authSign.idToken();
         try {
             const response = await fetch('https://buyitems-uqj7m73rbq-uc.a.run.app', {
                 method: 'POST',
@@ -50,8 +52,9 @@ const authData = (() => {
             return { success: false, message: error.message };
         }
     }
-    async function sellItems({ idToken, itemType, itemId }) {
+    async function sellItems({ itemType, itemId }, callback) {
         try {
+            const idToken = await authSign.idToken();
             const response = await fetch('https://sellitems-uqj7m73rbq-uc.a.run.app', {
                 method: 'POST',
                 headers: {
@@ -70,7 +73,9 @@ const authData = (() => {
                 console.error('request failed', result.message);
                 return { success: false, message: result.message };
             }
-
+            if (callback) {
+                callback();
+            }
             console.log('success: ', result.message);
             return { success: true, message: result.message };
 
