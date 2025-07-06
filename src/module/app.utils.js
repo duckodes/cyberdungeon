@@ -591,8 +591,12 @@ const equiputils = (() => {
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (userData[i].name === data[j].name) {
-                                                await items.removeUserItems(key, i);
-
+                                                const idToken = await authSign.idToken();
+                                                authData.sellItems({
+                                                    idToken: idToken,
+                                                    itemType: key,
+                                                    itemId: userData[i].id
+                                                });
                                                 // Remove unowned equipped items
                                                 let itemDataNames = [];
                                                 items.parse(await items.getUserItems(itemData), (newUserkey, newUserData) => {
@@ -601,7 +605,6 @@ const equiputils = (() => {
                                                     }
                                                 });
                                                 // userData[i].name: sell item
-                                                authData.setBtc(Math.round(await authData.getBtc() + sellBtc));
                                                 for (let f = 0; f < equipData.length; f++) {
                                                     console.log(itemDataNames, userData[i].name, equipData[f].name);
                                                     if (!itemDataNames.includes(userData[i].name) && userData[i].name === equipData[f].name) {

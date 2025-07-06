@@ -1,3 +1,5 @@
+import timer from "./timer.js";
+
 const scroller = (() => {
     const scrollPosition = {
         x: 0,
