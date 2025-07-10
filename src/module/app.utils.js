@@ -43,8 +43,8 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
-        const marketUtils = marketutils.render(app, languageData, itemData);
-        const gameUtils = await gameutils.render(app, content, languageData, itemData);
+        const marketUtils = marketutils.render(app, navUtils, languageData, itemData);
+        const gameUtils = await gameutils.render(app, navUtils, content, languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
         content.appendChild(gameUtils.game);
@@ -144,10 +144,11 @@ const navutils = (() => {
 const marketutils = (() => {
     /**
     * @param {HTMLDivElement} app
+    * @param {Object} navUtils
     * @param {languageJson} languageData
     * @param {Object} itemData
     */
-    function render(app, languageData, itemData) {
+    function render(app, navUtils, languageData, itemData) {
         const market = document.createElement('div');
         market.className = 'market';
 
@@ -189,7 +190,7 @@ const marketutils = (() => {
                     const confirmPurchase = document.createElement('button');
                     confirmPurchase.textContent = languageData.market.buy;
                     confirmPurchase.addEventListener('click', async () => {
-                        const btcData = await authData.getBtc();
+                        const btcData = parseInt(navUtils.navWalletBTC.textContent);
 
                         const popupCheck = popup.renderCheck(app);
                         if (btcData - data[i].cost < 0) {
@@ -258,11 +259,12 @@ const marketutils = (() => {
 const gameutils = (() => {
     /**
     * @param {HTMLDivElement} app
+    * @param {Object} navUtils
     * @param {HTMLDivElement} content
     * @param {languageJson} languageData
     * @param {Object} itemData
     */
-    async function render(app, content, languageData, itemData) {
+    async function render(app, navUtils, content, languageData, itemData) {
         const game = document.createElement('div');
         game.className = 'game';
         const openProjects = document.createElement('div');
@@ -275,7 +277,7 @@ const gameutils = (() => {
 
         const equip = document.createElement('div');
         equip.className = 'equip';
-        await equiputils.render(app, content, equip, languageData, itemData);
+        await equiputils.render(app, navUtils, content, equip, languageData, itemData);
 
         game.appendChild(dungeon);
         game.appendChild(equip);
@@ -514,16 +516,17 @@ const dungeonutils = (() => {
 const equiputils = (() => {
     /**
     * @param {HTMLDivElement} app
+    * @param {Object} navUtils
     * @param {HTMLDivElement} content
     * @param {HTMLDivElement} equip
     * @param {languageJson} languageData
     * @param {Object} itemData
     */
-    async function render(app, content, equip, languageData, itemData) {
+    async function render(app, navUtils, content, equip, languageData, itemData) {
         function update() {
             remove.child(equip);
             setTimeout(async () => {
-                await render(app, content, equip, languageData, itemData);
+                await render(app, navUtils, content, equip, languageData, itemData);
             });
         }
         items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
@@ -577,7 +580,7 @@ const equiputils = (() => {
                             });
                             shortLongPress.longPress(async () => {
                                 const sellBtc = userData[i].cost * 0.7;
-                                const btcData = await authData.getBtc();
+                                const btcData = parseInt(navUtils.navWalletBTC.textContent);
 
                                 const popupCheck = popup.renderCheck(app);
                                 popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${wasm.math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;

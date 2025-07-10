@@ -17,8 +17,6 @@ const authData = (() => {
             appUtilsRender.update.nc(snapshot.val()?.nc);
             !snapshot.val()?.level && updateData('level', 0);
             !snapshot.val()?.name && updateData('name', auth.auth.currentUser.displayName);
-            !snapshot.val()?.btc && updateData('btc', 0);
-            !snapshot.val()?.nc && updateData('nc', 0);
         });
     }
     async function purchaseItem({ itemType, itemId, quantity }) {
