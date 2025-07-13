@@ -436,11 +436,10 @@ const dungeonutils = (() => {
                         popupCheck.confirm.textContent = languageData.popup.confirm;
                         switch (currentTreasureType[selector.dataset.treasureOrder]) {
                             case treasureType.btc:
-                                // popupCheck.popupPanel.innerHTML = `<div>${treasureChestBtc} ${languageData.wallet.bitcoin}</div>`;
                                 noiseText.renderTyping(`${treasureChestBtc[selector.dataset.treasureOrder]} ${languageData.wallet.bitcoin}`, '#68aca3', popupCheck.popupPanel, 10, 10, 0);
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupCheck.removePanel();
-                                    await authData.modifyBtc(treasureChestBtc[selector.dataset.treasureOrder]);
+                                    await authData.openDungeonTreasure({ typeIndex: selector.dataset.treasureOrder });
                                     await load();
                                 });
                                 break;
@@ -448,8 +447,7 @@ const dungeonutils = (() => {
                                 popupCheck.popupPanel.innerHTML = `<div>safe area add 1</div>`;
                                 popupCheck.confirm.addEventListener('click', async () => {
                                     popupCheck.removePanel();
-                                    safeProbability++;
-                                    authData.setDungeonSafe(safeProbability);
+                                    await authData.openDungeonTreasure({ typeIndex: selector.dataset.treasureOrder });
                                     await load();
                                 });
                                 break;

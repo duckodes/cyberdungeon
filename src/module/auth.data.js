@@ -82,6 +82,34 @@ const authData = (() => {
             return { success: false, message: error.message };
         }
     }
+    async function openDungeonTreasure({ typeIndex }) {
+        const idToken = await authSign.idToken();
+        try {
+            const response = await fetch('https://opendungeontreasure-uqj7m73rbq-uc.a.run.app', {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    typeIndex
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error('request failed', result.message);
+                return { success: false, message: result.message };
+            }
+            console.log('success: ', result.message);
+            return { success: true, message: result.message };
+
+        } catch (error) {
+            console.error('Connect Error：', error.message);
+            return { success: false, message: error.message };
+        }
+    }
     async function initLeaveDungeon() {
         const idToken = await authSign.idToken();
         try {
@@ -143,15 +171,8 @@ const authData = (() => {
     }
 
     const btcKey = 'btc';
-    function setBtc(data) {
-        authData.setData(btcKey, data);
-    }
     async function getBtc() {
         return await getData(btcKey);
-    }
-    async function modifyBtc(data) {
-        const btcData = await getData(btcKey) || 0;
-        authData.setData(btcKey, data + btcData);
     }
 
     const isDungeon = 'dungeon/start';
@@ -206,9 +227,6 @@ const authData = (() => {
         return await getData(treasureChestBtc);
     }
     const leaveBtc = 'dungeon/leave/btc';
-    function setDungeonLeaveBtc(data) {
-        authData.setData(leaveBtc, data);
-    }
     async function getDungeonLeaveBtc() {
         return await getData(leaveBtc);
     }
@@ -217,13 +235,12 @@ const authData = (() => {
         init: init,
         purchaseItem: purchaseItem,
         sellItems: sellItems,
+        openDungeonTreasure: openDungeonTreasure,
         initLeaveDungeon: initLeaveDungeon,
         leaveDungeon: leaveDungeon,
         setData: setData,
         getData: getData,
-        setBtc: setBtc,
         getBtc: getBtc,
-        modifyBtc: modifyBtc,
         setDungeon: setDungeon,
         getDungeon: getDungeon,
         setDungeonArea: setDungeonArea,
@@ -238,7 +255,6 @@ const authData = (() => {
         getDungeonTreasureType: getDungeonTreasureType,
         setDungeonTreasureBtc: setDungeonTreasureBtc,
         getDungeonTreasureBtc: getDungeonTreasureBtc,
-        setDungeonLeaveBtc: setDungeonLeaveBtc,
         getDungeonLeaveBtc: getDungeonLeaveBtc
     }
 })();
