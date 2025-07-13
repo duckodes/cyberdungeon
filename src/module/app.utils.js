@@ -201,20 +201,22 @@ const marketutils = (() => {
                         }
                         popupCheck.confirm.textContent = languageData.market.confirm;
                         popupCheck.confirm.addEventListener('click', async () => {
-                            const progressDungeon = progress.render(app);
-                            await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
-                            popupConfirm.removePanel();
-                            popupCheck.removePanel();
-                            await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
-
                             if (btcData < data[i].cost) {
                                 const popupPurchaseFailed = popup.render(app);
                                 popupPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
                                 popupPurchaseFailed.popupPanel.textContent = languageData.market['purchase-failed'];
+                                popupConfirm.removePanel();
+                                popupCheck.removePanel();
                                 await timer.delay(1000);
                                 popupPurchaseFailed.removePanel();
                                 return;
                             }
+
+                            const progressDungeon = progress.render(app);
+                            await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
+                            popupConfirm.removePanel();
+                            popupCheck.removePanel();
+                            await progressDungeon.set({ value: wasm.math.getRandomIntIncludeMax(10, 90), delay: 500, loadText: '.' });
 
                             const popupPurchaseSuccess = popup.render(app);
                             popupPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
@@ -599,15 +601,15 @@ const equiputils = (() => {
                                                 await authData.sellItems({
                                                     itemType: key,
                                                     itemId: userData[i].id
-                                                }, () => {
+                                                }, async () => {
                                                     scroller.savePosition(content);
                                                     update();
                                                     scroller.resetPosition(content);
+                                                    await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
                                                 });
                                             }
                                         }
                                     });
-                                    await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
                                 });
                                 popupCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
                                 popupCheck.cancel.addEventListener('click', async () => {
