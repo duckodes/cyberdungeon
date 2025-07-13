@@ -51,8 +51,8 @@ const authData = (() => {
         }
     }
     async function sellItems({ itemType, itemId }, callback) {
+        const idToken = await authSign.idToken();
         try {
-            const idToken = await authSign.idToken();
             const response = await fetch('https://sellitems-uqj7m73rbq-uc.a.run.app', {
                 method: 'POST',
                 headers: {
@@ -73,6 +73,56 @@ const authData = (() => {
             }
             if (callback) {
                 callback();
+            }
+            console.log('success: ', result.message);
+            return { success: true, message: result.message };
+
+        } catch (error) {
+            console.error('Connect Error：', error.message);
+            return { success: false, message: error.message };
+        }
+    }
+    async function initLeaveDungeon() {
+        const idToken = await authSign.idToken();
+        try {
+            const response = await fetch('https://initleavedungeon-uqj7m73rbq-uc.a.run.app', {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error('request failed', result.message);
+                return { success: false, message: result.message };
+            }
+            console.log('success: ', result.message);
+            return { success: true, message: result.message };
+
+        } catch (error) {
+            console.error('Connect Error：', error.message);
+            return { success: false, message: error.message };
+        }
+    }
+    async function leaveDungeon() {
+        const idToken = await authSign.idToken();
+        try {
+            const response = await fetch('https://leavedungeon-uqj7m73rbq-uc.a.run.app', {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error('request failed', result.message);
+                return { success: false, message: result.message };
             }
             console.log('success: ', result.message);
             return { success: true, message: result.message };
@@ -167,6 +217,8 @@ const authData = (() => {
         init: init,
         purchaseItem: purchaseItem,
         sellItems: sellItems,
+        initLeaveDungeon: initLeaveDungeon,
+        leaveDungeon: leaveDungeon,
         setData: setData,
         getData: getData,
         setBtc: setBtc,

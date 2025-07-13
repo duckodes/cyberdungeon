@@ -201,8 +201,11 @@ const marketutils = (() => {
                         }
                         popupCheck.confirm.textContent = languageData.market.confirm;
                         popupCheck.confirm.addEventListener('click', async () => {
+                            const progressDungeon = progress.render(app);
+                            await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                             popupConfirm.removePanel();
                             popupCheck.removePanel();
+                            await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
 
                             if (btcData < data[i].cost) {
                                 const popupPurchaseFailed = popup.render(app);
@@ -223,6 +226,7 @@ const marketutils = (() => {
                                 itemId: data[i].id,
                                 quantity: 1
                             });
+                            await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
                             console.log('user items:', await items.getUserItems(itemData));
                         });
                         popupCheck.cancel.textContent = languageData.market.cancel;
@@ -503,7 +507,7 @@ const dungeonutils = (() => {
         authData.setDungeonTreasureBtc(null);
     }
     async function leaveResetData() {
-        authData.setDungeon(false);
+        // authData.setDungeon(false);
         authData.setDungeonSafe(null);
         await resetData();
     }
@@ -586,8 +590,11 @@ const equiputils = (() => {
                                 popupCheck.popupPanel.innerHTML = '<div>' + languageData.game.equip['sell-question'][0] + '<span class="text-red">' + userData[i].name + '</span>' + languageData.game.equip['sell-question'][1] + languageData.game.equip['question-mark'] + '</div>' + `${btcData} + ${wasm.math.truncateDecimal(sellBtc, 3)} = <span class="text-red">${Math.round(btcData + sellBtc)} ${languageData.wallet.bitcoin}</span>`;
                                 popupCheck.confirm.textContent = languageData.game.equip['sell-confirm'];
                                 popupCheck.confirm.addEventListener('click', async () => {
+                                    const progressDungeon = progress.render(app);
+                                    await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                                     popupUserItems.removePanel();
                                     popupCheck.removePanel();
+                                    await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (userData[i].name === data[j].name) {
@@ -602,6 +609,7 @@ const equiputils = (() => {
                                             }
                                         }
                                     });
+                                    await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
                                 });
                                 popupCheck.cancel.textContent = languageData.game.equip['sell-cancel'];
                                 popupCheck.cancel.addEventListener('click', async () => {
@@ -808,9 +816,9 @@ const footerutils = (() => {
         const selectGameBackLightSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 56 56" fill="var(--color-high-light)"><path d="M39.215 23.137c.797.21 1.406.21 2.015-.164c.61-.375.938-.867 1.149-1.664l1.969-7.805c.257-.984-.282-1.922-1.266-2.156c-.961-.258-1.969.28-2.18 1.289l-.984 4.195l-6.352-11.32c-1.195-2.156-3.351-3.258-5.554-3.258a6.411 6.411 0 0 0-5.579 3.258l-6.468 11.554c-.586 1.055-.258 2.063.633 2.602c.937.516 2.039.188 2.578-.75l6.468-11.602c.54-.937 1.454-1.335 2.368-1.335c.914 0 1.804.398 2.32 1.335l6.445 11.508l-4.336-1.289c-.984-.305-1.945.258-2.203 1.242c-.281.938.235 1.899 1.242 2.18ZM9.965 47.418h12.562c1.102 0 1.922-.773 1.922-1.828c0-1.055-.82-1.852-1.922-1.852H9.988c-1.617 0-2.695-1.336-2.695-2.789c0-.422.07-.937.328-1.383l6-10.734l.984 4.195c.211 1.008 1.22 1.547 2.18 1.29c.984-.235 1.547-1.172 1.266-2.157l-1.97-7.804c-.21-.774-.538-1.313-1.147-1.665c-.61-.375-1.196-.398-1.993-.164l-7.734 2.18c-1.031.281-1.547 1.242-1.266 2.18c.258.984 1.219 1.57 2.203 1.242l4.336-1.29l-6.093 10.923c-.586 1.031-.891 2.133-.891 3.187c0 3.633 2.484 6.469 6.469 6.469m24.539 5.578c.726.75 1.828.703 2.531 0c.703-.68.703-1.805-.047-2.531l-3.21-3.047h12.257c3.985 0 6.469-2.836 6.469-6.469c0-1.054-.281-2.133-.867-3.187l-6.188-11.086c-.562-1.008-1.64-1.242-2.555-.703c-.914.539-1.218 1.64-.703 2.578l6.188 11.015c.234.446.351.961.351 1.383c0 1.453-1.125 2.79-2.742 2.79h-12.21l3.21-3.024c.75-.727.75-1.852.047-2.531c-.703-.727-1.805-.75-2.531 0l-5.742 5.578c-.586.562-.868 1.125-.868 1.828c0 .703.282 1.242.868 1.804Z"></path></svg>';
         selectGame.innerHTML = selectGameSVG;
         const leaveValueData = await authData.getDungeonLeaveBtc();
-        let randomLeaveValue = leaveValueData ?? wasm.math.getRandomIntIncludeMax(20000, 50000);
-        authData.setDungeonLeaveBtc(randomLeaveValue);
+        !leaveValueData && await authData.initLeaveDungeon();
         selectGame.addEventListener('click', async () => {
+            let randomLeaveValue = await authData.getDungeonLeaveBtc();
             if (gameUtils.game.style.display === '') return;
             if (gameUtils.game.querySelector('.dungeon').style.display === 'flex') {
                 const popupCheck = popup.renderCheck(app);
@@ -822,14 +830,13 @@ const footerutils = (() => {
                         animation.forceInit(popupCheck.popupPanel.querySelector('.random-leave-value'), 'color-fade-red');
                         return;
                     }
-                    await authData.modifyBtc(-randomLeaveValue);
-                    await dungeonutils.leaveResetData();
-                    randomLeaveValue = wasm.math.getRandomIntIncludeMax(20000, 50000);
-                    authData.setDungeonLeaveBtc(randomLeaveValue);
 
                     const progressDungeon = progress.render(app);
                     await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
+                    popupCheck.removePanel();
                     await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
+                    await authData.leaveDungeon();
+                    await dungeonutils.leaveResetData();
                     await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
 
                     selectGame.innerHTML = selectGameLightSVG;
@@ -838,7 +845,6 @@ const footerutils = (() => {
                     gameUtils.game.querySelectorAll(':scope>*').forEach(async element => {
                         element.style.display = '';
                     });
-                    popupCheck.removePanel();
                 });
                 popupCheck.cancel.textContent = languageData.popup.cancel;
                 popupCheck.cancel.addEventListener('click', () => {
