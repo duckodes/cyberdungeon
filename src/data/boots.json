@@ -4,7 +4,6 @@
             "name": "Standard Boots",
             "id": "StandardBoots",
             "cost": 120,
-            "store": true,
             "img": "",
             "attr": [
                 {

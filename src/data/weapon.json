@@ -4,7 +4,6 @@
             "name": "Standard Knife",
             "id": "StandardKnife",
             "cost": 185,
-            "store": true,
             "img": "./src/image/weapon/StandardKnife.png",
             "attr": [
                 {

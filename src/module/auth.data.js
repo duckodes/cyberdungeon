@@ -1,24 +1,37 @@
-import { ref, update, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+import { ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
 import auth from "./auth.js";
 import authSign from "./auth.sign.js";
 
 const authData = (() => {
     function init(appUtilsRender) {
-        const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}`);
-        const updateData = (field, val) => {
-            update(dataRef, { [field]: val });
-        };
+        // btc auto change
+        const btcRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/btc`);
+        onValue(btcRef, (snapshot) => {
+            appUtilsRender.update.btc(snapshot.val());
+        });
 
-        onValue(dataRef, (snapshot) => {
-            appUtilsRender.update.level(snapshot.val()?.level);
-            appUtilsRender.update.name(snapshot.val()?.name);
-            appUtilsRender.update.btc(snapshot.val()?.btc);
-            appUtilsRender.update.nc(snapshot.val()?.nc);
-            !snapshot.val()?.level && updateData('level', 0);
-            !snapshot.val()?.name && updateData('name', auth.auth.currentUser.displayName);
+        // nc auto change
+        const ncRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/nc`);
+        onValue(ncRef, (snapshot) => {
+            appUtilsRender.update.nc(snapshot.val());
+        });
+
+        // level auto change
+        const levelRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/level`);
+        onValue(levelRef, (snapshot) => {
+            appUtilsRender.update.level(snapshot.val());
+            !snapshot.val() && set(levelRef, 0);
+        });
+
+        // name auto change
+        const nameRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/name`);
+        onValue(nameRef, (snapshot) => {
+            appUtilsRender.update.name(snapshot.val());
+            !snapshot.val() && set(nameRef, auth.auth.currentUser.displayName);
         });
     }
+    //#region  API
     async function purchaseItem({ itemType, itemId, quantity }) {
         const idToken = await authSign.idToken();
         try {
@@ -160,6 +173,8 @@ const authData = (() => {
             return { success: false, message: error.message };
         }
     }
+    //#endregion
+
     function setData(key, data) {
         const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/${key}`);
         set(dataRef, data);
@@ -168,6 +183,35 @@ const authData = (() => {
         const dataRef = ref(auth.database, `cyberdungeon/user/${auth.auth.currentUser.uid}/${key}`);
         const snapshot = await get(dataRef);
         return snapshot.val();
+    }
+
+    async function getStoreItems(itemData) {
+        const categoryMap = {};
+        const promises = [];
+
+        Object.entries(itemData).forEach(([category, items]) => {
+            categoryMap[category] = [];
+
+            items.forEach(({ id, name }) => {
+                const itemRef = ref(auth.database, `cyberdungeon/items/${category}/${id}`);
+                const promise = get(itemRef)
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        if (data) {
+                            // console.log(`success ${category}/${id}:`, data);
+                            categoryMap[category].push({ id, name, ...data });
+                        }
+                    })
+                    .catch(error => {
+                        // console.error(`failed ${category}/${id}:`, error);
+                    });
+
+                promises.push(promise);
+            });
+        });
+
+        await Promise.all(promises);
+        return categoryMap;
     }
 
     const btcKey = 'btc';
@@ -238,8 +282,11 @@ const authData = (() => {
         openDungeonTreasure: openDungeonTreasure,
         initLeaveDungeon: initLeaveDungeon,
         leaveDungeon: leaveDungeon,
+
+        getStoreItems: getStoreItems,
         setData: setData,
         getData: getData,
+
         getBtc: getBtc,
         setDungeon: setDungeon,
         getDungeon: getDungeon,

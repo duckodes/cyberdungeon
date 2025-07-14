@@ -43,7 +43,7 @@ const appUtils = (() => {
         nav.appendChild(navUtils.navLeft);
         nav.appendChild(navUtils.navRight);
 
-        const marketUtils = marketutils.render(app, navUtils, languageData, itemData);
+        const marketUtils = await marketutils.render(app, navUtils, languageData, itemData);
         const gameUtils = await gameutils.render(app, navUtils, content, languageData, itemData);
         const settingsUtils = settingsutils.render(app, languageData);
         content.appendChild(marketUtils.market);
@@ -148,18 +148,17 @@ const marketutils = (() => {
     * @param {languageJson} languageData
     * @param {Object} itemData
     */
-    function render(app, navUtils, languageData, itemData) {
+    async function render(app, navUtils, languageData, itemData) {
         const market = document.createElement('div');
         market.className = 'market';
 
-        items.parse(itemData, (key, data) => {
+        items.parse(await authData.getStoreItems(itemData), (key, data) => {
             const itemsKey = document.createElement('div');
             itemsKey.className = 'items-key';
             itemsKey.textContent = languageData.itemskey[key];
             const itemsEntire = document.createElement('div');
             itemsEntire.className = 'items-entire';
             for (let i = 0; i < data.length; i++) {
-                if (!data[i].store) return;
                 const item = document.createElement('div');
                 item.className = 'item';
                 item.setAttribute('data', data[i].name);
@@ -200,7 +199,11 @@ const marketutils = (() => {
                             popupCheck.popupPanel.innerHTML = `${btcData} - ${data[i].cost} = <span class="text-green">${btcData - data[i].cost} ${languageData.wallet.bitcoin}</span>`;
                         }
                         popupCheck.confirm.textContent = languageData.market.confirm;
+
+                        // confirm purchase
                         popupCheck.confirm.addEventListener('click', async () => {
+                            
+                            // popup purchase failed
                             if (btcData < data[i].cost) {
                                 const popupPurchaseFailed = popup.render(app);
                                 popupPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
@@ -212,30 +215,37 @@ const marketutils = (() => {
                                 return;
                             }
 
+                            // purchase post
                             const progressDungeon = progress.render(app);
                             await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                             popupConfirm.removePanel();
                             popupCheck.removePanel();
                             await progressDungeon.set({ value: wasm.math.getRandomIntIncludeMax(10, 90), delay: 500, loadText: '.' });
 
-                            const popupPurchaseSuccess = popup.render(app);
-                            popupPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
-                            popupPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
-                            await timer.delay(1000);
-                            popupPurchaseSuccess.removePanel();
                             await authData.purchaseItem({
                                 itemType: key,
                                 itemId: data[i].id,
                                 quantity: 1
                             });
+
+                            // popup purchase success
                             await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
+                            const popupPurchaseSuccess = popup.render(app);
+                            popupPurchaseSuccess.popupPanel.classList.add('popup-panel-purchase-success');
+                            popupPurchaseSuccess.popupPanel.textContent = `${languageData.market['purchase-success'][0]} ${auth.auth.currentUser.displayName} ${languageData.market['purchase-success'][1]}`;
+                            await timer.delay(1000);
+                            popupPurchaseSuccess.removePanel();
+
                             console.log('user items:', await items.getUserItems(itemData));
                         });
+
+                        // cancel purchase
                         popupCheck.cancel.textContent = languageData.market.cancel;
                         popupCheck.cancel.addEventListener('click', () => {
                             popupConfirm.removePanel();
                             popupCheck.removePanel();
                         });
+                        
                         popupCheck.render();
                     });
                     popupConfirm.popupPanel.appendChild(popupContent);
@@ -533,7 +543,7 @@ const equiputils = (() => {
                 await render(app, navUtils, content, equip, languageData, itemData);
             });
         }
-        items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
+        items.parse(await items.getEquipData(await authData.getStoreItems(itemData)), (equipKey, equipData) => {
             const userEquipContainer = document.createElement('div');
             userEquipContainer.className = 'user-equip-container';
             const userEquipImage = document.createElement('div');
@@ -818,8 +828,9 @@ const footerutils = (() => {
         const leaveValueData = await authData.getDungeonLeaveBtc();
         !leaveValueData && await authData.initLeaveDungeon();
         selectGame.addEventListener('click', async () => {
-            let randomLeaveValue = await authData.getDungeonLeaveBtc();
             if (gameUtils.game.style.display === '') return;
+            
+            let randomLeaveValue = await authData.getDungeonLeaveBtc();
             if (gameUtils.game.querySelector('.dungeon').style.display === 'flex') {
                 const popupCheck = popup.renderCheck(app);
                 popupCheck.popupPanel.innerHTML = `<div>${languageData.dungeon.leave}<span class='random-leave-value'> -${randomLeaveValue} ${languageData.wallet.bitcoin}</span></div>`;
