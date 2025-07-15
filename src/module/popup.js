@@ -26,6 +26,9 @@ const popup = (() => {
                 popupBase.classList.remove('fade-out');
             });
         }
+        const whiteLine = document.createElement('div');
+        whiteLine.className = 'white-line';
+        popupPanel.appendChild(whiteLine);
 
         popupBase.appendChild(popupPanel);
 
