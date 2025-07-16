@@ -12,9 +12,18 @@ const popup = (() => {
         popupPanel.addEventListener('animationend', () => {
             popupPanel.classList.remove('slide-in');
         });
+        let isPoint = false;
+        popupBase.addEventListener('mousedown', () => {
+            isPoint = true;
+        });
+        popupPanel.addEventListener('mouseleave', () => {
+            isPoint = false;
+        });
         popupBase.addEventListener('click', (e) => {
             if (popupPanel.contains(e.target)) return;
+            if (!isPoint) return;
             removePanel();
+            isPoint = false;
         });
         function removePanel() {
             popupPanel.classList.add('slide-out');
@@ -29,6 +38,80 @@ const popup = (() => {
         const whiteLine = document.createElement('div');
         whiteLine.className = 'white-line';
         popupPanel.appendChild(whiteLine);
+        move(popupPanel);
+        function move(element) {
+            let startY = 0;
+            let currentY = 0;
+            let dragging = false;
+            let initialTranslateY = 0;
+            let isPointerDown = false;
+
+            function getTranslateY() {
+                const transform = window.getComputedStyle(element).transform;
+                const matrix = new DOMMatrix(transform);
+                return matrix.m42 || 0;
+            }
+
+            function startDrag(y) {
+                initialTranslateY = getTranslateY();
+                startY = y;
+                isPointerDown = true;
+                dragging = true;
+                element.style.transition = 'none';
+            }
+
+            function moveDrag(y) {
+                if (isPointerDown) dragging = true;
+                if (!dragging) return;
+                currentY = y;
+                const deltaY = currentY - startY;
+                if (deltaY + initialTranslateY >= 0) {
+                    element.style.transform = `translateY(${deltaY + initialTranslateY}px)`;
+                }
+            }
+
+            function endDrag() {
+                isPointerDown = false;
+                dragging = false;
+                const deltaY = currentY - startY + initialTranslateY;
+                if (deltaY > 200) {
+                    removePanel(); // 你要自己定義這個函式
+                } else if (deltaY > 70) {
+                    element.style.transition = 'all 200ms ease-out';
+                    element.style.transform = `translateY(70%)`;
+                } else {
+                    element.style.transition = 'all 200ms ease-out';
+                    element.style.transform = `translateY(0)`;
+                }
+            }
+
+            function except(value) {
+                if (!dragging) return;
+                dragging = value;
+            }
+
+            // Pointer Events (桌面與部分手機瀏覽器)
+            element.addEventListener('pointerdown', (e) => startDrag(e.clientY));
+            document.addEventListener('pointermove', (e) => moveDrag(e.clientY));
+            document.addEventListener('pointerup', () => endDrag());
+            document.addEventListener('pointerout', () => except(false));
+            document.addEventListener('pointercancel', () => except(false));
+
+            // Touch Events (手機)
+            element.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    startDrag(e.touches[0].clientY);
+                }
+            }, { passive: true });
+
+            element.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                    moveDrag(e.touches[0].clientY);
+                }
+            }, { passive: true });
+
+            element.addEventListener('touchend', () => endDrag());
+        }
 
         popupBase.appendChild(popupPanel);
 
