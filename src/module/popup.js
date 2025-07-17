@@ -75,7 +75,10 @@ const popup = (() => {
                 dragging = false;
                 const deltaY = currentY - startY + initialTranslateY;
                 if (deltaY > 200) {
-                    removePanel(); // 你要自己定義這個函式
+                    popupBase.classList.add('fade-out');
+                    popupBase.addEventListener('animationend', () => {
+                        popupBase.remove();
+                    });
                 } else if (deltaY > 70) {
                     element.style.transition = 'all 200ms ease-out';
                     element.style.transform = `translateY(70%)`;
