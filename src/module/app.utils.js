@@ -83,7 +83,8 @@ const appUtils = (() => {
     */
     async function update(languageData) {
         document.title = languageData.appname;
-        const itemData = await items.get(languageData);
+        const itemBasicData = await items.get(languageData);
+        const itemData = await authData.getItems(itemBasicData);
         console.log(itemData);
         const appUtilsRender = await render(languageData, itemData);
         authData.init(appUtilsRender);

@@ -2,35 +2,7 @@
     "helmet": [
         {
             "name": "Standard Helmet",
-            "id": "StandardHelmet",
-            "cost": 175,
-            "img": "./src/image/helmet/StandardHelmet.png",
-            "attr": [
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                }
-            ]
+            "id": "StandardHelmet"
         }
     ]
 }

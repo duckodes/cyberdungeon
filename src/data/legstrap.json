@@ -2,35 +2,7 @@
     "legstrap": [
         {
             "name": "Standard Potion",
-            "id": "StandardPotion",
-            "cost": 100,
-            "img": "",
-            "attr": [
-                {
-                    "type": "rd",
-                    "value": 1
-                },
-                {
-                    "type": "rd",
-                    "value": 1
-                },
-                {
-                    "type": "rd",
-                    "value": 1
-                },
-                {
-                    "type": "rd",
-                    "value": 1
-                },
-                {
-                    "type": "rd",
-                    "value": 1
-                },
-                {
-                    "type": "rd",
-                    "value": 1
-                }
-            ]
+            "id": "StandardPotion"
         }
     ]
 }

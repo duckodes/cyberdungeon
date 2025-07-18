@@ -2,35 +2,7 @@
     "jacket": [
         {
             "name": "Standard Jacket",
-            "id": "StandardJacket",
-            "cost": 130,
-            "img": "./src/image/jacket/StandardJacket.png",
-            "attr": [
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                },
-                {
-                    "type": "def",
-                    "value": 1
-                }
-            ]
+            "id": "StandardJacket"
         }
     ]
 }

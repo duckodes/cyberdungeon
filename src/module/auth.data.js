@@ -185,7 +185,7 @@ const authData = (() => {
         return snapshot.val();
     }
 
-    async function getStoreItems(itemData) {
+    async function getItems(itemData) {
         const categoryMap = {};
         const promises = [];
 
@@ -194,6 +194,34 @@ const authData = (() => {
 
             items.forEach(({ id, name }) => {
                 const itemRef = ref(auth.database, `cyberdungeon/items/${category}/${id}`);
+                const promise = get(itemRef)
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        if (data) {
+                            // console.log(`success ${category}/${id}:`, data);
+                            categoryMap[category].push({ id, name, ...data });
+                        }
+                    })
+                    .catch(error => {
+                        // console.error(`failed ${category}/${id}:`, error);
+                    });
+
+                promises.push(promise);
+            });
+        });
+
+        await Promise.all(promises);
+        return categoryMap;
+    }
+    async function getStoreItems(itemData) {
+        const categoryMap = {};
+        const promises = [];
+
+        Object.entries(itemData).forEach(([category, items]) => {
+            categoryMap[category] = [];
+
+            items.forEach(({ id, name }) => {
+                const itemRef = ref(auth.database, `cyberdungeon/store/${category}/${id}`);
                 const promise = get(itemRef)
                     .then(snapshot => {
                         const data = snapshot.val();
@@ -283,6 +311,7 @@ const authData = (() => {
         initLeaveDungeon: initLeaveDungeon,
         leaveDungeon: leaveDungeon,
 
+        getItems: getItems,
         getStoreItems: getStoreItems,
         setData: setData,
         getData: getData,

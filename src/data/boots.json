@@ -2,35 +2,7 @@
     "boots": [
         {
             "name": "Standard Boots",
-            "id": "StandardBoots",
-            "cost": 120,
-            "img": "",
-            "attr": [
-                {
-                    "type": "act",
-                    "value": 1
-                },
-                {
-                    "type": "act",
-                    "value": 1
-                },
-                {
-                    "type": "act",
-                    "value": 1
-                },
-                {
-                    "type": "act",
-                    "value": 1
-                },
-                {
-                    "type": "act",
-                    "value": 1
-                },
-                {
-                    "type": "act",
-                    "value": 1
-                }
-            ]
+            "id": "StandardBoots"
         }
     ]
 }

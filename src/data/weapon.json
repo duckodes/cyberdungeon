@@ -2,35 +2,7 @@
     "weapon": [
         {
             "name": "Standard Knife",
-            "id": "StandardKnife",
-            "cost": 185,
-            "img": "./src/image/weapon/StandardKnife.png",
-            "attr": [
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                },
-                {
-                    "type": "dmg",
-                    "value": 1
-                }
-            ]
+            "id": "StandardKnife"
         }
     ]
 }
