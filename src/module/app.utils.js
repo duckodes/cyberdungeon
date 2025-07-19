@@ -223,11 +223,23 @@ const marketutils = (() => {
                             popupCheck.removePanel();
                             await progressDungeon.set({ value: wasm.math.getRandomIntIncludeMax(10, 90), delay: 500, loadText: '.' });
 
-                            await authData.purchaseItem({
+                            const response = await authData.buyItems({
                                 itemType: key,
                                 itemId: data[i].id,
                                 quantity: 1
                             });
+
+                            if (!response.success) {
+                                const popupPurchaseFailed = popup.render(app);
+                                popupPurchaseFailed.popupPanel.classList.add('popup-panel-purchase-failed');
+                                popupPurchaseFailed.popupPanel.textContent = languageData.market['purchase-failed'];
+                                popupConfirm.removePanel();
+                                popupCheck.removePanel();
+                                await timer.delay(1000);
+                                popupPurchaseFailed.removePanel();
+                                await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
+                                return;
+                            }
 
                             // popup purchase success
                             await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });

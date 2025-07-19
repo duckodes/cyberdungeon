@@ -32,7 +32,7 @@ const authData = (() => {
         });
     }
     //#region  API
-    async function purchaseItem({ itemType, itemId, quantity }) {
+    async function buyItems({ itemType, itemId, quantity }) {
         const idToken = await authSign.idToken();
         try {
             const response = await fetch('https://buyitems-uqj7m73rbq-uc.a.run.app', {
@@ -305,7 +305,7 @@ const authData = (() => {
 
     return {
         init: init,
-        purchaseItem: purchaseItem,
+        buyItems: buyItems,
         sellItems: sellItems,
         openDungeonTreasure: openDungeonTreasure,
         initLeaveDungeon: initLeaveDungeon,
