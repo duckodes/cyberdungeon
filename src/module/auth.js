@@ -2,6 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-functions.js";
 
 import language from "./language.js";
 import fetcher from "./fetcher.js";
@@ -16,6 +17,7 @@ const auth = (() => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const database = getDatabase();
+    const functions = getFunctions(app);
 
     function init(languageData) {
         let sign = authSign.render(languageData);
@@ -35,7 +37,10 @@ const auth = (() => {
     return {
         init: init,
         auth: auth,
-        database: database
+        database: database,
+        functions: (functionName) => {
+            return httpsCallable(functions, functionName);
+        }
     }
 })();
 

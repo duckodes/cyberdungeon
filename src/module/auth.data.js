@@ -63,7 +63,7 @@ const authData = (() => {
             return { success: false, message: error.message };
         }
     }
-    async function sellItems({ itemType, itemId }, callback) {
+    async function sellItems({ itemType, itemId }) {
         const idToken = await authSign.idToken();
         try {
             const response = await fetch('https://sellitems-uqj7m73rbq-uc.a.run.app', {
@@ -83,9 +83,6 @@ const authData = (() => {
             if (!response.ok) {
                 console.error('request failed', result.message);
                 return { success: false, message: result.message };
-            }
-            if (callback) {
-                callback();
             }
             console.log('success: ', result.message);
             return { success: true, message: result.message };
@@ -184,7 +181,6 @@ const authData = (() => {
         const snapshot = await get(dataRef);
         return snapshot.val();
     }
-
     async function getItems(itemData) {
         const categoryMap = {};
         const promises = [];
@@ -247,6 +243,51 @@ const authData = (() => {
         return await getData(btcKey);
     }
 
+    //#region items
+    const userItemDataKey = 'userItemData';
+    async function getUserItems(itemData) {
+        const userItemData = await authData.getData(userItemDataKey);
+        if (!userItemData) return;
+        return userItems(userItemData, itemData);
+    }
+    function userItems(userItemData, itemData) {
+        return Object.entries(userItemData).reduce(function (acc, entry) {
+            const category = entry[0];
+            const indices = entry[1];
+
+            acc[category] = indices.map(function (index) {
+                return itemData[category][index];
+            });
+
+            return acc;
+        }, {});
+    }
+
+    const equipDataKey = 'equip';
+    async function setEquipData(index, data) {
+        let equipData = await authData.getData(equipDataKey);
+        equipData[index] = data;
+        authData.setData(equipDataKey, equipData);
+    }
+    async function getEquipData(itemData) {
+        const categories = Object.keys(itemData);
+        const result = {};
+        let equipData = await authData.getData(equipDataKey);
+        if (!equipData) {
+            equipData = [-1, -1, -1, -1, -1];
+            authData.setData(equipDataKey, equipData);
+        }
+
+        categories.forEach((category, index) => {
+            const equipIndex = equipData[index];
+            result[category] = equipIndex !== -1 ? [itemData[category][equipIndex]] : [];
+        });
+
+        return result;
+    }
+    //#endregion
+
+    //#region dungeon
     const isDungeon = 'dungeon/start';
     function setDungeon(data) {
         authData.setData(isDungeon, data);
@@ -302,9 +343,11 @@ const authData = (() => {
     async function getDungeonLeaveBtc() {
         return await getData(leaveBtc);
     }
+    //#endregion
 
     return {
         init: init,
+        // api
         buyItems: buyItems,
         sellItems: sellItems,
         openDungeonTreasure: openDungeonTreasure,
@@ -317,6 +360,13 @@ const authData = (() => {
         getData: getData,
 
         getBtc: getBtc,
+
+        // items
+        getUserItems: getUserItems,
+        setEquipData: setEquipData,
+        getEquipData: getEquipData,
+
+        // dungeon
         setDungeon: setDungeon,
         getDungeon: getDungeon,
         setDungeonArea: setDungeonArea,

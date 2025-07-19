@@ -179,7 +179,7 @@ const marketutils = (() => {
                     const popupContent = document.createElement('div');
                     popupContent.className = 'popup-content';
                     let counter = 0;
-                    items.parse(await items.getUserItems(itemData), (userkey, userData) => {
+                    items.parse(await authData.getUserItems(itemData), (userkey, userData) => {
                         for (let j = 0; j < userData.length; j++) {
                             if (userData[j].name === data[i].name) {
                                 counter++;
@@ -249,7 +249,7 @@ const marketutils = (() => {
                             await timer.delay(1000);
                             popupPurchaseSuccess.removePanel();
 
-                            console.log('user items:', await items.getUserItems(itemData));
+                            console.log('user items:', await authData.getUserItems(itemData));
                         });
 
                         // cancel purchase
@@ -558,7 +558,7 @@ const equiputils = (() => {
                 scroller.resetPosition(content);
             });
         }
-        items.parse(await items.getEquipData(itemData), (equipKey, equipData) => {
+        items.parse(await authData.getEquipData(itemData), (equipKey, equipData) => {
             const userEquipContainer = document.createElement('div');
             userEquipContainer.className = 'user-equip-container';
             const userEquipImage = document.createElement('div');
@@ -573,13 +573,13 @@ const equiputils = (() => {
                 }
                 unEquip.innerHTML = '<div class="un-equip-bg"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 36 36"><path fill="var(--color-red)" d="M18 0C8.059 0 0 8.059 0 18s8.059 18 18 18s18-8.059 18-18S27.941 0 18 0zm13 18c0 2.565-.753 4.95-2.035 6.965L11.036 7.036A12.916 12.916 0 0 1 18 5c7.18 0 13 5.821 13 13zM5 18c0-2.565.753-4.95 2.036-6.964l17.929 17.929A12.93 12.93 0 0 1 18 31c-7.179 0-13-5.82-13-13z"></path></svg></div>';
                 unEquip.addEventListener('click', async () => {
-                    items.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
+                    authData.setEquipData(Object.keys(itemData).indexOf(equipKey), -1);
                     popupUserItems.removePanel();
                     await timer.delay(200);
                     update();
                 });
                 popupUserItems.popupPanel.appendChild(unEquip);
-                items.parse(await items.getUserItems(itemData), async (userkey, userData) => {
+                items.parse(await authData.getUserItems(itemData), async (userkey, userData) => {
                     for (let i = 0; i < userData.length; i++) {
                         if (equipKey === userkey) {
                             const userItemsContainer = document.createElement('div');
@@ -597,7 +597,7 @@ const equiputils = (() => {
                                 items.parse(itemData, async (key, data) => {
                                     for (let j = 0; j < data.length; j++) {
                                         if (data[j].name === userData[i].name) {
-                                            items.setEquipData(Object.keys(itemData).indexOf(key), j);
+                                            authData.setEquipData(Object.keys(itemData).indexOf(key), j);
                                             popupUserItems.removePanel();
                                             await timer.delay(200);
                                             update();
@@ -617,17 +617,17 @@ const equiputils = (() => {
                                     await progressDungeon.set({ value: 0, delay: 50, loadText: '.' });
                                     popupUserItems.removePanel();
                                     popupCheck.removePanel();
-                                    await progressDungeon.set({ value: 50, delay: 500, loadText: '.' });
                                     items.parse(itemData, async (key, data) => {
                                         for (let j = 0; j < data.length; j++) {
                                             if (userData[i].name === data[j].name) {
-                                                await authData.sellItems({
+                                                const response = await authData.sellItems({
                                                     itemType: key,
                                                     itemId: userData[i].id
-                                                }, async () => {
-                                                    update();
-                                                    await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 700 });
                                                 });
+                                                await progressDungeon.set({ value: 100, delay: 50, loadText: '.', endDelay: 200 });
+                                                if (response.success) {
+                                                    update();
+                                                }
                                             }
                                         }
                                     });

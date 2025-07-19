@@ -1,5 +1,3 @@
-import authData from "./auth.data.js";
-
 import fetcher from "./fetcher.js";
 
 const items = (() => {
@@ -42,67 +40,9 @@ const items = (() => {
         }
     }
 
-    // user items
-    const userItemDataKey = 'userItemData';
-    async function setUserItems(key, data) {
-        const currentUserItemData = await authData.getData(userItemDataKey + '/' + key) || [];
-        authData.setData(userItemDataKey + '/' + key, [...currentUserItemData, data]);
-    }
-    async function getUserItems(itemData) {
-        const userItemData = await authData.getData(userItemDataKey);
-        if (!userItemData) return;
-        return userItems(userItemData, itemData);
-    }
-    async function removeUserItems(key, data) {
-        const currentUserItemData = await authData.getData(userItemDataKey + '/' + key) || [];
-        currentUserItemData.splice(data, 1);
-        authData.setData(userItemDataKey + '/' + key, currentUserItemData);
-    }
-    function userItems(userItemData, itemData) {
-        return Object.entries(userItemData).reduce(function (acc, entry) {
-            const category = entry[0];
-            const indices = entry[1];
-
-            acc[category] = indices.map(function (index) {
-                return itemData[category][index];
-            });
-
-            return acc;
-        }, {});
-    }
-
-    // Equip
-    const equipDataKey = 'equip';
-    async function setEquipData(index, data) {
-        let equipData = await authData.getData(equipDataKey);
-        equipData[index] = data;
-        authData.setData(equipDataKey, equipData);
-    }
-    async function getEquipData(itemData) {
-        const categories = Object.keys(itemData);
-        const result = {};
-        let equipData = await authData.getData(equipDataKey);
-        if (!equipData) {
-            equipData = [-1, -1, -1, -1, -1];
-            authData.setData(equipDataKey, equipData);
-        }
-
-        categories.forEach((category, index) => {
-            const equipIndex = equipData[index];
-            result[category] = equipIndex !== -1 ? [itemData[category][equipIndex]] : [];
-        });
-
-        return result;
-    }
-
     return {
         get: get,
-        parse: parse,
-        setUserItems: setUserItems,
-        getUserItems: getUserItems,
-        removeUserItems: removeUserItems,
-        setEquipData: setEquipData,
-        getEquipData: getEquipData
+        parse: parse
     }
 })();
 
