@@ -969,4 +969,48 @@ const animation = (() => {
     }
 })();
 
+const consoleUtils = (() => {
+    function init() {
+        const style = document.createElement('style');
+        style.textContent = `
+        #console-output {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          max-height: 200px;
+          overflow-y: auto;
+          background: #111;
+          color: #0f0;
+          font-family: monospace;
+          padding: 10px;
+          box-sizing: border-box;
+          z-index: 9999;
+        }
+      `;
+        document.head.appendChild(style);
+
+        const consoleDiv = document.createElement('div');
+        consoleDiv.id = 'console-output';
+        document.body.appendChild(consoleDiv);
+
+        const originalLog = console.log;
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            const line = document.createElement('div');
+            line.textContent = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+            ).join(' ');
+            consoleDiv.appendChild(line);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        };
+
+        console.log("✅ Console 已連接到網頁底部");
+        console.log("🌐 所有 log 都會顯示在這裡");
+    }
+    return {
+        init: init
+    }
+})();
+
 export default appUtils;
