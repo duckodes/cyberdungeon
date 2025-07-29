@@ -32,29 +32,26 @@ const authData = (() => {
         });
     }
     //#region  API
-    async function buyItems({ itemType, itemId, quantity }) {
+    async function postApi(url, body = null) {
         const idToken = await authSign.idToken();
-        try {
-            const response = await fetch('https://buyitems-uqj7m73rbq-uc.a.run.app', {
-                method: 'POST',
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    itemType,
-                    itemId,
-                    quantity
-                })
-            });
+        const fetchOptions = {
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${idToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        
+        if (body) fetchOptions.body = JSON.stringify(body);
 
+        try {
+            const response = await fetch(url, fetchOptions);
             const result = await response.json();
 
             if (!response.ok) {
                 console.error('request failed', result.message);
                 return { success: false, message: result.message };
             }
-
             console.log('success: ', result.message);
             return { success: true, message: result.message };
 
@@ -62,113 +59,21 @@ const authData = (() => {
             console.error('Connect Error：', error.message);
             return { success: false, message: error.message };
         }
+    }
+    async function buyItems({ itemType, itemId, quantity }) {
+        return await postApi('https://buyitems-uqj7m73rbq-uc.a.run.app', { itemType, itemId, quantity });
     }
     async function sellItems({ itemType, itemId }) {
-        const idToken = await authSign.idToken();
-        try {
-            const response = await fetch('https://sellitems-uqj7m73rbq-uc.a.run.app', {
-                method: 'POST',
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    itemType,
-                    itemId
-                })
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                console.error('request failed', result.message);
-                return { success: false, message: result.message };
-            }
-            console.log('success: ', result.message);
-            return { success: true, message: result.message };
-
-        } catch (error) {
-            console.error('Connect Error：', error.message);
-            return { success: false, message: error.message };
-        }
+        return await postApi('https://sellitems-uqj7m73rbq-uc.a.run.app', { itemType, itemId });
     }
     async function openDungeonTreasure({ typeIndex }) {
-        const idToken = await authSign.idToken();
-        try {
-            const response = await fetch('https://opendungeontreasure-uqj7m73rbq-uc.a.run.app', {
-                method: 'POST',
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    typeIndex
-                })
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                console.error('request failed', result.message);
-                return { success: false, message: result.message };
-            }
-            console.log('success: ', result.message);
-            return { success: true, message: result.message };
-
-        } catch (error) {
-            console.error('Connect Error：', error.message);
-            return { success: false, message: error.message };
-        }
+        return await postApi('https://opendungeontreasure-uqj7m73rbq-uc.a.run.app', { typeIndex });
     }
     async function initLeaveDungeon() {
-        const idToken = await authSign.idToken();
-        try {
-            const response = await fetch('https://initleavedungeon-uqj7m73rbq-uc.a.run.app', {
-                method: 'POST',
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                console.error('request failed', result.message);
-                return { success: false, message: result.message };
-            }
-            console.log('success: ', result.message);
-            return { success: true, message: result.message };
-
-        } catch (error) {
-            console.error('Connect Error：', error.message);
-            return { success: false, message: error.message };
-        }
+        return await postApi('https://initleavedungeon-uqj7m73rbq-uc.a.run.app');
     }
     async function leaveDungeon() {
-        const idToken = await authSign.idToken();
-        try {
-            const response = await fetch('https://leavedungeon-uqj7m73rbq-uc.a.run.app', {
-                method: 'POST',
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                console.error('request failed', result.message);
-                return { success: false, message: result.message };
-            }
-            console.log('success: ', result.message);
-            return { success: true, message: result.message };
-
-        } catch (error) {
-            console.error('Connect Error：', error.message);
-            return { success: false, message: error.message };
-        }
+        return await postApi('https://leavedungeon-uqj7m73rbq-uc.a.run.app');
     }
     //#endregion
 
