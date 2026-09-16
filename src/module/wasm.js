@@ -8,7 +8,7 @@ const wasmUtils = (() => {
             }
         };
         const response = await WebAssembly.instantiateStreaming(
-            fetch('../c2wasm/wasm/math.wasm'),
+            fetch('./c2wasm/wasm/math.wasm'),
             importObject
         );
         return {
