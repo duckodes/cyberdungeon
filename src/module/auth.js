@@ -12,7 +12,7 @@ import authData from "./auth.data.js";
 
 import appUtils from "./app.utils.js";
 
-const firebaseConfig = await fetcher.load('../src/config/firebaseConfig.json');
+const firebaseConfig = await fetcher.load('./src/config/firebaseConfig.json');
 const auth = (() => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
