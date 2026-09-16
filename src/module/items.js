@@ -4,7 +4,7 @@ const items = (() => {
     async function get(languageData) {
         const categories = ['helmet', 'jacket', 'weapon', 'legstrap', 'boots'];
         const dataPromises = categories.map(category =>
-            fetcher.load(`../src/data/${category}.json`)
+            fetcher.load(`./src/data/${category}.json`)
         );
 
         const itemDataArray = await Promise.all(dataPromises);
